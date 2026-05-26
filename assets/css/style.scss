@@ -164,14 +164,15 @@ code {
   // Allow the per-path drop-shadow glow (during the click animation) to
   // render outside the SVG's box instead of being clipped at the viewBox edge.
   overflow: visible;
+  // Suppress all focus indicators (browser default outline, webkit tap
+  // highlight, etc.) — clicking the logo shouldn't show any ring.
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
-// Suppress the browser focus ring on mouse click — but keep a visible
-// indicator when the user Tabs to it with the keyboard.
-.hero-logo-svg:focus { outline: none; }
-.hero-logo-svg:focus-visible {
-  outline: 2px solid $accent;
-  outline-offset: 6px;
-  border-radius: 4px;
+.hero-logo-svg:focus,
+.hero-logo-svg:focus-visible,
+.hero-logo-svg:focus-within {
+  outline: none;
 }
 // ----------------------------------------------------------------------------
 // Intro animation: click-triggered.
@@ -202,10 +203,10 @@ code {
   animation: vlogo-fire 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1 forwards;
 }
 .hero-logo-svg.intro-active .intro-wrap {
-  animation: intro-spread 5.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: intro-spread 5.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .hero-logo-svg.intro-active .vlogo-connector {
-  animation: connector-fade 5.8s linear forwards;
+  animation: connector-fade 5.1s linear forwards;
 }
 
 @keyframes vlogo-fire {
@@ -254,11 +255,11 @@ code {
 }
 @keyframes intro-spread {
   0%   { transform: translate(0, 0); }                                       // 0.00s
-  3.5% { transform: translate(0, 0); }                                       // 0.20s: hold while connectors fade out
-  14%  { transform: translate(var(--scatter-x, 0), var(--scatter-y, 0)); }   // 0.80s: fully spread
-  66%  { transform: translate(var(--scatter-x, 0), var(--scatter-y, 0)); }   // 3.80s: end of hold + flashes
-  76%  { transform: translate(0, 0); }                                       // 4.40s: fully coalesced
-  100% { transform: translate(0, 0); }                                       // 5.80s: stays here while connectors fade in
+  4%   { transform: translate(0, 0); }                                       // 0.20s: hold while connectors fade out
+  16%  { transform: translate(var(--scatter-x, 0), var(--scatter-y, 0)); }   // 0.80s: fully spread
+  75%  { transform: translate(var(--scatter-x, 0), var(--scatter-y, 0)); }   // 3.80s: end of hold + flashes
+  86%  { transform: translate(0, 0); }                                       // 4.40s: fully coalesced
+  100% { transform: translate(0, 0); }                                       // 5.10s: stays here while connectors fade in
 }
 // Per-node scatter positions.
 .intro-lm  { --scatter-x: -38vw; --scatter-y: -4vh; }
@@ -277,12 +278,12 @@ code {
 
 // Connectors: visible at start, fade out very quickly *before* circles begin
 // to spread, stay invisible during scatter/flash/coalesce, then fade back in
-// over a deliberate 1.4s window only after the circles are fully home.
+// over a 0.7s window after the circles are fully home (2x faster than before).
 @keyframes connector-fade {
   0%   { opacity: 1; }   // 0.00s: visible
-  3.5% { opacity: 0; }   // 0.20s: faded out (before spread starts at 0.20s)
-  76%  { opacity: 0; }   // 4.40s: end of coalesce, still invisible
-  100% { opacity: 1; }   // 5.80s: fade-in complete (1.4s window)
+  4%   { opacity: 0; }   // 0.20s: faded out (before spread starts at 0.20s)
+  86%  { opacity: 0; }   // 4.40s: end of coalesce, still invisible
+  100% { opacity: 1; }   // 5.10s: fade-in complete (0.7s window)
 }
 
 // The hero logo is interactive — clicking it replays the sequence.
@@ -876,59 +877,37 @@ html {
   opacity: 0;
   transform: translateY(56px) scale(0.96);
   transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 .reveal.is-in {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-// Grid-stagger: each card delays so the row reveals as a wave. Halved.
-.feature-grid > .feature.reveal:nth-child(2) { transition-delay: 50ms; }
-.feature-grid > .feature.reveal:nth-child(3) { transition-delay: 100ms; }
-.feature-grid > .feature.reveal:nth-child(4) { transition-delay: 150ms; }
-.feature-grid > .feature.reveal:nth-child(5) { transition-delay: 200ms; }
-.feature-grid > .feature.reveal:nth-child(6) { transition-delay: 250ms; }
-.feature-grid > .feature.reveal:nth-child(7) { transition-delay: 300ms; }
-.feature-grid > .feature.reveal:nth-child(8) { transition-delay: 350ms; }
-.usecase-grid > .usecase.reveal:nth-child(2) { transition-delay: 65ms; }
-.usecase-grid > .usecase.reveal:nth-child(3) { transition-delay: 130ms; }
-.usecase-grid > .usecase.reveal:nth-child(4) { transition-delay: 195ms; }
-.stack-grid > .stack-card.reveal:nth-child(2) { transition-delay: 65ms; }
-.stack-grid > .stack-card.reveal:nth-child(3) { transition-delay: 130ms; }
-.stack-grid > .stack-card.reveal:nth-child(4) { transition-delay: 195ms; }
+// Grid-stagger: each card delays so the row reveals as a wave.
+.feature-grid > .feature.reveal:nth-child(2) { transition-delay: 100ms; }
+.feature-grid > .feature.reveal:nth-child(3) { transition-delay: 200ms; }
+.feature-grid > .feature.reveal:nth-child(4) { transition-delay: 300ms; }
+.feature-grid > .feature.reveal:nth-child(5) { transition-delay: 400ms; }
+.feature-grid > .feature.reveal:nth-child(6) { transition-delay: 500ms; }
+.feature-grid > .feature.reveal:nth-child(7) { transition-delay: 600ms; }
+.feature-grid > .feature.reveal:nth-child(8) { transition-delay: 700ms; }
+.usecase-grid > .usecase.reveal:nth-child(2) { transition-delay: 130ms; }
+.usecase-grid > .usecase.reveal:nth-child(3) { transition-delay: 260ms; }
+.usecase-grid > .usecase.reveal:nth-child(4) { transition-delay: 390ms; }
+.stack-grid > .stack-card.reveal:nth-child(2) { transition-delay: 130ms; }
+.stack-grid > .stack-card.reveal:nth-child(3) { transition-delay: 260ms; }
+.stack-grid > .stack-card.reveal:nth-child(4) { transition-delay: 390ms; }
 
-// ----- Hero ambient gradient ----------------------------------------------
-// Two soft green ellipses drift slowly behind the hero — barely perceptible
-// but the page stops feeling static.
+// (Removed the hero ambient gradient — it was producing a soft green glow
+// behind the logo that read as a halo around it.)
 .hero {
   position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -300px;
-  left: -10%;
-  right: -10%;
-  height: 900px;
-  background:
-    radial-gradient(ellipse 700px 350px at 30% 50%, rgba(142, 217, 115, 0.18), transparent 65%),
-    radial-gradient(ellipse 500px 280px at 70% 35%, rgba(142, 217, 115, 0.12), transparent 65%);
-  filter: blur(24px);
-  animation: hero-drift 28s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
 }
 .hero-inner {
   position: relative;
   z-index: 1;
-}
-@keyframes hero-drift {
-  0%   { transform: translate(0, 0) scale(1);      opacity: 1; }
-  50%  { transform: translate(-30px, 14px) scale(1.04); opacity: 0.92; }
-  100% { transform: translate(22px, -10px) scale(1.02); opacity: 1; }
 }
 
 // ----- Mouse-tracking tilt + cursor spotlight on cards --------------------
