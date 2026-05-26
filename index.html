@@ -35,7 +35,39 @@
 
   <header class="hero" id="top">
     <div class="hero-inner">
-      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="hero-logo">
+      <svg class="hero-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456 226" overflow="visible" fill="#8ed973" fill-rule="evenodd" aria-label="vizi" role="img">
+        <!--
+          Order matters: SVG has no z-index, so paths rendered later appear on
+          top. Connectors are listed first so the animated circles (rendered
+          last) overlap them when scaled up and glowing.
+        -->
+        <!-- Connectors (rendered behind, no animation) -->
+        <path class="vlogo-connector" d="M24.29,117.65l16.87-9.74,46.98,81.37-16.87,9.74L24.29,117.65Z"/>
+        <path class="vlogo-connector" d="M347.87,101.7l18.77,18.76-90.5,90.5-18.76-18.76,90.49-90.5Z"/>
+        <path class="vlogo-connector" d="M208.64,153.53c0-4.62,2.54-8.64,6.3-10.76v-.15h-32.4v.05c3.84,2.09,6.45,6.17,6.45,10.85s-2.55,8.65-6.31,10.76h32.26c-3.76-2.12-6.3-6.14-6.3-10.76Z"/>
+        <path class="vlogo-connector" d="M432.64,153.53c0-4.62,2.54-8.64,6.3-10.76v-.15h-32.4v.05c3.84,2.09,6.45,6.17,6.45,10.85s-2.55,8.65-6.31,10.76h32.26c-3.76-2.12-6.3-6.14-6.3-10.76Z"/>
+        <path class="vlogo-connector" d="M311.53,103.85c-4.62,0-8.64-2.54-10.76-6.3h-.15s0,32.4,0,32.4h.05c2.09-3.84,6.17-6.45,10.85-6.45s8.65,2.55,10.76,6.31v-32.26s0,0,0,0c-2.12,3.76-6.14,6.3-10.76,6.3Z"/>
+        <path class="vlogo-connector" d="M311.53,183.35c-4.62,0-8.64-2.54-10.76-6.3h-.15s0,32.4,0,32.4h.05c2.09-3.84,6.17-6.45,10.85-6.45s8.65,2.55,10.76,6.31v-32.26s0,0,0,0c-2.12,3.76-6.14,6.3-10.76,6.3Z"/>
+        <path class="vlogo-connector" d="M66.28,150.54c-.34-.52-.7-1.04-1.07-1.55-2.51-3.44-4-7.68-4-12.26,0-3.3.78-6.4,2.14-9.17v-.02s-32.48,19.4-32.48,19.4l.07.12c8.7.48,15.97,6.29,18.62,14.22.23.68.47,1.35.72,2.01.9,2.33,1.41,4.86,1.41,7.51,0,2.96-.62,5.77-1.73,8.31h0s31.45-19.24,31.45-19.24h0c-6.34-.71-11.82-4.25-15.14-9.33Z"/>
+        <path class="vlogo-connector" d="M93.66,150.54c.34-.52.7-1.04,1.07-1.55,2.51-3.44,4-7.68,4-12.26,0-3.3-.78-6.4-2.14-9.17v-.02s32.48,19.4,32.48,19.4l-.07.12c-8.7.48-15.97,6.29-18.62,14.22-.23.68-.47,1.35-.72,2.01-.9,2.33-1.41,4.86-1.41,7.51,0,2.96.62,5.77,1.73,8.31h0s-31.45-19.24-31.45-19.24h0c6.34-.71,11.82-4.25,15.14-9.33Z"/>
+        <path class="vlogo-connector" d="M305.48,179.7c0-1.88.71-3.59,1.88-4.89l-.09-.23-13.97-13.52h0c-1.33,1.33-3.17,2.15-5.2,2.15-1.16,0-2.25-.28-3.23-.75l-1.36,1.84,13.42,21.94,15.9,3.18-.91-2.42c-3.63-.45-6.44-3.54-6.44-7.29Z"/>
+        <path class="vlogo-connector" d="M332.91,154.48l.02-.02h0c5.31-4.69,12.2-7.6,19.78-7.84l.06-.03-8.03-23.33-27.9-6.07c.06.76.09,1.53.09,2.31,0,8.17-3.12,15.62-8.23,21.21v.18s-7.66,8.21-7.66,8.21c-.54.62-1.1,1.23-1.68,1.81l-.02.02h0c-5.68,5.6-13.47,9.06-22.07,9.06-.89,0-1.76-.05-2.63-.12h0s10.88,27.03,10.88,27.03l23.22,2.97c.37-7.57,3.42-14.44,8.22-19.68v-.03s.55-.55.55-.55c.43-.45.88-.89,1.34-1.31l11.66-11.44c.76-.84,1.58-1.63,2.42-2.38Z"/>
+        <!-- Circular nodes (rendered on top, animated). Each is wrapped in a <g>
+             that handles the one-shot intro scatter/coalesce translate. -->
+        <g class="intro-wrap intro-lm"><path class="vlogo-node node-lm"  d="M.07,116.16c-1.27-19.92,15.14-36.34,35.06-35.09,16.43,1.03,29.76,14.35,30.81,30.77,1.27,19.92-15.14,36.34-35.06,35.09-16.43-1.03-29.76-14.35-30.81-30.77Z"/></g>
+        <g class="intro-wrap intro-cl"><path class="vlogo-node node-cl"  d="M93.82,114c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-bl"><path class="vlogo-node node-bl"  d="M47,193c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-tm"><path class="vlogo-node node-tm"  d="M166,33c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.77-33-33Z"/></g>
+        <g class="intro-wrap intro-c"><path class="vlogo-node node-c"    d="M166,114c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-bm"><path class="vlogo-node node-bm"  d="M166,193c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-tr"><path class="vlogo-node node-tr"  d="M390,33c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.77-33-33Z"/></g>
+        <g class="intro-wrap intro-mr"><path class="vlogo-node node-mr"  d="M390,114c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-br"><path class="vlogo-node node-br"  d="M390,193c0-18.22,14.77-33,33-33s33,14.78,33,33-14.77,33-33,33-33-14.78-33-33Z"/></g>
+        <g class="intro-wrap intro-ztl"><path class="vlogo-node node-ztl" d="M271.99,146.5c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
+        <g class="intro-wrap intro-ztr"><path class="vlogo-node node-ztr" d="M350.99,146.5c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
+        <g class="intro-wrap intro-zbl"><path class="vlogo-node node-zbl" d="M271.99,226c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
+        <g class="intro-wrap intro-zbr"><path class="vlogo-node node-zbr" d="M350.99,226c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
+      </svg>
       <h1 class="hero-tagline">
         A viewer for <em>volumetric</em> scientific image data.
       </h1>
@@ -56,7 +88,7 @@
   </header>
 
   <section class="demo-band">
-    <div class="media-frame" aria-label="vizi UI demo">
+    <div class="media-frame reveal" aria-label="vizi UI demo">
       <img src="{{ '/assets/img/hero-still.png' | relative_url }}" alt="vizi user interface — 2D pane, 3D pane, LUT controls, bounding-box panel" class="media-fill">
       <div class="media-overlay">
         <div class="play-icon" aria-hidden="true"></div>
@@ -66,48 +98,48 @@
   </section>
 
   <section class="features" id="features">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Features</span>
       <h2>Designed around how scientists actually look at data.</h2>
     </div>
 
     <ul class="feature-grid">
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">01</span>
         <h3>Fast, even on huge files</h3>
         <p>Move through volumetric timeseries at full resolution. No proxies, no precomputation, no stalls.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">02</span>
         <h3>Voxel-perfect rendering</h3>
         <p>Physically faithful and MIP volume modes that stay crisp at every zoom level.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">03</span>
         <h3>Fluid 3D navigation</h3>
         <p>Fly or orbit through your data. Move between modes without losing where you are.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">04</span>
         <h3>2D and 3D, in sync</h3>
         <p>Find any voxel from one view to the other. The two views always agree on what you're looking at.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">05</span>
         <h3>Annotate and crop in place</h3>
         <p>Mark regions of interest. Hide what doesn't matter. Save it all alongside the file.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">06</span>
         <h3>Multi-channel done right</h3>
         <p>Composite views, per-channel controls, and presets you can recall.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">07</span>
         <h3>Reproducible by default</h3>
         <p>Sessions and action logs make every step you took recoverable later.</p>
       </li>
-      <li class="feature">
+      <li class="feature reveal">
         <span class="feature-num">08</span>
         <h3>Publication-ready output</h3>
         <p>Single frames, sequences, and movies &mdash; ready to paste into a paper or talk.</p>
@@ -116,25 +148,25 @@
   </section>
 
   <section class="use-cases" id="use-cases">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Use cases</span>
       <h2>Built for real science.</h2>
       <p class="section-sub">vizi is designed around the data and the workflows scientists actually use — not synthetic benchmarks.</p>
     </div>
     <ul class="usecase-grid">
-      <li class="usecase">
+      <li class="usecase reveal">
         <h3>Calcium imaging</h3>
         <p>Smooth scrubbing through long acquisition timeseries. Per-channel composite display for multi-fluorophore experiments. Built and tested on data from MicroManager-style pipelines.</p>
       </li>
-      <li class="usecase">
+      <li class="usecase reveal">
         <h3>SCAPE microscopy</h3>
         <p>FOCO Lab SCAPE compressed-zip files open directly — voxel intensities, channel layout, and anisotropic pixel sizes come from the embedded metadata. T/Z/C dimensions match the file's anatomical axes so Z-scrubbing acts like depth.</p>
       </li>
-      <li class="usecase">
+      <li class="usecase reveal">
         <h3>OME-TIFF, large or small</h3>
         <p>Volumetric OME-TIFFs above 10&nbsp;GB scrub smoothly at full resolution. Plain TIFFs without OME-XML open too — you specify the T&times;Z split on first open, and vizi remembers it.</p>
       </li>
-      <li class="usecase">
+      <li class="usecase reveal">
         <h3>Annotation &amp; curation</h3>
         <p>Named bounding boxes persist per file. Global X/Y/Z crops. Click-to-fly between 2D and 3D. Designed for the inspect-mark-export loop, not just look-and-close.</p>
       </li>
@@ -142,28 +174,28 @@
   </section>
 
   <section class="under-the-hood" id="under-the-hood">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Under the hood</span>
       <h2>A modern stack, where it counts.</h2>
       <p class="section-sub">The fast parts are written in Rust. The interactive parts are written in Python. The rendering is GPU-native through wgpu.</p>
     </div>
     <div class="stack-grid">
-      <div class="stack-card">
+      <div class="stack-card reveal">
         <span class="stack-tag">Render</span>
         <h3>pygfx &amp; wgpu</h3>
         <p>GPU-native rendering through <code>wgpu</code>, the same modern graphics API that backs Firefox and Servo. Vulkan on Linux, Metal on macOS, DX12 on Windows — same code path everywhere.</p>
       </div>
-      <div class="stack-card">
+      <div class="stack-card reveal">
         <span class="stack-tag">UI</span>
         <h3>PySide6 &amp; pyqtgraph</h3>
         <p>Native Qt widgets and toolbars on every platform. No web view, no electron shell. The window opens fast and stays responsive while gigabyte files load behind the scenes.</p>
       </div>
-      <div class="stack-card">
+      <div class="stack-card reveal">
         <span class="stack-tag">I/O</span>
         <h3>Rust hot path</h3>
         <p>The TIFF reader and pyramid builder are written in Rust and exposed to Python through PyO3. The wheel ships with the Rust extension prebuilt — no toolchain required on the install machine.</p>
       </div>
-      <div class="stack-card">
+      <div class="stack-card reveal">
         <span class="stack-tag">Distribution</span>
         <h3>One wheel, three Pythons</h3>
         <p>Built against Python's <code>abi3</code> interface, so a single per-platform wheel works on Python 3.11, 3.12, <em>and</em> 3.13. Native installers (AppImage, .exe, .dmg) bundle their own Python.</p>
@@ -172,12 +204,12 @@
   </section>
 
   <section class="workflow" id="workflow">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Workflow</span>
       <h2>Where vizi fits.</h2>
       <p class="section-sub">In the middle of every imaging pipeline — between raw acquisition and downstream analysis or publication.</p>
     </div>
-    <div class="media-frame workflow-frame" aria-label="vizi in the scientific imaging workflow">
+    <div class="media-frame workflow-frame reveal" aria-label="vizi in the scientific imaging workflow">
       <svg class="workflow-svg" viewBox="0 0 1180 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wf-title">
         <title id="wf-title">vizi is the workbench in the middle: inspect, analyze, annotate, and export — all in one place, iteratively.</title>
         <defs>
@@ -270,7 +302,7 @@
   </section>
 
   <section class="status" id="status">
-    <div class="status-card">
+    <div class="status-card reveal">
       <div class="status-text">
         <span class="eyebrow">Project status</span>
         <h2>In private beta. Open-source release planned post&nbsp;v1.0.0.</h2>
@@ -289,7 +321,7 @@
   </section>
 
   <section class="about-lab" id="about">
-    <div class="lab-card">
+    <div class="lab-card reveal">
       <img src="{{ '/assets/img/focolab.png' | relative_url }}" alt="FOCO Lab" class="lab-logo">
       <div class="lab-text">
         <span class="eyebrow">About</span>
@@ -328,6 +360,91 @@
     </div>
     <p class="footer-fine">&copy; {{ 'now' | date: '%Y' }} vizi contributors. Built with Jekyll on GitHub Pages.</p>
   </footer>
+
+  <script>
+  (() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Hero logo: click to play the scatter-flash-coalesce intro sequence.
+    // Clicks during a running animation are ignored; once the animation
+    // completes the next click works again.
+    //
+    // We use a setTimeout that matches the CSS animation duration (5.8s) to
+    // reset state — animationend was unreliable because it has to bubble
+    // from the SVG's descendants, and not every browser delivers it cleanly
+    // in time. The timeout also removes .intro-active when done so the next
+    // click adds it from a clean state (no force-reflow trick needed).
+    const heroLogo = document.querySelector('.hero-logo-svg');
+    const ANIMATION_MS = 5800;
+    if (heroLogo && !reduceMotion) {
+      heroLogo.setAttribute('role', 'button');
+      heroLogo.setAttribute('tabindex', '0');
+      heroLogo.setAttribute('aria-label', 'Play vizi logo animation');
+      let animating = false;
+      const playIntro = () => {
+        if (animating) return;
+        animating = true;
+        heroLogo.classList.add('intro-active');
+        setTimeout(() => {
+          heroLogo.classList.remove('intro-active');
+          animating = false;
+        }, ANIMATION_MS);
+      };
+      heroLogo.addEventListener('click', playIntro);
+      heroLogo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          playIntro();
+        }
+      });
+    }
+
+    // Scroll-reveal: add .is-in to elements with .reveal as they enter the viewport.
+    if (reduceMotion) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
+    } else if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
+    }
+
+    // Mouse-tracking tilt + spotlight on .feature and .usecase cards.
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (reduceMotion || !supportsHover) return;
+    const tiltMax = 6;
+    document.querySelectorAll('.feature, .usecase, .stack-card').forEach(el => {
+      let raf = null;
+      el.addEventListener('mouseenter', () => {
+        el.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease';
+      });
+      el.addEventListener('mousemove', (e) => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const rx = (0.5 - y) * tiltMax;
+          const ry = (x - 0.5) * tiltMax;
+          el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+          el.style.setProperty('--mx', `${x * 100}%`);
+          el.style.setProperty('--my', `${y * 100}%`);
+        });
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease';
+        el.style.transform = '';
+      });
+    });
+  })();
+  </script>
 
 </body>
 </html>
