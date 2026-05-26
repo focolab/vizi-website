@@ -157,10 +157,10 @@ code {
 }
 // Inline hero SVG: animated logo with sequenced node-pulse.
 .hero-logo-svg {
-  height: clamp(100px, 15vw, 150px);
+  height: clamp(80px, 11vw, 115px);
   width: auto;
   display: block;
-  margin: 0 auto 40px;
+  margin: 0 auto 36px;
   filter: drop-shadow(0 4px 18px rgba(142, 217, 115, 0.35));
   // Allow the per-path drop-shadow glow to render outside the SVG's box
   // instead of being clipped at the viewBox edge.
@@ -972,22 +972,7 @@ html {
   box-shadow: 0 12px 32px -16px rgba(60, 80, 50, 0.18);
 }
 
-// ----- Reduced motion -----------------------------------------------------
-// Respect user preference. All decorative motion off; structural transitions
-// (hover color changes, etc.) stay since they aren't motion-heavy.
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .hero::before { animation: none; }
-  .hero-logo-svg path { animation: none; }
-  .hero-logo-svg.intro-active .intro-wrap,
-  .hero-logo-svg.intro-active .vlogo-node,
-  .hero-logo-svg.intro-active .vlogo-connector { animation: none; }
-  .intro-wrap { transform: none; }
-  .vlogo-connector { opacity: 1; }
-  .feature::after, .usecase::after { display: none; }
-}
+// Note: previous versions had a @media (prefers-reduced-motion: reduce)
+// block that disabled the click-triggered logo intro, scroll-reveal, and
+// card cursor spotlight. It's been removed so the animations work regardless
+// of the OS-level "Reduce motion" accessibility preference.

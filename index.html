@@ -363,8 +363,6 @@
 
   <script>
   (() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     // Hero logo: click to play the scatter-flash-coalesce intro sequence.
     // Clicks during a running animation are ignored; once the animation
     // completes the next click works again.
@@ -373,10 +371,10 @@
     // reset state — animationend was unreliable because it has to bubble
     // from the SVG's descendants, and not every browser delivers it cleanly
     // in time. The timeout also removes .intro-active when done so the next
-    // click adds it from a clean state (no force-reflow trick needed).
+    // click adds it from a clean state.
     const heroLogo = document.querySelector('.hero-logo-svg');
     const ANIMATION_MS = 5800;
-    if (heroLogo && !reduceMotion) {
+    if (heroLogo) {
       heroLogo.setAttribute('role', 'button');
       heroLogo.setAttribute('tabindex', '0');
       heroLogo.setAttribute('aria-label', 'Play vizi logo animation');
@@ -400,9 +398,7 @@
     }
 
     // Scroll-reveal: add .is-in to elements with .reveal as they enter the viewport.
-    if (reduceMotion) {
-      document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
-    } else if ('IntersectionObserver' in window) {
+    if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
@@ -416,9 +412,9 @@
       document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
     }
 
-    // Mouse-tracking tilt + spotlight on .feature and .usecase cards.
+    // Mouse-tracking tilt + spotlight on .feature, .usecase, .stack-card cards.
     const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (reduceMotion || !supportsHover) return;
+    if (!supportsHover) return;
     const tiltMax = 6;
     document.querySelectorAll('.feature, .usecase, .stack-card').forEach(el => {
       let raf = null;
