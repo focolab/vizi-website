@@ -552,7 +552,9 @@ code {
   overflow: hidden;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
-.usecase::before {
+.feature::before,
+.usecase::before,
+.stack-card::before {
   content: "";
   position: absolute;
   top: 0;
@@ -562,12 +564,15 @@ code {
   background: $accent-bright;
   opacity: 0;
   transition: opacity 0.2s ease;
+  z-index: 1;
 }
 .usecase:hover {
   border-color: $border-2;
   transform: translateY(-2px);
 }
-.usecase:hover::before {
+.feature:hover::before,
+.usecase:hover::before,
+.stack-card:hover::before {
   opacity: 1;
 }
 .usecase h3 {
