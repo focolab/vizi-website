@@ -1,1 +1,12 @@
-theme: jekyll-theme-minimal
+title: vizi
+description: High-performance visualization of 2D/3D/4D/5D scientific imaging data in the era of AI.
+url: https://vizi-science.com
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+sass:
+  style: compressed

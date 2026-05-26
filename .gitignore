@@ -1,0 +1,5 @@
+_preview/
+_site/
+.sass-cache/
+*.pyc
+__pycache__/

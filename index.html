@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vizi — a viewer for volumetric scientific image data</title>
+  <meta name="description" content="{{ site.description }}">
+  <meta property="og:title" content="vizi">
+  <meta property="og:description" content="{{ site.description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.url }}">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/vizi.svg' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="#top">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#use-cases">Use cases</a>
+      <a href="#under-the-hood">Under the hood</a>
+      <a href="#workflow">Workflow</a>
+      <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener" class="nav-cta">GitHub →</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="hero-logo">
+      <h1 class="hero-tagline">
+        A viewer for <em>volumetric</em> scientific image data.
+      </h1>
+      <p class="hero-sub">
+        Smooth scrubbing through &gt;10&nbsp;GB OME-TIFF and SCAPE files.
+        Voxel-perfect 3D rendering. Reproducible sessions.
+        Built at <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO&nbsp;Lab</a> for working neuroscientists.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/focolab/vizi" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn btn-ghost" href="#features">What it does</a>
+      </div>
+      <p class="hero-meta">
+        <span class="dot"></span>
+        Currently in private beta &middot; Open-source release planned post&nbsp;v1.0.0
+      </p>
+    </div>
+  </header>
+
+  <section class="demo-band">
+    <div class="media-frame" aria-label="vizi UI demo">
+      <img src="{{ '/assets/img/hero-still.png' | relative_url }}" alt="vizi user interface — 2D pane, 3D pane, LUT controls, bounding-box panel" class="media-fill">
+      <div class="media-overlay">
+        <div class="play-icon" aria-hidden="true"></div>
+        <span class="media-caption">Demo video coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-head">
+      <span class="eyebrow">Features</span>
+      <h2>Designed around how scientists actually look at data.</h2>
+    </div>
+
+    <ul class="feature-grid">
+      <li class="feature">
+        <span class="feature-num">01</span>
+        <h3>Fast, even on huge files</h3>
+        <p>Move through volumetric timeseries at full resolution. No proxies, no precomputation, no stalls.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">02</span>
+        <h3>Voxel-perfect rendering</h3>
+        <p>Physically faithful and MIP volume modes that stay crisp at every zoom level.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">03</span>
+        <h3>Fluid 3D navigation</h3>
+        <p>Fly or orbit through your data. Move between modes without losing where you are.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">04</span>
+        <h3>2D and 3D, in sync</h3>
+        <p>Find any voxel from one view to the other. The two views always agree on what you're looking at.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">05</span>
+        <h3>Annotate and crop in place</h3>
+        <p>Mark regions of interest. Hide what doesn't matter. Save it all alongside the file.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">06</span>
+        <h3>Multi-channel done right</h3>
+        <p>Composite views, per-channel controls, and presets you can recall.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">07</span>
+        <h3>Reproducible by default</h3>
+        <p>Sessions and action logs make every step you took recoverable later.</p>
+      </li>
+      <li class="feature">
+        <span class="feature-num">08</span>
+        <h3>Publication-ready output</h3>
+        <p>Single frames, sequences, and movies &mdash; ready to paste into a paper or talk.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="use-cases" id="use-cases">
+    <div class="section-head">
+      <span class="eyebrow">Use cases</span>
+      <h2>Built for real science.</h2>
+      <p class="section-sub">vizi is designed around the data and the workflows scientists actually use — not synthetic benchmarks.</p>
+    </div>
+    <ul class="usecase-grid">
+      <li class="usecase">
+        <h3>Calcium imaging</h3>
+        <p>Smooth scrubbing through long acquisition timeseries. Per-channel composite display for multi-fluorophore experiments. Built and tested on data from MicroManager-style pipelines.</p>
+      </li>
+      <li class="usecase">
+        <h3>SCAPE microscopy</h3>
+        <p>FOCO Lab SCAPE compressed-zip files open directly — voxel intensities, channel layout, and anisotropic pixel sizes come from the embedded metadata. T/Z/C dimensions match the file's anatomical axes so Z-scrubbing acts like depth.</p>
+      </li>
+      <li class="usecase">
+        <h3>OME-TIFF, large or small</h3>
+        <p>Volumetric OME-TIFFs above 10&nbsp;GB scrub smoothly at full resolution. Plain TIFFs without OME-XML open too — you specify the T&times;Z split on first open, and vizi remembers it.</p>
+      </li>
+      <li class="usecase">
+        <h3>Annotation &amp; curation</h3>
+        <p>Named bounding boxes persist per file. Global X/Y/Z crops. Click-to-fly between 2D and 3D. Designed for the inspect-mark-export loop, not just look-and-close.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="under-the-hood" id="under-the-hood">
+    <div class="section-head">
+      <span class="eyebrow">Under the hood</span>
+      <h2>A modern stack, where it counts.</h2>
+      <p class="section-sub">The fast parts are written in Rust. The interactive parts are written in Python. The rendering is GPU-native through wgpu.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <span class="stack-tag">Render</span>
+        <h3>pygfx &amp; wgpu</h3>
+        <p>GPU-native rendering through <code>wgpu</code>, the same modern graphics API that backs Firefox and Servo. Vulkan on Linux, Metal on macOS, DX12 on Windows — same code path everywhere.</p>
+      </div>
+      <div class="stack-card">
+        <span class="stack-tag">UI</span>
+        <h3>PySide6 &amp; pyqtgraph</h3>
+        <p>Native Qt widgets and toolbars on every platform. No web view, no electron shell. The window opens fast and stays responsive while gigabyte files load behind the scenes.</p>
+      </div>
+      <div class="stack-card">
+        <span class="stack-tag">I/O</span>
+        <h3>Rust hot path</h3>
+        <p>The TIFF reader and pyramid builder are written in Rust and exposed to Python through PyO3. The wheel ships with the Rust extension prebuilt — no toolchain required on the install machine.</p>
+      </div>
+      <div class="stack-card">
+        <span class="stack-tag">Distribution</span>
+        <h3>One wheel, three Pythons</h3>
+        <p>Built against Python's <code>abi3</code> interface, so a single per-platform wheel works on Python 3.11, 3.12, <em>and</em> 3.13. Native installers (AppImage, .exe, .dmg) bundle their own Python.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="workflow" id="workflow">
+    <div class="section-head">
+      <span class="eyebrow">Workflow</span>
+      <h2>Where vizi fits.</h2>
+      <p class="section-sub">In the middle of every imaging pipeline — between raw acquisition and downstream analysis or publication.</p>
+    </div>
+    <div class="media-frame workflow-frame" aria-label="vizi in the scientific imaging workflow">
+      <svg class="workflow-svg" viewBox="0 0 1180 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="wf-title">
+        <title id="wf-title">vizi is the workbench in the middle: inspect, analyze, annotate, and export — all in one place, iteratively.</title>
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#5a615a"/>
+          </marker>
+          <marker id="arrowhead-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#3d7d2a"/>
+          </marker>
+          <marker id="arrowhead-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#3d7d2a"/>
+          </marker>
+        </defs>
+
+        <!-- Stage 1: Acquire -->
+        <g>
+          <rect x="20" y="290" width="180" height="160" rx="12" fill="#ffffff" stroke="#d4d1c5" stroke-width="1.5"/>
+          <text x="110" y="328" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="2">STAGE 01</text>
+          <text x="110" y="368" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="24" font-weight="700">Acquire</text>
+          <text x="110" y="400" text-anchor="middle" fill="#1a1f1d" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="500">Microscope</text>
+          <text x="110" y="421" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="13">MicroManager, SCAPE</text>
+        </g>
+
+        <!-- Stage 2: Store -->
+        <g>
+          <rect x="230" y="290" width="180" height="160" rx="12" fill="#ffffff" stroke="#d4d1c5" stroke-width="1.5"/>
+          <text x="320" y="328" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="2">STAGE 02</text>
+          <text x="320" y="368" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="24" font-weight="700">Store</text>
+          <text x="320" y="400" text-anchor="middle" fill="#1a1f1d" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="500">OME-TIFF, SCAPE zip</text>
+          <text x="320" y="421" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="13">plain TIFF</text>
+        </g>
+
+        <!-- Stage 3: vizi workbench (centerpiece) -->
+        <g>
+          <rect x="440" y="160" width="500" height="420" rx="16" fill="#f0fae8" stroke="#3d7d2a" stroke-width="2"/>
+          <text x="690" y="200" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="2">STAGE 03 — YOU ARE HERE</text>
+          <text x="690" y="252" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="48" font-weight="700" letter-spacing="-0.02em">vizi</text>
+          <text x="690" y="282" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="14" font-style="italic">the volumetric workbench</text>
+
+          <!-- 2x2 grid of internal activities -->
+          <g>
+            <!-- Inspect (top-left) -->
+            <rect x="478" y="320" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
+            <text x="568" y="352" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Inspect</text>
+            <text x="568" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">scrub, contrast, 2D &amp; 3D</text>
+
+            <!-- Analyze (top-right) -->
+            <rect x="722" y="320" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
+            <text x="812" y="352" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Analyze</text>
+            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">plug-ins, scripts, agents</text>
+
+            <!-- Annotate (bottom-right) -->
+            <rect x="722" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
+            <text x="812" y="472" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Annotate</text>
+            <text x="812" y="498" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">bounding boxes, crops</text>
+
+            <!-- Export (bottom-left) -->
+            <rect x="478" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
+            <text x="568" y="472" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Export</text>
+            <text x="568" y="498" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">frames, movies, sessions</text>
+
+            <!-- Internal cycle arrows: Inspect → Analyze → Annotate → Export → Inspect -->
+            <line x1="660" y1="360" x2="720" y2="360" stroke="#3d7d2a" stroke-width="2" marker-end="url(#arrowhead-loop)"/>
+            <line x1="812" y1="402" x2="812" y2="438" stroke="#3d7d2a" stroke-width="2" marker-end="url(#arrowhead-loop)"/>
+            <line x1="720" y1="480" x2="660" y2="480" stroke="#3d7d2a" stroke-width="2" marker-end="url(#arrowhead-loop)"/>
+            <line x1="568" y1="438" x2="568" y2="402" stroke="#3d7d2a" stroke-width="2" marker-end="url(#arrowhead-loop)"/>
+          </g>
+
+          <text x="690" y="558" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="700" letter-spacing="2">ITERATE FREELY — ALL IN ONE APP</text>
+        </g>
+
+        <!-- Stage 4: Publish -->
+        <g>
+          <rect x="980" y="290" width="180" height="160" rx="12" fill="#ffffff" stroke="#d4d1c5" stroke-width="1.5"/>
+          <text x="1070" y="328" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="2">STAGE 04</text>
+          <text x="1070" y="368" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="24" font-weight="700">Publish</text>
+          <text x="1070" y="400" text-anchor="middle" fill="#1a1f1d" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="500">PNG, MP4, GIF</text>
+          <text x="1070" y="421" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="13">Figures &amp; papers</text>
+        </g>
+
+        <!-- Stage arrows -->
+        <line x1="202" y1="370" x2="228" y2="370" stroke="#5a615a" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+        <line x1="412" y1="370" x2="438" y2="370" stroke="#3d7d2a" stroke-width="2.5" marker-end="url(#arrowhead-accent)"/>
+        <line x1="942" y1="370" x2="978" y2="370" stroke="#3d7d2a" stroke-width="2.5" marker-end="url(#arrowhead-accent)"/>
+
+        <!-- Bottom caption -->
+        <text x="590" y="700" text-anchor="middle" fill="#1a1f1d" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="600" letter-spacing="2">SESSIONS &amp; ACTION LOGS MAKE EVERY STEP REPRODUCIBLE</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="status" id="status">
+    <div class="status-card">
+      <div class="status-text">
+        <span class="eyebrow">Project status</span>
+        <h2>In private beta. Open-source release planned post&nbsp;v1.0.0.</h2>
+        <p>vizi is in active development at FOCO&nbsp;Lab. Labmates and a handful of external collaborators are the current users; bug reports surface in real-world install paths. The repository and binary releases are private for now &mdash; the source will move to a public repo, with open binary downloads, after the v1.0.0 milestone.</p>
+        <p class="status-meta">Cross-platform: Linux (AppImage), Windows (.exe), macOS Apple Silicon (.dmg). Vulkan / Metal / DX12 backends through <code>wgpu</code>.</p>
+      </div>
+      <div class="status-side">
+        <ul class="ledger">
+          <li><span class="ledger-k">License</span><span class="ledger-v">MIT</span></li>
+          <li><span class="ledger-k">Python</span><span class="ledger-v">3.11+</span></li>
+          <li><span class="ledger-k">GPU</span><span class="ledger-v">Vulkan / Metal / DX12</span></li>
+          <li><span class="ledger-k">Formats</span><span class="ledger-v">OME-TIFF, SCAPE zip, TIFF</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-lab" id="about">
+    <div class="lab-card">
+      <img src="{{ '/assets/img/focolab.png' | relative_url }}" alt="FOCO Lab" class="lab-logo">
+      <div class="lab-text">
+        <span class="eyebrow">About</span>
+        <h2>Built at FOCO&nbsp;Lab.</h2>
+        <p>FOCO Lab studies how biological brains produce real-time behavior &mdash; from the 302-neuron <em>C.&nbsp;elegans</em> to tardigrades, cultured human organoids, and <em>in silico</em> networks. vizi began as the lab's internal viewer for SCAPE and calcium-imaging acquisitions, and grew into a general-purpose workbench for anyone working with large volumetric image data.</p>
+        <a class="btn btn-ghost btn-sm" href="https://www.focolab.org/" target="_blank" rel="noopener">Visit focolab.org →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
+        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
+          <a href="https://github.com/focolab/vizi/blob/main/LICENSE" target="_blank" rel="noopener">License (MIT)</a>
+        </div>
+        <div class="footer-col">
+          <h5>Lab</h5>
+          <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
+          <a href="#about">About vizi</a>
+        </div>
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="#features">Features</a>
+          <a href="#use-cases">Use cases</a>
+          <a href="#workflow">Workflow</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-fine">&copy; {{ 'now' | date: '%Y' }} vizi contributors. Built with Jekyll on GitHub Pages.</p>
+  </footer>
+
+</body>
+</html>
