@@ -1,2 +1,2 @@
 # vizi
-ultra-performant 4D data visualization for the AI era
+the ultra-performant 4D data visualization app for the AI era
