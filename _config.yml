@@ -1,6 +1,7 @@
 title: vizi
-description: High-performance visualization of 2D/3D/4D/5D scientific imaging data in the era of AI.
-url: https://vizi-science.com
+description: A viewer for volumetric scientific image data.
+url: https://focolab.github.io
+baseurl: /vizi-website
 
 exclude:
   - README.md
