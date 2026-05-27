@@ -1,7 +1,7 @@
 title: vizi
 description: A viewer for volumetric scientific image data.
-url: https://focolab.github.io
-baseurl: /vizi-website
+url: https://vizi.science
+baseurl: ""
 
 exclude:
   - README.md
