@@ -149,6 +149,10 @@ code {
 // ----------------------------------------------------------------------------
 .hero {
   padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 48px) clamp(40px, 7vw, 80px);
+  // Backstop: clip horizontal overflow so a scattering logo node can never
+  // produce a horizontal scrollbar. `clip` (not `hidden`) keeps overflow-y
+  // visible, so nodes can still fly up over the nav during the intro.
+  overflow-x: clip;
 }
 .hero-inner {
   max-width: $max-w;
@@ -287,20 +291,24 @@ code {
   86%  { transform: translate(0, 0); }                                       // 4.40s: fully coalesced
   100% { transform: translate(0, 0); }                                       // 5.10s: stays here while connectors fade in
 }
-// Per-node scatter positions.
-.intro-lm  { --scatter-x: -38vw; --scatter-y: -4vh; }
-.intro-cl  { --scatter-x: -22vw; --scatter-y: -12vh; }
-.intro-bl  { --scatter-x: -30vw; --scatter-y: +14vh; }
-.intro-tm  { --scatter-x: -4vw;  --scatter-y: -20vh; }
-.intro-c   { --scatter-x: +3vw;  --scatter-y: -5vh; }
-.intro-bm  { --scatter-x: -8vw;  --scatter-y: +18vh; }
-.intro-tr  { --scatter-x: +33vw; --scatter-y: -20vh; }
-.intro-mr  { --scatter-x: +38vw; --scatter-y: -2vh; }
-.intro-br  { --scatter-x: +30vw; --scatter-y: +16vh; }
-.intro-ztl { --scatter-x: +10vw; --scatter-y: -16vh; }
-.intro-ztr { --scatter-x: +22vw; --scatter-y: -8vh; }
-.intro-zbl { --scatter-x: +6vw;  --scatter-y: +18vh; }
-.intro-zbr { --scatter-x: +18vw; --scatter-y: +12vh; }
+// Per-node scatter positions. These are the DESKTOP values for the two-column
+// hero: the logo sits in the left column, so the original symmetric pattern is
+// shifted ~33vw to the right (x only) to re-center the cloud on the screen and
+// keep every node on-screen. Below 880px the hero stacks and the logo re-centers,
+// so the @media (max-width: 880px) block restores the original centered pattern.
+.intro-lm  { --scatter-x: -5vw;  --scatter-y: -4vh; }
+.intro-cl  { --scatter-x: +11vw; --scatter-y: -12vh; }
+.intro-bl  { --scatter-x: +3vw;  --scatter-y: +14vh; }
+.intro-tm  { --scatter-x: +29vw; --scatter-y: -20vh; }
+.intro-c   { --scatter-x: +36vw; --scatter-y: -5vh; }
+.intro-bm  { --scatter-x: +25vw; --scatter-y: +18vh; }
+.intro-tr  { --scatter-x: +66vw; --scatter-y: -20vh; }
+.intro-mr  { --scatter-x: +71vw; --scatter-y: -2vh; }
+.intro-br  { --scatter-x: +63vw; --scatter-y: +16vh; }
+.intro-ztl { --scatter-x: +43vw; --scatter-y: -16vh; }
+.intro-ztr { --scatter-x: +55vw; --scatter-y: -8vh; }
+.intro-zbl { --scatter-x: +39vw; --scatter-y: +18vh; }
+.intro-zbr { --scatter-x: +51vw; --scatter-y: +12vh; }
 
 // Connectors: visible at start, fade out very quickly *before* circles begin
 // to spread, stay invisible during scatter/flash/coalesce, then fade back in
@@ -904,6 +912,21 @@ code {
   .hero-cta {
     justify-content: center;
   }
+  // Stacked hero re-centers the logo, so restore the original symmetric scatter
+  // (the desktop rightward bias would shove the cloud off-center to the right).
+  .intro-lm  { --scatter-x: -38vw; --scatter-y: -4vh; }
+  .intro-cl  { --scatter-x: -22vw; --scatter-y: -12vh; }
+  .intro-bl  { --scatter-x: -30vw; --scatter-y: +14vh; }
+  .intro-tm  { --scatter-x: -4vw;  --scatter-y: -20vh; }
+  .intro-c   { --scatter-x: +3vw;  --scatter-y: -5vh; }
+  .intro-bm  { --scatter-x: -8vw;  --scatter-y: +18vh; }
+  .intro-tr  { --scatter-x: +33vw; --scatter-y: -20vh; }
+  .intro-mr  { --scatter-x: +38vw; --scatter-y: -2vh; }
+  .intro-br  { --scatter-x: +30vw; --scatter-y: +16vh; }
+  .intro-ztl { --scatter-x: +10vw; --scatter-y: -16vh; }
+  .intro-ztr { --scatter-x: +22vw; --scatter-y: -8vh; }
+  .intro-zbl { --scatter-x: +6vw;  --scatter-y: +18vh; }
+  .intro-zbr { --scatter-x: +18vw; --scatter-y: +12vh; }
 }
 
 @media (max-width: 720px) {
