@@ -148,12 +148,33 @@ code {
 // hero
 // ----------------------------------------------------------------------------
 .hero {
-  padding: clamp(70px, 12vw, 140px) clamp(20px, 5vw, 48px) clamp(40px, 8vw, 70px);
-  text-align: center;
+  padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 48px) clamp(40px, 7vw, 80px);
 }
 .hero-inner {
-  max-width: 880px;
+  max-width: $max-w;
   margin: 0 auto;
+  // Two columns: copy on the left, demo video on the right. The intro type
+  // is shrunk (see .hero-tagline / .hero-sub below) so the media fits beside
+  // it on a typical laptop screen. Collapses to a single column < 880px.
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 4vw, 60px);
+  align-items: center;
+}
+.hero-copy {
+  text-align: left;
+  min-width: 0;
+}
+.hero-copy .hero-logo-svg {
+  margin: 0 0 22px;
+  height: clamp(58px, 6.5vw, 88px);
+}
+.hero-media {
+  min-width: 0;
+}
+.hero-media .media-frame {
+  margin: 0;
+  max-width: 100%;
 }
 // Inline hero SVG: animated logo with sequenced node-pulse.
 .hero-logo-svg {
@@ -297,11 +318,11 @@ code {
 }
 .hero-tagline {
   font-family: $serif;
-  font-size: clamp(2.1rem, 5.5vw, 3.6rem);
+  font-size: clamp(1.75rem, 3.1vw, 2.7rem);
   font-weight: 700;
   letter-spacing: -0.015em;
-  line-height: 1.1;
-  margin: 0 0 22px;
+  line-height: 1.12;
+  margin: 0 0 18px;
   color: $text;
 }
 .hero-tagline em {
@@ -311,11 +332,11 @@ code {
   color: $accent;
 }
 .hero-sub {
-  font-size: clamp(1.05rem, 1.8vw, 1.22rem);
+  font-size: clamp(0.98rem, 1.3vw, 1.1rem);
   color: $text-dim;
-  margin: 0 auto 36px;
-  line-height: 1.55;
-  max-width: 680px;
+  margin: 0 0 26px;
+  line-height: 1.5;
+  max-width: 520px;
 }
 .hero-sub a {
   color: $accent;
@@ -324,9 +345,9 @@ code {
 .hero-cta {
   display: flex;
   gap: 12px;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 .hero-meta {
   font-family: $mono;
@@ -861,12 +882,33 @@ code {
 // ----------------------------------------------------------------------------
 // responsive misc
 // ----------------------------------------------------------------------------
-@media (max-width: 720px) {
-  // On narrow screens hide the section anchors and keep only the GitHub CTA.
-  .nav-links a:not(.nav-cta) {
-    display: none;
+// Hero: collapse the two-column layout to a single centered column once the
+// copy + video no longer comfortably sit side by side.
+@media (max-width: 880px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(30px, 6vw, 48px);
+    max-width: 760px;
   }
-  .hero-cta .btn-ghost {
+  .hero-copy {
+    text-align: center;
+  }
+  .hero-copy .hero-logo-svg {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-cta {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 720px) {
+  // On narrow screens hide the section anchors and keep only the Download CTA.
+  .nav-links a:not(.nav-cta) {
     display: none;
   }
 }
@@ -972,3 +1014,107 @@ html {
 // block that disabled the click-triggered logo intro, scroll-reveal, and
 // card cursor spotlight. It's been removed so the animations work regardless
 // of the OS-level "Reduce motion" accessibility preference.
+
+// ============================================================================
+// Download page (download.html)
+// Placeholder release cards until public binaries are wired up.
+// ============================================================================
+.download-hero {
+  padding: clamp(56px, 9vw, 110px) clamp(20px, 5vw, 48px) clamp(48px, 8vw, 90px);
+}
+.download-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+.download-inner h1 {
+  font-family: $serif;
+  font-size: clamp(2.1rem, 4.4vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  line-height: 1.12;
+  margin: 14px 0 16px;
+  color: $text;
+}
+.download-sub {
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  color: $text-dim;
+  line-height: 1.55;
+  max-width: 620px;
+  margin: 0 auto 20px;
+}
+.download-note {
+  font-family: $mono;
+  font-size: 0.9rem;
+  color: $text-dim;
+  letter-spacing: 0.02em;
+  margin: 0 0 clamp(36px, 5vw, 56px);
+}
+.download-note .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $accent-bright;
+  margin-right: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px rgba(142, 217, 115, 0.7);
+}
+.download-grid {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.5vw, 24px);
+  text-align: left;
+}
+.download-card {
+  background: $surface;
+  border: 1px solid $border-2;
+  border-radius: $radius-lg;
+  padding: clamp(22px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 12px 32px -22px rgba(60, 80, 50, 0.2);
+}
+.download-card h2 {
+  font-family: $serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: $text;
+}
+.dl-meta {
+  font-family: $mono;
+  font-size: 0.85rem;
+  color: $text-dim;
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+}
+.dl-btn {
+  align-self: flex-start;
+}
+.dl-btn.is-disabled {
+  background: $bg-tint;
+  color: $text-faint;
+  border-color: $border-2;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.dl-fine {
+  font-size: 0.82rem;
+  color: $text-faint;
+  margin: 12px 0 0;
+}
+.download-foot {
+  margin: clamp(40px, 6vw, 60px) 0 0;
+  color: $text-dim;
+  font-size: 0.96rem;
+}
+@media (max-width: 720px) {
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}

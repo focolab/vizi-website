@@ -1,0 +1,105 @@
+---
+# Empty front-matter tells Jekyll to process this file (resolve Liquid tags).
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download vizi</title>
+  <meta name="description" content="Download vizi for macOS, Windows, and Linux.">
+  <meta property="og:title" content="Download vizi">
+  <meta property="og:description" content="Download vizi for macOS, Windows, and Linux.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/vizi.svg' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}#features">Features</a>
+      <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+      <a href="{{ '/' | relative_url }}#workflow">Workflow</a>
+      <a href="{{ '/' | relative_url }}" class="nav-cta">← Home</a>
+    </div>
+  </nav>
+
+  <section class="download-hero">
+    <div class="download-inner">
+      <span class="eyebrow">Download</span>
+      <h1>Get vizi for your platform.</h1>
+      <p class="download-sub">
+        vizi runs natively on macOS, Windows, and Linux — Vulkan, Metal, and
+        DX12 GPU backends through <code>wgpu</code>. Pick your platform below to
+        grab the latest stable build.
+      </p>
+      <p class="download-note">
+        <span class="dot"></span>
+        Currently in private beta — public downloads coming soon.
+      </p>
+
+      <ul class="download-grid">
+        <li class="download-card">
+          <h2>macOS</h2>
+          <p class="dl-meta">Apple Silicon · .dmg</p>
+          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
+          <p class="dl-fine">Placeholder — wire up the .dmg download here.</p>
+        </li>
+        <li class="download-card">
+          <h2>Windows</h2>
+          <p class="dl-meta">x64 · .exe installer</p>
+          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
+          <p class="dl-fine">Placeholder — wire up the .exe download here.</p>
+        </li>
+        <li class="download-card">
+          <h2>Linux</h2>
+          <p class="dl-meta">x86_64 · AppImage</p>
+          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
+          <p class="dl-fine">Placeholder — wire up the AppImage download here.</p>
+        </li>
+      </ul>
+
+      <p class="download-foot">
+        Looking for source code or release notes?
+        <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">View the project on GitHub →</a>
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
+        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
+          <a href="https://github.com/focolab/vizi/blob/main/LICENSE" target="_blank" rel="noopener">License (MIT)</a>
+        </div>
+        <div class="footer-col">
+          <h5>Lab</h5>
+          <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
+        </div>
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="{{ '/' | relative_url }}#features">Features</a>
+          <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+          <a href="{{ '/' | relative_url }}#workflow">Workflow</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-fine">&copy;2026 UCSF FOCOlab</p>
+  </footer>
+
+</body>
+</html>

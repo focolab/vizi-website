@@ -27,14 +27,14 @@
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#use-cases">Use cases</a>
-      <a href="#under-the-hood">Under the hood</a>
       <a href="#workflow">Workflow</a>
-      <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener" class="nav-cta">GitHub →</a>
+      <a href="{{ '/download.html' | relative_url }}" class="nav-cta">Download →</a>
     </div>
   </nav>
 
   <header class="hero" id="top">
     <div class="hero-inner">
+      <div class="hero-copy">
       <svg class="hero-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456 226" overflow="visible" fill="#8ed973" fill-rule="evenodd" aria-label="vizi" role="img">
         <!--
           Order matters: SVG has no z-index, so paths rendered later appear on
@@ -69,34 +69,34 @@
         <g class="intro-wrap intro-zbr"><path class="vlogo-node node-zbr" d="M350.99,226c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
       </svg>
       <h1 class="hero-tagline">
-        vizi — the ultimate app for scientific </em>volumetric timeseries</em> data
+        vizi — the ultimate app for scientific <em>volumetric timeseries</em> data
       </h1>
       <p class="hero-sub">
         Smooth scrubbing through multi-GB/TB recordings.
-        Voxel-perfect 3D rendering. 
+        Voxel-perfect 3D rendering.
         Fully reproducible human curation and analysis sessions.
         Generate presentation and paper ready output.
       </p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="https://github.com/focolab/vizi" target="_blank" rel="noopener">View on GitHub</a>
-        <a class="btn btn-ghost" href="#features">What it does</a>
+        <a class="btn btn-primary" href="{{ '/download.html' | relative_url }}">Download for Mac/Windows/Linux</a>
       </div>
       <p class="hero-meta">
         <span class="dot"></span>
         Currently in private beta.
       </p>
+      </div><!-- /.hero-copy -->
+
+      <div class="hero-media">
+        <div class="media-frame reveal" aria-label="vizi UI demo">
+          <img src="{{ '/assets/img/hero-still.png' | relative_url }}" alt="vizi user interface — 2D pane, 3D pane, LUT controls, bounding-box panel" class="media-fill">
+          <div class="media-overlay">
+            <div class="play-icon" aria-hidden="true"></div>
+            <span class="media-caption">Demo video coming soon</span>
+          </div>
+        </div>
+      </div><!-- /.hero-media -->
     </div>
   </header>
-
-  <section class="demo-band">
-    <div class="media-frame reveal" aria-label="vizi UI demo">
-      <img src="{{ '/assets/img/hero-still.png' | relative_url }}" alt="vizi user interface — 2D pane, 3D pane, LUT controls, bounding-box panel" class="media-fill">
-      <div class="media-overlay">
-        <div class="play-icon" aria-hidden="true"></div>
-        <span class="media-caption">Demo video coming soon</span>
-      </div>
-    </div>
-  </section>
 
   <section class="features" id="features">
     <div class="section-head reveal">
@@ -172,36 +172,6 @@
         <p>Named bounding boxes persist per session. Global X/Y/Z crops. Click-to-fly between 2D and 3D. Designed for the inspect-mark-export loop, not just look-and-close.</p>
       </li>
     </ul>
-  </section>
-
-  <section class="under-the-hood" id="under-the-hood">
-    <div class="section-head reveal">
-      <span class="eyebrow">Under the hood</span>
-      <h2>A modern stack, where it counts.</h2>
-      <p class="section-sub">The fast parts are written in Rust. The interactive parts are written in Python. The rendering is GPU-native through wgpu.</p>
-    </div>
-    <div class="stack-grid">
-      <div class="stack-card reveal">
-        <span class="stack-tag">Render</span>
-        <h3>pygfx &amp; wgpu</h3>
-        <p>GPU-native rendering through <code>wgpu</code>, the same modern graphics API that backs Firefox and Servo. Vulkan on Linux, Metal on macOS, DX12 on Windows — same code path everywhere.</p>
-      </div>
-      <div class="stack-card reveal">
-        <span class="stack-tag">UI</span>
-        <h3>PySide6 &amp; pyqtgraph</h3>
-        <p>Native Qt widgets and toolbars on every platform. No web view, no electron shell. The window opens fast and stays responsive while gigabyte files load behind the scenes.</p>
-      </div>
-      <div class="stack-card reveal">
-        <span class="stack-tag">I/O</span>
-        <h3>Rust hot path</h3>
-        <p>The TIFF reader and pyramid builder are written in Rust and exposed to Python through PyO3. The wheel ships with the Rust extension prebuilt — no toolchain required on the install machine.</p>
-      </div>
-      <div class="stack-card reveal">
-        <span class="stack-tag">Distribution</span>
-        <h3>One wheel, three Pythons</h3>
-        <p>Built against Python's <code>abi3</code> interface, so a single per-platform wheel works on Python 3.11, 3.12, <em>and</em> 3.13. Native installers (AppImage, .exe, .dmg) bundle their own Python.</p>
-      </div>
-    </div>
   </section>
 
   <section class="workflow" id="workflow">
@@ -302,37 +272,6 @@
     </div>
   </section>
 
-  <section class="status" id="status">
-    <div class="status-card reveal">
-      <div class="status-text">
-        <span class="eyebrow">Project status</span>
-        <h2>In private beta. Open-source release planned post&nbsp;v1.0.0.</h2>
-        <p>vizi is in active development at FOCO&nbsp;Lab. Labmates and a handful of external collaborators are the current users; bug reports surface in real-world install paths. The repository and binary releases are private for now &mdash; the source will move to a public repo, with open binary downloads, after the v1.0.0 milestone.</p>
-        <p class="status-meta">Cross-platform: Linux (AppImage), Windows (.exe), macOS Apple Silicon (.dmg). Vulkan / Metal / DX12 backends through <code>wgpu</code>.</p>
-      </div>
-      <div class="status-side">
-        <ul class="ledger">
-          <li><span class="ledger-k">License</span><span class="ledger-v">MIT</span></li>
-          <li><span class="ledger-k">Python</span><span class="ledger-v">3.11+</span></li>
-          <li><span class="ledger-k">GPU</span><span class="ledger-v">Vulkan / Metal / DX12</span></li>
-          <li><span class="ledger-k">Formats</span><span class="ledger-v">OME-TIFF, SCAPE zip, TIFF</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="about-lab" id="about">
-    <div class="lab-card reveal">
-      <img src="{{ '/assets/img/focolab.png' | relative_url }}" alt="FOCO Lab" class="lab-logo">
-      <div class="lab-text">
-        <span class="eyebrow">About</span>
-        <h2>Built at FOCO&nbsp;Lab.</h2>
-        <p>FOCO Lab studies how biological brains produce real-time behavior &mdash; from the 302-neuron <em>C.&nbsp;elegans</em> to tardigrades, cultured human organoids, and <em>in silico</em> networks. vizi began as the lab's internal viewer for SCAPE and calcium-imaging acquisitions, and grew into a general-purpose workbench for anyone working with large volumetric image data.</p>
-        <a class="btn btn-ghost btn-sm" href="https://www.focolab.org/" target="_blank" rel="noopener">Visit focolab.org →</a>
-      </div>
-    </div>
-  </section>
-
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
@@ -349,7 +288,6 @@
         <div class="footer-col">
           <h5>Lab</h5>
           <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
-          <a href="#about">About vizi</a>
         </div>
         <div class="footer-col">
           <h5>Site</h5>
@@ -359,7 +297,7 @@
         </div>
       </div>
     </div>
-    <p class="footer-fine">&copy; {{ 'now' | date: '%Y' }} vizi contributors. Built with Jekyll on GitHub Pages.</p>
+    <p class="footer-fine">&copy;2026 UCSF FOCOlab</p>
   </footer>
 
   <script>
