@@ -164,6 +164,11 @@ code {
   // Allow the per-path drop-shadow glow (during the click animation) to
   // render outside the SVG's box instead of being clipped at the viewBox edge.
   overflow: visible;
+  // Lift above the tagline + subtitle below so the scattering circles paint
+  // on top of the text during the intro animation. (Nav uses z-index: 50,
+  // so 10 is comfortably under that.)
+  position: relative;
+  z-index: 10;
   // Suppress all focus indicators (browser default outline, webkit tap
   // highlight, etc.) — clicking the logo shouldn't show any ring.
   outline: none;
