@@ -74,7 +74,7 @@
       <p class="hero-sub">
         Smooth scrubbing through multi-GB/TB recordings.
         Voxel-perfect 3D rendering.
-        Fully reproducible human curation and analysis sessions.
+        Human curation and annotation, saved with every file.
         Generate presentation and paper ready output.
       </p>
       <div class="hero-cta">
@@ -108,42 +108,42 @@
       <li class="feature reveal">
         <span class="feature-num">01</span>
         <h3>Fast, even on huge files</h3>
-        <p>Move through volumetric timeseries at full resolution. No proxies, no precomputation, no stalls.</p>
+        <p>Scrub and play 10+&nbsp;GB OME-TIFF, OME-Zarr, and SCAPE volumes at full resolution. A Rust I/O core and streaming load keep it smooth &mdash; no proxies, no precomputation.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">02</span>
         <h3>Voxel-perfect rendering</h3>
-        <p>Physically faithful and MIP volume modes that stay crisp at every zoom level.</p>
+        <p>Emissive (fluorescence-faithful) and MIP volume modes stay crisp at every zoom. Auto pyramid-level selection picks the right resolution for the camera distance.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">03</span>
         <h3>Fluid 3D navigation</h3>
-        <p>Fly or orbit through your data. Move between modes without losing where you are.</p>
+        <p>Fly (WASD) or orbit through your data, with an orientation minimap and click-to-fly. Switch modes without losing your viewpoint.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">04</span>
         <h3>2D and 3D, in sync</h3>
-        <p>Find any voxel from one view to the other. The two views always agree on what you're looking at.</p>
+        <p>Ctrl+click in 2D to fly the 3D camera to that voxel. The slice view and the volume view always agree on where you are.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">05</span>
-        <h3>Annotate and crop in place</h3>
-        <p>Mark regions of interest. Hide what doesn't matter. Save it all alongside the file.</p>
+        <h3>Annotate, crop &amp; mask</h3>
+        <p>Box and ellipse annotations persist per file. Crop to them &mdash; or to global X/Y/Z ranges &mdash; and rasterize any annotation into a voxel mask with a reported count.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">06</span>
         <h3>Multi-channel done right</h3>
-        <p>Composite views, per-channel controls, and presets you can recall.</p>
+        <p>Per-channel composite with colors, saved presets, and emissive balancing. A subtractive &ldquo;stain&rdquo; mode and a custom multi-stop colormap editor round it out.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">07</span>
-        <h3>Reproducible by default</h3>
-        <p>Sessions and action logs make every step you took recoverable later.</p>
+        <h3>Your working state, saved</h3>
+        <p>Annotations, crops, contrast, colormaps, channel presets, and Z-anisotropy persist per file. Reopen and everything is exactly where you left it.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">08</span>
         <h3>Publication-ready output</h3>
-        <p>Single frames, sequences, and movies &mdash; ready to paste into a paper or talk.</p>
+        <p>Export frames, sequences, and movies (MP4, GIF, PNG, TIFF) with optional timestamp, scale-bar, and colormap-legend burn-ins.</p>
       </li>
     </ul>
   </section>
@@ -161,11 +161,11 @@
       </li>
       <li class="usecase reveal">
         <h3>SCAPE microscopy</h3>
-        <p>kinvoxel-SCAPE compressed-zip files open directly — voxel intensities, channel layout, and anisotropic pixel sizes come from the embedded metadata. T/Z/C dimensions match the file's anatomical axes so Z-scrubbing acts like depth.</p>
+        <p>FOCO Lab SCAPE compressed-zip files open directly — voxel intensities, channel layout, and physical pixel sizes come from the embedded metadata. T/Z/C dimensions match the file's anatomical axes so Z-scrubbing acts like depth.</p>
       </li>
       <li class="usecase reveal">
-        <h3>OME-TIFF, large or small</h3>
-        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution. Plain TIFFs without OME-XML open too — you specify the T&times;Z dimensionality, and vizi remembers it.</p>
+        <h3>OME-TIFF, OME-Zarr &amp; more</h3>
+        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution, and OME-Zarr / OME-NGFF stores open natively with their multiscale levels. Plain TIFFs without OME-XML open too &mdash; you set the T&times;Z split. CZI, ND2, LIF and ~150 other formats open through the optional Bio-Formats image server.</p>
       </li>
       <li class="usecase reveal">
         <h3>Annotation &amp; curation</h3>
@@ -209,8 +209,8 @@
           <rect x="230" y="290" width="180" height="160" rx="12" fill="#ffffff" stroke="#d4d1c5" stroke-width="1.5"/>
           <text x="320" y="328" text-anchor="middle" fill="#3d7d2a" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="2">STAGE 02</text>
           <text x="320" y="368" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="24" font-weight="700">Store</text>
-          <text x="320" y="400" text-anchor="middle" fill="#1a1f1d" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="500">OME-TIFF, SCAPE zip</text>
-          <text x="320" y="421" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="13">plain TIFF</text>
+          <text x="320" y="400" text-anchor="middle" fill="#1a1f1d" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="500">OME-TIFF · OME-Zarr</text>
+          <text x="320" y="421" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="13">SCAPE zip · Bio-Formats</text>
         </g>
 
         <!-- Stage 3: vizi workbench (centerpiece) -->
@@ -230,7 +230,7 @@
             <!-- Analyze (top-right) -->
             <rect x="722" y="320" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
             <text x="812" y="352" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Analyze</text>
-            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">plug-ins, scripts, agents</text>
+            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">masks, voxel counts</text>
 
             <!-- Annotate (bottom-right) -->
             <rect x="722" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
@@ -240,7 +240,7 @@
             <!-- Export (bottom-left) -->
             <rect x="478" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
             <text x="568" y="472" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Export</text>
-            <text x="568" y="498" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">frames, movies, sessions</text>
+            <text x="568" y="498" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">frames, sequences, movies</text>
 
             <!-- Internal cycle arrows: Inspect → Analyze → Annotate → Export → Inspect -->
             <line x1="660" y1="360" x2="720" y2="360" stroke="#3d7d2a" stroke-width="2" marker-end="url(#arrowhead-loop)"/>
@@ -267,7 +267,7 @@
         <line x1="942" y1="370" x2="978" y2="370" stroke="#3d7d2a" stroke-width="2.5" marker-end="url(#arrowhead-accent)"/>
 
         <!-- Bottom caption -->
-        <text x="590" y="700" text-anchor="middle" fill="#1a1f1d" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="600" letter-spacing="2">SESSIONS &amp; ACTION LOGS MAKE EVERY STEP REPRODUCIBLE</text>
+        <text x="590" y="700" text-anchor="middle" fill="#1a1f1d" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="600" letter-spacing="2">EVERY SETTING &amp; ANNOTATION SAVED PER FILE</text>
       </svg>
     </div>
   </section>
@@ -283,7 +283,6 @@
           <h5>Project</h5>
           <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
           <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
-          <a href="https://github.com/focolab/vizi/blob/main/LICENSE" target="_blank" rel="noopener">License (MIT)</a>
         </div>
         <div class="footer-col">
           <h5>Lab</h5>
