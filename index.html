@@ -108,7 +108,7 @@
       <li class="feature reveal">
         <span class="feature-num">01</span>
         <h3>Fast, even on huge files</h3>
-        <p>Scrub and play 10+&nbsp;GB OME-TIFF, OME-Zarr, and SCAPE volumes at full resolution. A Rust I/O core and streaming load keep it smooth &mdash; no proxies, no precomputation.</p>
+        <p>Scrub and play 10+&nbsp;GB OME-TIFF, OME-Zarr, and SCAPE volumes at full resolution. A Rust I/O core and streaming load keep it smooth &mdash; no proxies, no precomputation. Set Skip to stride past slowly-varying frames.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">02</span>
@@ -118,17 +118,17 @@
       <li class="feature reveal">
         <span class="feature-num">03</span>
         <h3>Fluid 3D navigation</h3>
-        <p>Fly (WASD) or orbit through your data, with an orientation minimap and click-to-fly. Switch modes without losing your viewpoint.</p>
+        <p>Fly (WASD), orbit, or Hybrid &mdash; orbit an annotation, then detach into free-look. An orientation minimap and click-to-fly keep you placed, and you switch modes without losing your viewpoint.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">04</span>
         <h3>2D and 3D, in sync</h3>
-        <p>Ctrl+click in 2D to fly the 3D camera to that voxel. The slice view and the volume view always agree on where you are.</p>
+        <p>Dock the slice and the volume side by side &mdash; or float one onto a second monitor. Ctrl+click in 2D to fly the 3D camera to that voxel; the two views always agree on where you are.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">05</span>
         <h3>Annotate, crop &amp; mask</h3>
-        <p>Box and ellipse annotations persist per file. Crop to them &mdash; or to global X/Y/Z ranges &mdash; and rasterize any annotation into a voxel mask with a reported count.</p>
+        <p>Box and ellipse annotations persist per file. Crop to them &mdash; or to global X/Y/Z ranges &mdash; and rasterize any annotation into a voxel mask with a reported count. Full undo/redo for every edit.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">06</span>
@@ -137,13 +137,13 @@
       </li>
       <li class="feature reveal">
         <span class="feature-num">07</span>
-        <h3>Your working state, saved</h3>
-        <p>Annotations, crops, contrast, colormaps, channel presets, and Z-anisotropy persist per file. Reopen and everything is exactly where you left it.</p>
+        <h3>Extensible via plugins</h3>
+        <p>Add file-format readers, exporters, commands, dockable panels, 3D overlays, and tools from the Plugin Manager. Each plugin runs in its own process, so a broken one can't take the viewer down.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">08</span>
         <h3>Publication-ready output</h3>
-        <p>Export frames, sequences, and movies (MP4, GIF, PNG, TIFF) with optional timestamp, scale-bar, and colormap-legend burn-ins.</p>
+        <p>Export frames, sequences, and movies (MP4, GIF, PNG, TIFF) with optional timestamp, scale-bar, and colormap-legend burn-ins &mdash; or write out the raw voxels at full bit depth (OME-TIFF, OME-Zarr, .zarr.zip) with an embedded provenance record.</p>
       </li>
     </ul>
   </section>
@@ -165,7 +165,7 @@
       </li>
       <li class="usecase reveal">
         <h3>OME-TIFF, OME-Zarr &amp; more</h3>
-        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution, and OME-Zarr / OME-NGFF stores open natively with their multiscale levels. Plain TIFFs without OME-XML open too &mdash; you set the T&times;Z split. CZI, ND2, LIF and ~150 other formats open through the optional Bio-Formats image server.</p>
+        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution, and OME-Zarr / OME-NGFF stores &mdash; including single-file <code>.zarr.zip</code> &mdash; open natively with their multiscale levels. Plain TIFFs without OME-XML open too &mdash; you set the T&times;Z split. CZI, ND2, LIF and ~150 other formats open through the optional Bio-Formats image server.</p>
       </li>
       <li class="usecase reveal">
         <h3>Annotation &amp; curation</h3>
@@ -230,7 +230,7 @@
             <!-- Analyze (top-right) -->
             <rect x="722" y="320" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
             <text x="812" y="352" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Analyze</text>
-            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">masks, voxel counts</text>
+            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">plug-ins, masks</text>
 
             <!-- Annotate (bottom-right) -->
             <rect x="722" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
