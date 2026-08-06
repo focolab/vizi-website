@@ -90,11 +90,11 @@
 
       <div class="hero-media">
         <div class="media-frame reveal" aria-label="vizi UI demo">
-          <img src="{{ '/assets/img/hero-still.png' | relative_url }}" alt="vizi user interface — 2D pane, 3D pane, LUT controls, bounding-box panel" class="media-fill">
-          <div class="media-overlay">
-            <div class="play-icon" aria-hidden="true"></div>
-            <span class="media-caption">Demo video coming soon</span>
-          </div>
+          <video class="media-fill" autoplay muted loop playsinline preload="metadata"
+                 poster="{{ '/assets/img/vizi-demo-poster.jpg' | relative_url }}"
+                 aria-label="vizi in action — a NeuroPAL volumetric recording explored in the viewer">
+            <source src="{{ '/assets/video/vizi-demo.mp4' | relative_url }}" type="video/mp4">
+          </video>
         </div>
       </div><!-- /.hero-media -->
     </div>
