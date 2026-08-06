@@ -129,8 +129,8 @@
       </li>
       <li class="feature reveal">
         <span class="feature-num">05</span>
-        <h3>Annotate, crop &amp; mask</h3>
-        <p>Box and ellipse annotations persist per file. Crop to them &mdash; or to global X/Y/Z ranges &mdash; and rasterize any annotation into a voxel mask with a reported count. Full undo/redo for every edit.</p>
+        <h3>Annotate, measure &amp; track</h3>
+        <p>Draw box, ellipse, cylinder, or surface regions, rotate and parent them in 3D, and crop the volume to them. Measure per-channel intensity over time &mdash; live plot and CSV export &mdash; while &ldquo;Center&rdquo; tracks a region on a moving object across timepoints.</p>
       </li>
       <li class="feature reveal">
         <span class="feature-num">06</span>
@@ -145,7 +145,7 @@
       <li class="feature reveal">
         <span class="feature-num">08</span>
         <h3>Publication-ready output</h3>
-        <p>Export frames, sequences, and movies (MP4, GIF, PNG, TIFF) with optional timestamp, scale-bar, and colormap-legend burn-ins &mdash; or write out the raw voxels at full bit depth (OME-TIFF, OME-Zarr, .zarr.zip) with an embedded provenance record.</p>
+        <p>Export frames, sequences, and movies (MP4, GIF, PNG, TIFF) &mdash; including keyframed camera flythroughs &mdash; with timestamp, scale-bar, and colormap-legend burn-ins. Or write out the raw voxels at full bit depth (OME-TIFF, OME-Zarr, .zarr.zip) with an embedded provenance record.</p>
       </li>
     </ul>
   </section>
@@ -167,7 +167,7 @@
       </li>
       <li class="usecase reveal">
         <h3>OME-TIFF, OME-Zarr &amp; more</h3>
-        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution, and OME-Zarr / OME-NGFF stores &mdash; including single-file <code>.zarr.zip</code> &mdash; open natively with their multiscale levels. Plain TIFFs without OME-XML open too &mdash; you set the T&times;Z split. CZI, ND2, LIF and ~150 other formats open through the optional Bio-Formats image server.</p>
+        <p>Volumetric OME-TIFFs 10+&nbsp;GB scrub smoothly at full resolution, and OME-Zarr / OME-NGFF stores &mdash; Zarr v2 or v3, including single-file <code>.zarr.zip</code> &mdash; open natively with their multiscale levels. Plain, compressed, and tiled TIFFs open too; set the T&times;Z split for ones without OME-XML. CZI, ND2, LIF and ~150 other formats open through the optional Bio-Formats image server.</p>
       </li>
       <li class="usecase reveal">
         <h3>Annotation &amp; curation</h3>
@@ -232,7 +232,7 @@
             <!-- Analyze (top-right) -->
             <rect x="722" y="320" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
             <text x="812" y="352" text-anchor="middle" fill="#1a1f1d" font-family="'Caudex', Georgia, serif" font-size="20" font-weight="700">Analyze</text>
-            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">plug-ins, masks</text>
+            <text x="812" y="378" text-anchor="middle" fill="#5a615a" font-family="'Inter', system-ui, sans-serif" font-size="12">measure, plug-ins</text>
 
             <!-- Annotate (bottom-right) -->
             <rect x="722" y="440" width="180" height="80" rx="10" fill="#ffffff" stroke="#8ed973" stroke-width="1.5"/>
