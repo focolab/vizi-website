@@ -1,0 +1,33 @@
+# vizi accepted-plugin catalog — source of truth, hand-edited.
+#
+# One entry per accepted plugin = its CURRENT accepted version. Accepting a new
+# version is an edit to that entry; this file's git history is the acceptance
+# record. The build (plugins/catalog.json) serves these to the app; the Plugins
+# page (plugins.html) lists them. Validate/fill hashes with:
+#     python script/verify-plugins.py            # re-check every live entry
+#     python script/verify-plugins.py --fetch <asset_url>   # print sha256 + size
+#
+# Field contract (frozen 2026-10-13, vizi-website#13; mirror of the plugin
+# manifest where noted). Every field below is required on a live entry:
+#   id          manifest `id` (reverse-DNS)
+#   name        manifest `name`
+#   summary     one line
+#   repo        https repo URL
+#   version     accepted plugin version (== manifest `version`)
+#   min_vizi    minimum vizi APP version, full string (app floor; NOT engines.vizi)
+#   sdk_version SDK version the release was built against (what Ready/doctor print)
+#   asset_url   https URL of the release asset the app downloads
+#   size        asset size in bytes
+#   sha256      sha256 of the asset, 64 lowercase hex
+#   permissions copied verbatim from the manifest `permissions`
+#
+# `pending: true` marks an entry whose release is not yet public: it is shown on
+# the Plugins page as pending and is NOT emitted to catalog.json (so the app
+# never offers an asset that does not yet exist). Remove it once the release is
+# live and the asset_url/sha256/size are final.
+
+schema: 1
+
+# No plugins accepted yet. Add one mapping per accepted plugin (fields above);
+# fill size + sha256 with `script/verify-plugins.py --fetch <asset_url>`.
+plugins: []
