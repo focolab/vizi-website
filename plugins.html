@@ -1,0 +1,105 @@
+---
+# The Plugins page. Lists every entry in _data/plugins.yml (pending ones marked);
+# the app reads the live subset from /plugins/catalog.json. Existing site style.
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vizi — Plugins</title>
+  <meta name="description" content="Plugins accepted for vizi, and how to submit one.">
+  <meta property="og:title" content="vizi — Plugins">
+  <meta property="og:description" content="Plugins accepted for vizi, and how to submit one.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/vizi.svg' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}#features">Features</a>
+      <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+      <a href="{{ '/' | relative_url }}#workflow">Workflow</a>
+      <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+      <a href="{{ '/download.html' | relative_url }}" class="nav-cta">Download →</a>
+    </div>
+  </nav>
+
+  <section class="plugins-page">
+    <div class="section-head reveal is-in">
+      <span class="eyebrow">Plugins</span>
+      <h2>Extend vizi with accepted plugins.</h2>
+      <p class="section-sub">vizi installs plugins from a reviewed list. Each version below was audited and accepted by hand; the app reads the same list and installs from it. Anyone can submit one &mdash; see below.</p>
+    </div>
+
+    <ul class="plugin-list">
+      {%- for p in site.data.plugins.plugins %}
+      <li class="plugin{% if p.pending %} is-pending{% endif %}">
+        <div class="plugin-head">
+          <h3>{{ p.name }}</h3>
+          {%- if p.pending %}<span class="badge-pending">Pending</span>{% endif %}
+          <span class="plugin-version">{{ p.version }}</span>
+        </div>
+        <p class="plugin-summary">{{ p.summary }}</p>
+        <div class="plugin-meta">
+          <span>Needs vizi&nbsp;&ge;&nbsp;{{ p.min_vizi }}</span>
+          <span class="dotsep">·</span>
+          <span>Access:
+            {%- for perm in p.permissions %} <code>{{ perm }}</code>{% unless forloop.last %},{% endunless %}{% endfor -%}
+            {% if p.permissions.size == 0 %} <code>none</code>{% endif %}
+          </span>
+          <span class="dotsep">·</span>
+          <a href="{{ p.repo }}" target="_blank" rel="noopener">Repository &rarr;</a>
+        </div>
+        {%- if p.pending %}<p class="plugin-note">Release under review &mdash; not yet installable.</p>{% endif %}
+      </li>
+      {%- endfor %}
+      {%- if site.data.plugins.plugins.size == 0 %}
+      <li class="plugin plugin-empty"><p>No plugins accepted yet.</p></li>
+      {%- endif %}
+    </ul>
+
+    <div class="submit-block">
+      <h3>Submit a plugin</h3>
+      <p>Email <a href="mailto:focolabdev@gmail.com">focolabdev@gmail.com</a> with the repository, the version, and the release asset. Each version is audited and accepted separately &mdash; acceptance of a new version is a new review. The release must follow the contract on the <a href="https://github.com/focolab/vizi-plugin-sdk" target="_blank" rel="noopener">vizi-plugin-sdk</a> repository.</p>
+      <p class="submit-fine">Access each plugin requests is shown above and declared in its manifest; vizi grants only what the plugin declares.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
+        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+        <div class="footer-col">
+          <h5>Lab</h5>
+          <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
+        </div>
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="{{ '/' | relative_url }}#features">Features</a>
+          <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+          <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-fine">&copy;2026 UCSF FOCOlab</p>
+  </footer>
+
+</body>
+</html>

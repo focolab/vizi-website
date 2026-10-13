@@ -1,0 +1,29 @@
+name: verify-plugins
+
+# Gate the accepted-plugin catalog: on any change to the data, the script, or
+# itself, re-validate every entry's shape and re-download every LIVE entry's
+# asset to confirm its size and sha256 still match. A pending entry is
+# shape-checked only. A mismatch (or an unreachable asset) fails the check.
+on:
+  pull_request:
+    paths:
+      - "_data/plugins.yml"
+      - "script/verify-plugins.py"
+      - ".github/workflows/verify-plugins.yml"
+  push:
+    branches: [main]
+    paths:
+      - "_data/plugins.yml"
+      - "script/verify-plugins.py"
+      - ".github/workflows/verify-plugins.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python script/verify-plugins.py
