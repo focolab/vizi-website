@@ -23,25 +23,11 @@
 #
 # `pending: true` marks an entry whose release is not yet public: it is shown on
 # the Plugins page as pending and is NOT emitted to catalog.json (so the app
-# never offers an asset that does not yet exist). Remove it once PM confirms the
-# release is live and the asset_url/sha256/size are final.
+# never offers an asset that does not yet exist). Remove it once the release is
+# live and the asset_url/sha256/size are final.
 
 schema: 1
 
-plugins:
-  # vizi-quant 0.1.1 — PENDING: release is still a DRAFT, asset_url is the
-  # expected published URL. sha256 (5708e105…) and size (367666) were verified
-  # against the draft asset on 2026-10-13; asset_url finalizes when PM confirms.
-  - id: org.focolab.vizi_quant
-    name: vizi-quant
-    summary: Per-region intensity over time — raw F or ΔF/F — with plotting and CSV export.
-    repo: https://github.com/focolab/vizi-quant
-    version: "0.1.1"
-    min_vizi: "0.9.4"
-    sdk_version: "1.0a83"
-    asset_url: https://github.com/focolab/vizi-quant/releases/download/v0.1.1/vizi-quant-0.1.1.zip
-    size: 367666
-    sha256: "5708e105bf40e048c005bd9017336d9356c339454190e7782580911f4e7aa6b7"
-    permissions:
-      - data_access
-    pending: true
+# No plugins accepted yet. Add one mapping per accepted plugin (fields above);
+# fill size + sha256 with `script/verify-plugins.py --fetch <asset_url>`.
+plugins: []
