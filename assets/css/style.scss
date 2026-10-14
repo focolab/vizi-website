@@ -141,6 +141,12 @@ code {
 .nav-links a.nav-cta {
   color: $accent;
   font-weight: 600;
+  // Fixed-width slot so the CTA label — "Download →" on home/Plugins vs
+  // "← Home" on the Download page — doesn't shift the other nav links between
+  // pages. 88px fits "Download →" (87px at this font/size); "← Home" clamps to
+  // it. (As a flex item, .nav-cta honors min-width.)
+  min-width: 88px;
+  text-align: right;
 }
 
 // ----------------------------------------------------------------------------
