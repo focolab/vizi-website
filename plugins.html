@@ -37,7 +37,7 @@
     <div class="section-head reveal is-in">
       <span class="eyebrow">Plugins</span>
       <h2>Extend vizi with accepted plugins.</h2>
-      <p class="section-sub">vizi installs plugins from a reviewed list. Each version below was audited and accepted by hand; the app reads the same list and installs from it. Anyone can submit one &mdash; see below.</p>
+      <p class="section-sub">This is the list of plugin versions we have reviewed and accepted; a coming vizi release will install from it inside the app. Each version listed here is audited and accepted by hand before it appears. Anyone can submit one &mdash; see below.</p>
     </div>
 
     <ul class="plugin-list">
@@ -66,6 +66,12 @@
       <li class="plugin plugin-empty"><p>No plugins accepted yet.</p></li>
       {%- endif %}
     </ul>
+
+    <div class="submit-block">
+      <h3>Acceptance is optional</h3>
+      <p>A plugin does not need to be on this list to work. Acceptance only adds a plugin to this list, so that a coming vizi release can install it for you from inside the app. Anyone can build a plugin with the SDK and extend vizi today by installing it themselves &mdash; it runs on your own machine, and nothing is submitted anywhere.</p>
+      <p>A plugin is a folder holding a <code>vizi-plugin.json</code> manifest, placed in vizi's plugins folder (Tools &rarr; Plugin Manager&hellip; &rarr; Open plugins folder, or wherever <code>VIZI_PLUGINS_DIR</code> points). vizi finds it when it starts, or on Rescan in the same panel. A plugin that declares its manifest in code can also run itself with <code>--install</code> to place it there. Each plugin runs as its own process in its own environment, so it brings its own dependencies. The <a href="https://github.com/focolab/vizi-plugin-sdk" target="_blank" rel="noopener">vizi-plugin-sdk</a>'s getting-started guide walks a first plugin from an empty folder to a file opening in vizi, against vizi 0.9.0 or later.</p>
+    </div>
 
     <div class="submit-block">
       <h3>Submit a plugin</h3>
