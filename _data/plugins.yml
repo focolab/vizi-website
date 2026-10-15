@@ -14,12 +14,19 @@
 #   summary     one line
 #   repo        https repo URL
 #   version     accepted plugin version (== manifest `version`)
-#   min_vizi    minimum vizi APP version, full string (app floor; NOT engines.vizi)
+#   min_vizi    minimum vizi APP version, full string (app floor; NOT engines.vizi).
+#               verify-plugins.py requires >= 0.9.5 when the asset's manifest
+#               declares protocol engines.vizi 1.0 (the catalog-aware client floor).
 #   sdk_version SDK version the release was built against (what Ready/doctor print)
 #   asset_url   https URL of the release asset the app downloads
 #   size        asset size in bytes
 #   sha256      sha256 of the asset, 64 lowercase hex
 #   permissions copied verbatim from the manifest `permissions`
+#
+# Optional per entry (schema 1; vizi-website#21):
+#   platforms   list from linux-x86_64 / macos-arm64 / windows-x86_64; ABSENT means
+#               all three. The v0.9.5+ client offers an entry only on a listed
+#               platform. (Omitted from catalog.json when absent.)
 #
 # `pending: true` marks an entry whose release is not yet public: it is shown on
 # the Plugins page as pending and is NOT emitted to catalog.json (so the app
