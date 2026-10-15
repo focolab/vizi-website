@@ -21,7 +21,8 @@
       "asset_url": {{ p.asset_url | jsonify }},
       "size": {{ p.size | jsonify }},
       "sha256": {{ p.sha256 | jsonify }},
-      "permissions": {{ p.permissions | jsonify }}
+      "permissions": {{ p.permissions | jsonify }}{% if p.platforms %},
+      "platforms": {{ p.platforms | jsonify }}{% endif %}
     }{%- unless forloop.last %},{% endunless -%}
     {%- endfor %}
   ]
