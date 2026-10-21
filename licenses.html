@@ -1,0 +1,97 @@
+---
+# Empty front-matter tells Jekyll to process this file (resolve Liquid tags).
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vizi — Licenses</title>
+  <meta name="description" content="Open-source components bundled in vizi, their licenses, and corresponding source.">
+  <meta property="og:title" content="vizi — Licenses">
+  <meta property="og:description" content="Open-source components bundled in vizi, their licenses, and corresponding source.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/vizi.svg' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}#features">Features</a>
+      <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+      <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+      <a href="{{ '/' | relative_url }}" class="nav-cta">← Home</a>
+    </div>
+  </nav>
+
+  <section class="plugins-page">
+    <div class="section-head reveal is-in">
+      <span class="eyebrow">Licenses</span>
+      <h2>Open-source components in vizi.</h2>
+      <p class="section-sub">vizi's installers bundle two open-source libraries. Their licenses require that we offer the exact source we build from, so the corresponding source and checksums are published below.</p>
+    </div>
+
+    <div class="submit-block">
+      <h3>Bundled components</h3>
+      <p>vizi's installers include <strong>FFmpeg 9.0.2</strong>, used under the GNU Lesser General Public License, version 3 or later (LGPL-3.0-or-later), and <strong>libvpx 1.17.0</strong>, used under the BSD 3-Clause license. Both are built by the FOCO Lab; the exact configure options used for each build are recorded in the <code>THIRD_PARTY_NOTICES.txt</code> file included with every vizi installer.</p>
+    </div>
+
+    <div class="submit-block">
+      <h3>Corresponding source</h3>
+      <p>These archives are byte-for-byte the upstream releases vizi builds from. Verify a download against the published checksum with <code>sha256sum</code>.</p>
+      <p>
+        <strong>FFmpeg 9.0.2</strong> — LGPL-3.0-or-later<br>
+        <a href="{{ '/sources/ffmpeg-9.0.2.tar.xz' | relative_url }}">ffmpeg-9.0.2.tar.xz</a><br>
+        <code>sha256 8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e</code>
+      </p>
+      <p>
+        <strong>libvpx 1.17.0</strong> — BSD-3-Clause<br>
+        <a href="{{ '/sources/libvpx-1.17.0.tar.gz' | relative_url }}">libvpx-1.17.0.tar.gz</a><br>
+        <code>sha256 7f98aae5c52c46e85b7b26feabcab9b1554605e771bd1df1d6e6a00ee22fa8ed</code>
+      </p>
+      <p>Both checksums are also published together at <a href="{{ '/sources/SHA256SUMS' | relative_url }}">SHA256SUMS</a>.</p>
+      <p class="submit-fine">The same source is available on request from <a href="mailto:focolabdev@gmail.com">focolabdev@gmail.com</a>.</p>
+    </div>
+
+    <div class="submit-block">
+      <h3>Privacy statement</h3>
+      <p class="submit-fine">To come.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
+        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+        <div class="footer-col">
+          <h5>Lab</h5>
+          <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
+        </div>
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="{{ '/' | relative_url }}#features">Features</a>
+          <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+          <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-fine">&copy;2026 UCSF FOCOlab · <a href="{{ '/licenses.html' | relative_url }}">Licenses</a></p>
+  </footer>
+
+</body>
+</html>
