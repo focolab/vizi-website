@@ -9,13 +9,16 @@
 # Installers live on the download host, not in this repo:
 #   https://downloads.vizi.science/<version>/<asset>
 #
+# The site carries no release older than 1.0.0; the first public release is the
+# 1.0.0 beta. The list stays empty until that first publish.
+#
 # ORDER: releases MUST be listed newest first. The build trusts this order; it
 # does not sort by version or date.
 #
 # Field contract (schema 1) — one mapping per release:
-#   version      PEP 440, no leading 'v' (e.g. "0.9.5", "1.0.0b1")
-#   tag          the git tag (e.g. "v0.9.5")
-#   published    release time, ISO 8601 UTC (e.g. "2025-09-18T17:04:00Z")
+#   version      PEP 440, no leading 'v' (e.g. "1.0.0b1", "1.0.0")
+#   tag          the git tag (e.g. "v1.0.0b1")
+#   published    release time, ISO 8601 UTC (e.g. "2026-02-10T18:30:00Z")
 #   prerelease   true for a beta/rc, false for a final release
 #   notes        release notes, markdown, verbatim from the GitHub release.
 #                Rendered on changelog.html via `markdownify`. User-facing only.
@@ -28,94 +31,18 @@
 #                (size is not derivable at build time, so the workflow records it;
 #                 the download page shows it next to each button.)
 #
-# A release that was never published to this channel (e.g. the two seeded below)
-# OMITS downloads / sha256 / size entirely: its download buttons are hidden and
-# it never drives the feed. It still appears on the changelog for the record.
-#
 # FEED ELIGIBILITY (how releases/latest.json picks "latest"):
-#   1. newest FINAL release that has downloads (published through this channel); else
-#   2. newest release of ANY kind that has downloads  — the one-time bootstrap case,
-#      so a beta's own update check has something to read until the first public
-#      final ships; else
-#   3. newest final overall; else the newest release.
-# A pre-release never becomes "latest" once a published final exists (rule 1 wins).
+#   1. newest FINAL release that has downloads; else
+#   2. newest release of ANY kind that has downloads (so the first public build,
+#      the 1.0.0 beta, is served until a final ships).
+# A release without downloads is never eligible. A pre-release never stays
+# "latest" once a published final exists (rule 1 wins). When nothing is eligible
+# (the list is empty), the feed is emitted as `{}` — GitHub Pages cannot skip a
+# generated file conditionally, and the app treats an unparseable feed as a quiet
+# failed update check.
 
 schema: 1
 
-releases:
-  # Seeded for the record. These installers were never public, so downloads /
-  # sha256 / size are omitted and their buttons stay hidden.
-  - version: "0.9.5"
-    tag: "v0.9.5"
-    published: "2026-10-20T19:44:59Z"
-    prerelease: false
-    notes: |
-      ## New features
-
-      - **Install plugins from the catalog, inside the app.** Tools → Plugin Manager: a catalog entry shows a download icon; vizi fetches the accepted release, checks its hash, gets the Python it needs and runs its setup. No Python install on your machine. When the catalog's accepted version moves, the row offers an update (or a roll-back); a failed update leaves the installed version running.
-      - **Tables and theme-matched plots in plugin panels.** Plugins can show results in a real table (sortable, multi-select, tens of thousands of rows), their drawn images scale to fit the panel and are told its size, and they are told vizi's theme and colours so their plots match dark and light mode. vizi-quant 0.1.4 uses all three.
-      - **One progress bar for opening a file**, from the click to the first frame, each stage named with its count where vizi has one.
-      - **The Plugin Manager is a dock**, under Annotations, slimmed to a checkbox, the name, a per-plugin "Control view" permission (lets that plugin select and frame regions and scrub time for you) and small icons for install, update and remove; right-click a row for its settings folder and diagnostics.
-      - **Regions are easier to grab in 3D** by their wireframe.
-
-      ## Bug fixes
-
-      - A plugin panel's float slider showed its position (0 to 1000) instead of its value and ignored its step.
-      - A file or plugin reporting no unit, or one vizi does not know, was shown as micrometres and seconds; it now shows as unknown and measurements stay in voxels.
-      - A plugin holding more than 1024 open files lost its session.
-      - The selected row in a plugin's list was unreadable in the light theme, and checkboxes were invisible in one theme.
-      - Opening a folder or link from vizi spilled the file manager's warnings into vizi's terminal.
-      - Opening a large file froze the window for about a second while a plugin installed.
-
-      ## Upgrade notes
-
-      - The per-plugin "May move the view" switch has moved from each plugin's panel into the Plugin Manager as "Control view", off until you turn it on.
-
-  - version: "0.9.4"
-    tag: "v0.9.4"
-    published: "2026-10-13T21:45:58Z"
-    prerelease: false
-    notes: |
-      ## New features
-
-      - **3D clicks pick the structure under the cursor.** Hold Shift over the volume to preview the voxel a click would pick; Shift+click re-centres the view on it, in Orbit, Fly and Hybrid alike.
-      - **Overlays sort by depth.** Region outlines, handles, the pivot marker and the rotation cross now composite by depth instead of draw order, so a near line is never painted over by a far one; handles are small shaded spheres and cubes.
-      - **Plugins can contribute regions of any shape**, drag their handles, and the focus pulse lights a region's own voxels rather than its bounding box. Plugin tools receive the picked structure and where it ends, can read the file's own voxels while a filter is applied, and see each axis's pitch separately.
-      - **A plugin's start is visible and cancellable.** The Plugins button in the status bar lists what failed, what vizi is waiting on and what runs in the background; every Cancel names what it cancels, and a starting plugin no longer freezes the window.
-      - **A reader that fails offers another.** When a plugin reader cannot open or start, the error offers "Choose another reader…" with the readers that could.
-
-      ## Bug fixes
-
-      - The rotation cross lagged behind the drag during playback.
-      - Calibration froze the window on DX12.
-      - Auto contrast on volumes over 8 M voxels could pick a wrong top (a v0.9.3 regression).
-      - A file's default exposure leaked into the next file opened.
-      - The 2D view stalled while its projection was being rebuilt.
-      - A Shift handoff after an inverted drag lost the corner being held.
-      - The minimap composited a shade off.
-      - Plugin channel pickers numbered channels from 0 instead of 1.
-      - Export manifests recorded the wrong source digest for a Zarr v2 store or a multi-file series.
-      - Vulkan failed to start on older Intel drivers.
-
-      ## Performance improvements
-
-      - Playback marches each timepoint once; uploads no longer trigger a second draw.
-      - Plugin volume reads land in reused buffers instead of a fresh allocation each time.
-      - One read cache sits in front of the TIFF and Zarr readers; a timepoint decoded once is not decoded again for the other view.
-      - Large TIFF decodes run on their own pool and no longer steal the renderer's threads.
-      - The 3D shader is compiled for the file's channel count at open; on DX12 the first frame drops from 5–7 s to about 3 s on a 6-channel file.
-      - The status bar's camera readout and the minimap repaint on a schedule rather than every frame, which removes the stutter on single-GPU Windows machines.
-      - The multichannel projection is specialised per Mode end (a v0.9.3 regression).
-
-      ## Known limitations
-
-      - On Intel integrated GPUs, the sharp frame after a drag on a large multichannel file lands about one second late (a wait in the driver's presentation path; the view is otherwise unaffected). On the same machines under DX12 the view settles about 3.7 s after a drag instead of losing the GPU.
-      - On DX12 the depth-ordered overlays appear about 15 s after a file opens; until then overlays draw the old way, then switch once.
-
-      ## Upgrade notes
-
-      - **SCAPE / SOLS files and Bio-Formats formats open through reader plugins now**, not vizi itself: the FOCO Lab SOLS reader plugin for `.zip`, `_raw.zip` and `.fli`, and the Bio-Formats reader plugin for CZI, ND2, LIF and the rest. The README has the install lines.
-      - **The on-disk pyramid cache is retired.** If an earlier version left lower-resolution copies on disk, vizi asks once whether to delete that folder; your data files are not touched.
-      - **The voxel wireframe checkbox is hidden** until it supports the multichannel display.
-      - **When two readers claim a file, the one with the longer matching suffix wins.**
-      - **Plugin developers: SDK 1.0a83 is required.** The SDK version now carries its round; a plugin built on an earlier round must be rebuilt, and the pick's `back_frac` is measured from the picked front rather than the camera. Tools may declare `wants_pick`.
+# No public release yet. The publish workflow prepends the first entry (the
+# 1.0.0 beta) following the field contract above.
+releases: []

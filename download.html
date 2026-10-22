@@ -1,7 +1,7 @@
 ---
 # Download page — data-driven from _data/releases.yml. Shows the current final
 # release, and a beta block when a newer pre-release is published. Empty-safe:
-# with nothing published yet, it shows a "coming soon" note.
+# with nothing published yet, it shows a short "no public release yet" note.
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +86,7 @@
       {%- else %}
       <p class="download-note">
         <span class="dot"></span>
-        Currently in private beta — public downloads coming soon.
+        No public release yet — the first public build is the 1.0.0 beta.
       </p>
       {%- endif %}
 
