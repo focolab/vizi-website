@@ -1230,3 +1230,154 @@ html {
   font-size: 0.9rem;
   color: $text-faint;
 }
+
+// ----------------------------------------------------------------------------
+// Download page extras (download.html) — per-asset detail + beta block
+// ----------------------------------------------------------------------------
+.dl-file {
+  font-family: $mono;
+  font-size: 0.82rem;
+  color: $text-dim;
+  margin: 12px 0 0;
+  word-break: break-all;
+}
+.dl-sha {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: $text-faint;
+}
+.dl-sha-label {
+  font-family: $mono;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 6px;
+}
+.dl-sha code {
+  font-family: $mono;
+  word-break: break-all;
+  color: $text-dim;
+}
+.dl-firstrun {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: $text-faint;
+}
+.beta-block {
+  margin: clamp(40px, 6vw, 60px) 0 0;
+  padding-top: clamp(32px, 5vw, 44px);
+  border-top: 1px dashed $border-2;
+  text-align: left;
+}
+.beta-title {
+  font-family: $sans;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: $text;
+}
+.beta-warn {
+  font-size: 0.92rem;
+  color: $text-dim;
+  margin: 0 0 clamp(20px, 3vw, 28px);
+  max-width: 620px;
+}
+
+// ----------------------------------------------------------------------------
+// Changelog page (changelog.html) — release notes, newest first
+// ----------------------------------------------------------------------------
+.changelog {
+  display: grid;
+  gap: clamp(32px, 5vw, 48px);
+  max-width: 76ch;
+}
+.cl-release {
+  scroll-margin-top: 96px;
+  border-top: 1px solid $border;
+  padding-top: clamp(24px, 3.5vw, 36px);
+}
+.cl-release:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.cl-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 14px;
+}
+.cl-head h3 {
+  font-family: $sans;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: $text;
+}
+.cl-anchor {
+  color: $text;
+}
+.cl-anchor:hover {
+  color: $accent;
+}
+.cl-date {
+  font-family: $mono;
+  font-size: 0.85rem;
+  color: $text-faint;
+  margin-left: auto;
+}
+.cl-notes {
+  color: $text-dim;
+  line-height: 1.6;
+}
+.cl-notes h1,
+.cl-notes h2,
+.cl-notes h3,
+.cl-notes h4 {
+  font-family: $sans;
+  font-weight: 600;
+  color: $text;
+  margin: 1.4em 0 0.5em;
+  line-height: 1.3;
+}
+.cl-notes h1 { font-size: 1.15rem; }
+.cl-notes h2 { font-size: 1.08rem; }
+.cl-notes h3,
+.cl-notes h4 { font-size: 1rem; }
+.cl-notes :first-child { margin-top: 0; }
+.cl-notes p { margin: 0 0 0.8em; }
+.cl-notes ul,
+.cl-notes ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.4em;
+}
+.cl-notes li { margin: 0.2em 0; }
+.cl-notes a {
+  color: $accent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cl-notes code {
+  font-family: $mono;
+  font-size: 0.88em;
+  background: $bg-tint;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: $text;
+}
+.cl-notes pre {
+  background: $bg-tint;
+  border: 1px solid $border-2;
+  border-radius: $radius-sm;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 0 0 0.8em;
+}
+.cl-notes pre code {
+  background: none;
+  padding: 0;
+}
+.cl-empty {
+  color: $text-dim;
+}

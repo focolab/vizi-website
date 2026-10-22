@@ -1,0 +1,90 @@
+---
+# Changelog — every release from _data/releases.yml, newest first, each under a
+# #<version> anchor. The in-app update check and the feed's notes_url link here.
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vizi — Changelog</title>
+  <meta name="description" content="Release notes for every version of vizi, newest first.">
+  <meta property="og:title" content="vizi — Changelog">
+  <meta property="og:description" content="Release notes for every version of vizi, newest first.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/vizi.svg' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}#features">Features</a>
+      <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+      <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+      <a href="{{ '/download.html' | relative_url }}" class="nav-cta">Download →</a>
+    </div>
+  </nav>
+
+  <section class="plugins-page">
+    <div class="section-head reveal is-in">
+      <span class="eyebrow">Changelog</span>
+      <h2>Every vizi release.</h2>
+      <p class="section-sub">Release notes for each version, newest first. The in-app update check and the download page link here.</p>
+    </div>
+
+    <div class="changelog">
+      {%- for r in site.data.releases.releases %}
+      <article class="cl-release" id="{{ r.version }}">
+        <div class="cl-head">
+          <h3><a href="#{{ r.version }}" class="cl-anchor">{{ r.version }}</a></h3>
+          {%- if r.prerelease %}<span class="badge-pending">Pre-release</span>{% endif %}
+          {%- if r.published %}<time class="cl-date" datetime="{{ r.published }}">{{ r.published | date: "%B %-d, %Y" }}</time>{% endif %}
+        </div>
+        <div class="cl-notes">
+          {{ r.notes | markdownify }}
+        </div>
+      </article>
+      {%- endfor %}
+      {%- if site.data.releases.releases.size == 0 %}
+      <p class="cl-empty">No public release yet — the first public build is the 1.0.0 beta.</p>
+      {%- endif %}
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
+        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/focolab/vizi/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+        <div class="footer-col">
+          <h5>Lab</h5>
+          <a href="https://www.focolab.org/" target="_blank" rel="noopener">FOCO Lab</a>
+        </div>
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="{{ '/' | relative_url }}#features">Features</a>
+          <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
+          <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+          <a href="{{ '/changelog.html' | relative_url }}">Changelog</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-fine">&copy;2026 UCSF FOCOlab · <a href="{{ '/licenses.html' | relative_url }}">Licenses</a></p>
+  </footer>
+
+</body>
+</html>

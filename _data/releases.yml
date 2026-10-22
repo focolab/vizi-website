@@ -1,0 +1,48 @@
+# vizi releases — single source of truth for the public download channel.
+#
+# The publish workflow WRITES this file (newest release prepended). The site
+# builds everything else from it:
+#   - releases/latest.json  the update feed the app polls (newest eligible release)
+#   - download.html         the current build (+ a beta block when one is newer)
+#   - changelog.html        every release, newest first, under a #<version> anchor
+#
+# Installers live on the download host, not in this repo:
+#   https://downloads.vizi.science/<version>/<asset>
+#
+# The site carries no release older than 1.0.0; the first public release is the
+# 1.0.0 beta. The list stays empty until that first publish.
+#
+# ORDER: releases MUST be listed newest first. The build trusts this order; it
+# does not sort by version or date.
+#
+# Field contract (schema 1) — one mapping per release:
+#   version      PEP 440, no leading 'v' (e.g. "1.0.0b1", "1.0.0")
+#   tag          the git tag (e.g. "v1.0.0b1")
+#   published    release time, ISO 8601 UTC (e.g. "2026-02-10T18:30:00Z")
+#   prerelease   true for a beta/rc, false for a final release
+#   notes        release notes, markdown, verbatim from the GitHub release.
+#                Rendered on changelog.html via `markdownify`. User-facing only.
+#   downloads    per-OS installer URL on downloads.vizi.science:
+#                  windows / macos / linux
+#   sha256       per-OS sha256 of that asset (64 lowercase hex):
+#                  windows / macos / linux
+#   size         per-OS asset size in BYTES (integer):
+#                  windows / macos / linux
+#                (size is not derivable at build time, so the workflow records it;
+#                 the download page shows it next to each button.)
+#
+# FEED ELIGIBILITY (how releases/latest.json picks "latest"):
+#   1. newest FINAL release that has downloads; else
+#   2. newest release of ANY kind that has downloads (so the first public build,
+#      the 1.0.0 beta, is served until a final ships).
+# A release without downloads is never eligible. A pre-release never stays
+# "latest" once a published final exists (rule 1 wins). When nothing is eligible
+# (the list is empty), the feed is emitted as `{}` — GitHub Pages cannot skip a
+# generated file conditionally, and the app treats an unparseable feed as a quiet
+# failed update check.
+
+schema: 1
+
+# No public release yet. The publish workflow prepends the first entry (the
+# 1.0.0 beta) following the field contract above.
+releases: []
