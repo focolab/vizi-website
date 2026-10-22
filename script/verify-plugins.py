@@ -16,6 +16,27 @@ Two uses:
 
 Only depends on the standard library plus PyYAML (`pip install pyyaml`).
 The field contract it enforces is the one frozen in _data/plugins.yml.
+
+Reader formats — the optional `extensions` field (vizi#1031)
+------------------------------------------------------------
+A plugin that opens file formats lists their suffixes in `extensions`, copied
+from the asset manifest's ``contributions.readers[].extensions`` at acceptance
+(the primary list, not ``fallback_extensions``), normalised to lower case with
+one leading dot, de-duplicated and sorted. For a live entry the check reads
+those suffixes out of the same zip it reads ``engines.vizi`` from and requires
+the entry's `extensions` to equal them as a set; a manifest that declares reader
+formats while the entry omits `extensions` is an error (acceptance forgot to
+copy them).
+
+Dry example (the catalog is empty live, so this documents the check):
+
+    entry:    extensions: [".crate"]
+    manifest: {"contributions": {"readers":
+                [{"id": "crate", "extensions": [".crate"]}]}}
+
+  Accepted — the sets match. Rejected: the entry drops `extensions` while the
+  manifest declares ``.crate``; the entry lists [".crate", ".zip"] but the
+  manifest has only ``.crate``; the entry lists [".CRATE"] (not lower case).
 """
 from __future__ import annotations
 
@@ -93,6 +114,46 @@ def manifest_engines(zip_path: Path) -> tuple[str | None, str | None]:
         return "", cands[0]  # present but unreadable
 
 
+def normalize_ext(s: str) -> str:
+    """Normalise a reader suffix the way the SDK manifest schema does (readers
+    §3.1): lower case with exactly one leading dot. 'TIF', '.tif' and 'tif' all
+    become '.tif'; a compound suffix like '.ome.tif' keeps its inner dot."""
+    return "." + s.strip().lower().lstrip(".")
+
+
+def manifest_reader_extensions(zip_path: Path) -> set[str] | None:
+    """Normalised set of file suffixes the asset's readers declare.
+
+    Reads ``contributions.readers[].extensions`` from the plugin's
+    vizi-plugin.json — each reader's PRIMARY extensions list, NOT
+    ``fallback_extensions`` — and normalises every suffix. Returns the set
+    (empty if no reader declares a format), or None when there is no readable
+    manifest (the engines check reports that case)."""
+    with zipfile.ZipFile(zip_path) as z:
+        cands = [n for n in z.namelist() if n.rsplit("/", 1)[-1] == "vizi-plugin.json"]
+        if not cands:
+            return None
+        cands.sort(key=lambda n: (n.count("/"), len(n)))  # shallowest = <plugin-id>/ root
+        raw = z.read(cands[0])
+    try:
+        data = json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    readers = (data.get("contributions") or {}).get("readers")
+    if not isinstance(readers, list):
+        return set()
+    exts: set[str] = set()
+    for r in readers:
+        if not isinstance(r, dict):
+            continue
+        for s in r.get("extensions") or []:
+            if isinstance(s, str) and s.strip().strip("."):
+                exts.add(normalize_ext(s))
+    return exts
+
+
 def validate_entry(p: dict, errs: list[str]) -> None:
     where = f"plugin '{p.get('id', '?')}'"
     for k in REQUIRED_STR:
@@ -128,6 +189,17 @@ def validate_entry(p: dict, errs: list[str]) -> None:
                 errs.append(f"{where}: unknown platform(s) {bad}; allowed: {sorted(KNOWN_PLATFORMS)}")
             if len(set(plats)) != len(plats):
                 errs.append(f"{where}: duplicate value in 'platforms'")
+    exts = p.get("extensions")
+    if exts is not None:  # optional; absent or empty means no formats offered on open
+        if not isinstance(exts, list) or not exts or not all(isinstance(x, str) for x in exts):
+            errs.append(f"{where}: 'extensions', if present, must be a non-empty list of strings")
+        else:
+            bad = [x for x in exts if not (x.startswith(".") and len(x) > 1 and x == x.lower())]
+            if bad:
+                errs.append(f"{where}: each extension must be lowercase with a leading dot, "
+                            f"e.g. '.czi'; bad: {bad}")
+            if len(set(exts)) != len(exts):
+                errs.append(f"{where}: duplicate value in 'extensions'")
     if "pending" in p and not isinstance(p["pending"], bool):
         errs.append(f"{where}: 'pending' must be true/false if present")
 
@@ -155,6 +227,37 @@ def check_min_vizi_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> None
     else:
         print(f"  {p.get('id')}: note — no app-version floor rule defined for protocol {engines}; "
               f"min_vizi {mv} accepted as-is")
+
+
+def check_extensions_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> None:
+    """Require the entry's 'extensions' to equal the asset's declared reader
+    suffixes (contributions.readers[].extensions), as a set."""
+    where = f"plugin '{p.get('id', '?')}'"
+    declared = manifest_reader_extensions(zip_path)
+    if declared is None:
+        return  # no readable manifest — the engines check reports that
+    cat = p.get("extensions")
+    if cat is None:
+        if declared:
+            errs.append(f"{where}: the asset's manifest declares reader formats "
+                        f"{sorted(declared)} but the entry has no 'extensions' "
+                        f"(copy them from the manifest at acceptance)")
+        return
+    if not isinstance(cat, list):
+        return  # shape already reported by validate_entry
+    catset = {x for x in cat if isinstance(x, str)}
+    if catset == declared:
+        print(f"  {p.get('id')}: extensions match manifest ({sorted(declared) or 'none'})")
+        return
+    bits = []
+    extra = sorted(catset - declared)
+    missing = sorted(declared - catset)
+    if extra:
+        bits.append(f"in entry but not the manifest: {extra}")
+    if missing:
+        bits.append(f"in the manifest but not the entry: {missing}")
+    errs.append(f"{where}: 'extensions' does not match the asset's reader formats "
+                f"(entry {sorted(catset)} vs manifest {sorted(declared)}; {'; '.join(bits)})")
 
 
 def main() -> int:
@@ -211,6 +314,7 @@ def main() -> int:
             if size == p.get("size") and sha == p.get("sha256"):
                 print(f"  {pid}: OK — {size} bytes, sha256 {sha[:12]}…")
             check_min_vizi_vs_manifest(p, tmp, errs)
+            check_extensions_vs_manifest(p, tmp, errs)
         except Exception as e:  # noqa: BLE001
             errs.append(f"plugin '{pid}': could not fetch/read asset_url: {e}")
         finally:
