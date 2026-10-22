@@ -45,4 +45,46 @@ schema: 1
 
 # No public release yet. The publish workflow prepends the first entry (the
 # 1.0.0 beta) following the field contract above.
-releases: []
+releases:
+  - version: "0.9.6"
+    tag: "v0.9.6"
+    published: "2026-10-22T18:10:53Z"
+    prerelease: false
+    notes: |2
+      ## New features
+
+      - **Registration.** vizi asks for your name, email and organisation when it starts; you can put it off for five launches, after which it is required. About shows your registration and offers Register… if you skipped it. Only those three fields are sent, to the FOCO Lab, and the dialog says how to have them removed.
+      - **Help → Send feedback…** sends anonymous feedback to the FOCO Lab from inside vizi, queued and sent in the background, with a checkbox to include your vizi version, operating system, graphics adapter and log file name. Put an email address in the text if you want a reply.
+      - **The macOS app is signed and notarized.** First launch is a plain double-click; macOS shows its standard confirmation for a downloaded app once, and no Open Anyway is needed.
+      - **Crash stacks in the log.** If vizi crashes, the session log ends with every thread's stack; attach it to a report.
+
+      ## Bug fixes
+
+      - Quitting while a file was still opening aborted the process and left a crash report.
+      - On Windows, quitting could end with an access-violation dialog.
+      - A file that failed to open after the window was closed left an error dialog behind.
+      - Quitting while the 2D view was still reading a plane could crash on the way out.
+      - Opening the Performance panel took width from the view.
+      - GIF movies exported at 30 fps played about 10 percent fast.
+      - Cmd+Q and Ctrl+Q did nothing while the startup About dialog was open.
+      - A movie exported from the demo dataset was written into vizi's cache folder instead of somewhere you would find it.
+      - On Windows, updating a plugin could fail because the old version's process had not yet let go of its folder.
+
+      ## Upgrade notes
+
+      - **The scroll wheel in the 2D view now zooms** about the pointer. **Ctrl+wheel** (Cmd+wheel on macOS) steps through Z, which the plain wheel did before. Right-drag still zooms.
+      - **Movie export:** MP4 (H.264) on macOS and Windows uses the system's encoder; on Linux, movies export as WebM (VP9). The bundled ffmpeg is an LGPL build with no GPL encoders.
+      - **Every installation now ships vizi's End User Licence Agreement** (`LICENSE`) and `THIRD_PARTY_NOTICES.txt` beside it, listing every bundled component, its licence, and where the FFmpeg and libvpx sources are.
+    downloads:
+      windows: "https://downloads.vizi.science/dry-run/0.9.6/vizi-0.9.6-Setup.exe"
+      macos: "https://downloads.vizi.science/dry-run/0.9.6/vizi-0.9.6-arm64.dmg"
+      linux: "https://downloads.vizi.science/dry-run/0.9.6/vizi-0.9.6-x86_64.AppImage"
+    sha256:
+      windows: "4e1c9a508b23fd7c708443f966538d6260b088440a379ac2553777e2669443aa"
+      macos: "b5c8cccd8d6dcc065d17faf4368308463ddbb6acd8bf996448bac28fa15c1e17"
+      linux: "19d738d05973a11ae92c815bf41816fc64a1cdb5ffa4a02c63ebbace8887de7c"
+    size:
+      windows: 215598343
+      macos: 262573927
+      linux: 290064888
+
