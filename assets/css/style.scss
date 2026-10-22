@@ -1209,6 +1209,13 @@ html {
   font-style: italic;
   color: $text-faint;
 }
+.plugin-formats {
+  font-family: $mono;
+  font-size: 0.84rem;
+  color: $text-dim;
+  margin: 10px 0 0;
+  letter-spacing: 0.01em;
+}
 .plugin-empty p { margin: 0; color: $text-dim; }
 .submit-block {
   border-top: 1px solid $border;

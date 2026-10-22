@@ -23,10 +23,19 @@
 #   sha256      sha256 of the asset, 64 lowercase hex
 #   permissions copied verbatim from the manifest `permissions`
 #
-# Optional per entry (schema 1; vizi-website#21):
+# Optional per entry (schema 1):
 #   platforms   list from linux-x86_64 / macos-arm64 / windows-x86_64; ABSENT means
 #               all three. The v0.9.5+ client offers an entry only on a listed
-#               platform. (Omitted from catalog.json when absent.)
+#               platform. (vizi-website#21; omitted from catalog.json when absent.)
+#   extensions  list of lowercase file suffixes, each with a leading dot (e.g.
+#               [".czi", ".lif"]), copied from the asset manifest's
+#               contributions.readers[].extensions at acceptance (the primary list,
+#               not fallback_extensions), de-duplicated and sorted. ABSENT or empty
+#               means the plugin opens no formats and is never offered on open.
+#               Drives vizi's offer-on-open (vizi#1031): a file that no installed
+#               reader handles but a catalog plugin declares prompts to install that
+#               plugin. verify-plugins.py requires this to equal the manifest's
+#               declared reader suffixes. (Omitted from catalog.json when absent.)
 #
 # `pending: true` marks an entry whose release is not yet public: it is shown on
 # the Plugins page as pending and is NOT emitted to catalog.json (so the app

@@ -58,6 +58,9 @@
           <span class="dotsep">·</span>
           <a href="{{ p.repo }}" target="_blank" rel="noopener">Repository &rarr;</a>
         </div>
+        {%- if p.extensions and p.extensions.size > 0 %}
+        <p class="plugin-formats">Opens: {{ p.extensions | join: ", " }}</p>
+        {%- endif %}
         {%- if p.pending %}<p class="plugin-note">Release under review &mdash; not yet installable.</p>{% endif %}
       </li>
       {%- endfor %}
