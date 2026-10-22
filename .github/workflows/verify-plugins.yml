@@ -25,5 +25,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # Offline unit checks for the extensions logic — no network, stdlib only,
+      # so it runs before PyYAML is installed.
+      - run: python script/verify-plugins.py --selftest
       - run: pip install pyyaml
       - run: python script/verify-plugins.py
