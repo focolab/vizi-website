@@ -1,5 +1,7 @@
 ---
-# Empty front-matter tells Jekyll to process this file (resolve Liquid tags).
+# Download page — data-driven from _data/releases.yml. Shows the current final
+# release, and a beta block when a newer pre-release is published. Empty-safe:
+# with nothing published yet, it shows a "coming soon" note.
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +33,15 @@
     </div>
   </nav>
 
+  {%- assign rels = site.data.releases.releases -%}
+  {%- assign pub_finals = rels | where_exp: "r", "r.prerelease != true" | where_exp: "r", "r.downloads.windows" -%}
+  {%- assign pub_any = rels | where_exp: "r", "r.downloads.windows" -%}
+  {%- assign current = pub_finals.first -%}
+  {%- assign newest_pub = pub_any.first -%}
+  {%- assign beta = false -%}
+  {%- if newest_pub and newest_pub.prerelease -%}{%- assign beta = newest_pub -%}{%- endif -%}
+  {%- assign oses = "windows,macos,linux" | split: "," -%}
+
   <section class="download-hero">
     <div class="download-inner">
       <span class="eyebrow">Download</span>
@@ -39,38 +50,76 @@
         vizi runs natively on macOS, Windows, and Linux — Vulkan, Metal, and
         DX12 GPU backends through <code>wgpu</code>. It opens OME-TIFF,
         OME-Zarr, and FOCO Lab SCAPE natively, plus CZI, ND2, LIF and ~150
-        more formats via the optional Bio-Formats image server. Pick your
-        platform below to grab the latest stable build.
+        more formats via the optional Bio-Formats image server.
       </p>
+
+      {%- if current %}
+      <p class="download-note">
+        <span class="dot"></span>
+        Current release: {{ current.version }}{% if current.published %} · {{ current.published | date: "%B %-d, %Y" }}{% endif %}
+      </p>
+      <ul class="download-grid">
+        {%- for os in oses %}
+        {%- assign url = current.downloads[os] -%}
+        {%- assign sha = current.sha256[os] -%}
+        {%- assign size = current.size[os] -%}
+        {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
+        <li class="download-card">
+          <h2>{{ label }}</h2>
+          <p class="dl-meta">{{ meta }}</p>
+          {%- if url %}
+          <a class="btn btn-primary dl-btn" href="{{ url }}">Download</a>
+          <p class="dl-file">{{ url | split: "/" | last }}{% if size %} · {{ size | divided_by: 1048576.0 | round: 1 }} MB{% endif %}</p>
+          {%- if sha %}<p class="dl-sha"><span class="dl-sha-label">sha256</span> <code>{{ sha }}</code></p>{% endif %}
+          <p class="dl-firstrun">{{ firstrun }}</p>
+          {%- else %}
+          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Unavailable</a>
+          {%- endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+      {%- elsif beta %}
+      <p class="download-note">
+        <span class="dot"></span>
+        No stable release yet — a beta is available below.
+      </p>
+      {%- else %}
       <p class="download-note">
         <span class="dot"></span>
         Currently in private beta — public downloads coming soon.
       </p>
+      {%- endif %}
 
-      <ul class="download-grid">
-        <li class="download-card">
-          <h2>macOS</h2>
-          <p class="dl-meta">Apple Silicon · .dmg</p>
-          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
-          <p class="dl-fine">Placeholder — wire up the .dmg download here.</p>
-        </li>
-        <li class="download-card">
-          <h2>Windows</h2>
-          <p class="dl-meta">x64 · .exe installer</p>
-          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
-          <p class="dl-fine">Placeholder — wire up the .exe download here.</p>
-        </li>
-        <li class="download-card">
-          <h2>Linux</h2>
-          <p class="dl-meta">x86_64 · AppImage</p>
-          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Coming soon</a>
-          <p class="dl-fine">Placeholder — wire up the AppImage download here.</p>
-        </li>
-      </ul>
+      {%- if beta %}
+      <div class="beta-block">
+        <h2 class="beta-title">Beta: {{ beta.version }}</h2>
+        <p class="beta-warn">This is a test build — expect rough edges, and prefer the stable release for real work.</p>
+        <ul class="download-grid">
+          {%- for os in oses %}
+          {%- assign url = beta.downloads[os] -%}
+          {%- assign sha = beta.sha256[os] -%}
+          {%- assign size = beta.size[os] -%}
+          {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
+          <li class="download-card">
+            <h2>{{ label }}</h2>
+            <p class="dl-meta">{{ meta }}</p>
+            {%- if url %}
+            <a class="btn btn-primary dl-btn" href="{{ url }}">Download</a>
+            <p class="dl-file">{{ url | split: "/" | last }}{% if size %} · {{ size | divided_by: 1048576.0 | round: 1 }} MB{% endif %}</p>
+            {%- if sha %}<p class="dl-sha"><span class="dl-sha-label">sha256</span> <code>{{ sha }}</code></p>{% endif %}
+            <p class="dl-firstrun">{{ firstrun }}</p>
+            {%- else %}
+            <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Unavailable</a>
+            {%- endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endif %}
 
       <p class="download-foot">
-        Looking for source code or release notes?
-        <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">View the project on GitHub →</a>
+        See the <a href="{{ '/changelog.html' | relative_url }}">changelog</a> for release notes, or
+        <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">view the project on GitHub →</a>
       </p>
     </div>
   </section>
@@ -96,6 +145,7 @@
           <a href="{{ '/' | relative_url }}#features">Features</a>
           <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
           <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
+          <a href="{{ '/changelog.html' | relative_url }}">Changelog</a>
         </div>
       </div>
     </div>

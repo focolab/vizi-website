@@ -1,0 +1,59 @@
+# vizi releases — single source of truth for the public download channel.
+#
+# The publish workflow WRITES this file (newest release prepended). The site
+# builds everything else from it:
+#   - releases/latest.json  the update feed the app polls (newest eligible release)
+#   - download.html         the current build (+ a beta block when one is newer)
+#   - changelog.html        every release, newest first, under a #<version> anchor
+#
+# Installers live on the download host, not in this repo:
+#   https://downloads.vizi.science/<version>/<asset>
+#
+# ORDER: releases MUST be listed newest first. The build trusts this order; it
+# does not sort by version or date.
+#
+# Field contract (schema 1) — one mapping per release:
+#   version      PEP 440, no leading 'v' (e.g. "0.9.5", "1.0.0b1")
+#   tag          the git tag (e.g. "v0.9.5")
+#   published    release time, ISO 8601 UTC (e.g. "2025-09-18T17:04:00Z")
+#   prerelease   true for a beta/rc, false for a final release
+#   notes        release notes, markdown, verbatim from the GitHub release.
+#                Rendered on changelog.html via `markdownify`. User-facing only.
+#   downloads    per-OS installer URL on downloads.vizi.science:
+#                  windows / macos / linux
+#   sha256       per-OS sha256 of that asset (64 lowercase hex):
+#                  windows / macos / linux
+#   size         per-OS asset size in BYTES (integer):
+#                  windows / macos / linux
+#                (size is not derivable at build time, so the workflow records it;
+#                 the download page shows it next to each button.)
+#
+# A release that was never published to this channel (e.g. the two seeded below)
+# OMITS downloads / sha256 / size entirely: its download buttons are hidden and
+# it never drives the feed. It still appears on the changelog for the record.
+#
+# FEED ELIGIBILITY (how releases/latest.json picks "latest"):
+#   1. newest FINAL release that has downloads (published through this channel); else
+#   2. newest release of ANY kind that has downloads  — the one-time bootstrap case,
+#      so a beta's own update check has something to read until the first public
+#      final ships; else
+#   3. newest final overall; else the newest release.
+# A pre-release never becomes "latest" once a published final exists (rule 1 wins).
+
+schema: 1
+
+releases:
+  # Seeded for the record. These installers were never public, so downloads /
+  # sha256 / size are omitted and their buttons stay hidden. notes + published
+  # are PENDING — to be filled from the GitHub release once provided.
+  - version: "0.9.5"
+    tag: "v0.9.5"
+    prerelease: false
+    notes: |
+      Release notes pending.
+
+  - version: "0.9.4"
+    tag: "v0.9.4"
+    prerelease: false
+    notes: |
+      Release notes pending.
