@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
 """Verify the accepted-plugin catalog (_data/plugins.yml).
 
-Two uses:
+Three uses:
 
   python script/verify-plugins.py
       Validate the shape of every entry, and for every LIVE (non-pending)
       entry re-download its asset_url, check the byte size and sha256, and
       read the plugin's vizi-plugin.json out of that same zip to check
-      min_vizi against the manifest's protocol (engines.vizi). Exits non-zero
-      on any problem. Run this when accepting a version, and gate it in CI.
+      min_vizi against the manifest's protocol (engines.vizi) and its
+      `extensions` against the manifest's readers. Exits non-zero on any
+      problem. Run this when accepting a version, and gate it in CI.
 
   python script/verify-plugins.py --fetch <asset_url>
       Download one asset and print its sha256 and size, to paste into a new
       entry. (Does not touch the catalog.)
 
-Only depends on the standard library plus PyYAML (`pip install pyyaml`).
-The field contract it enforces is the one frozen in _data/plugins.yml.
+  python script/verify-plugins.py --selftest
+      Run the offline unit checks for the extensions logic (normalisation, the
+      manifest read, and the accept/reject matrix) and exit. No network, and
+      standard library only — CI runs this on every trigger, before anything
+      that needs PyYAML or the network.
+
+The catalog check needs PyYAML (`pip install pyyaml`); --fetch and --selftest
+use only the standard library. The field contract it enforces is the one frozen
+in _data/plugins.yml.
 
 Reader formats — the optional `extensions` field (vizi#1031)
 ------------------------------------------------------------
@@ -50,10 +58,8 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError:
-    sys.exit("verify-plugins: needs PyYAML — `pip install pyyaml`")
+# PyYAML is imported lazily in main(), only for the catalog check — so --selftest
+# and --fetch stay standard-library only (and runnable in CI before pip install).
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "_data" / "plugins.yml"
@@ -260,10 +266,86 @@ def check_extensions_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> No
                 f"(entry {sorted(catset)} vs manifest {sorted(declared)}; {'; '.join(bits)})")
 
 
+def selftest() -> int:
+    """Offline checks for the `extensions` logic — no network, stdlib only.
+
+    Covers suffix normalisation, reading reader extensions out of a crafted zip
+    (fallback_extensions and a deeper manifest both excluded, mixed case
+    de-duplicated), and the accept/reject matrix against a fully-valid entry so
+    only extension problems surface."""
+    failures: list[str] = []
+
+    def check(name: str, ok: bool) -> None:
+        print(f"  {'ok  ' if ok else 'FAIL'} {name}")
+        if not ok:
+            failures.append(name)
+
+    for raw, want in [("TIF", ".tif"), (".tif", ".tif"), ("tif", ".tif"),
+                      (".ome.tif", ".ome.tif"), ("  .CZI ", ".czi"), ("..x", ".x")]:
+        check(f"normalize_ext({raw!r}) == {want!r}", normalize_ext(raw) == want)
+
+    with tempfile.TemporaryDirectory() as td:
+        zpath = Path(td) / "plugin.zip"
+        manifest = {"contributions": {"readers": [
+            {"id": "a", "extensions": [".czi", "CZI"]},
+            {"id": "b", "extensions": [".lif"], "fallback_extensions": [".h5"]},
+        ]}}
+        with zipfile.ZipFile(zpath, "w") as z:
+            z.writestr("myplugin/vizi-plugin.json", json.dumps(manifest))
+            z.writestr("myplugin/nested/vizi-plugin.json", json.dumps(
+                {"contributions": {"readers": [{"id": "x", "extensions": [".deep"]}]}}))
+        check("manifest read = {.czi,.lif} (fallback + deeper manifest excluded, "
+              "mixed case de-duplicated)", manifest_reader_extensions(zpath) == {".czi", ".lif"})
+
+        znone = Path(td) / "noreaders.zip"
+        with zipfile.ZipFile(znone, "w") as z:
+            z.writestr("p/vizi-plugin.json", json.dumps({"contributions": {"commands": []}}))
+        check("no readers -> empty set", manifest_reader_extensions(znone) == set())
+
+        base = {"id": "org.example.p", "name": "P", "summary": "s",
+                "repo": "https://example.com/p", "version": "1.0.0", "min_vizi": "0.9.5",
+                "sdk_version": "1.0.0", "asset_url": "https://example.com/p.zip",
+                "size": 10, "sha256": "a" * 64, "permissions": []}
+
+        def errs_for(*, extensions="\0absent"):
+            entry = dict(base)
+            if extensions != "\0absent":
+                entry["extensions"] = extensions
+            out: list[str] = []
+            validate_entry(entry, out)
+            check_extensions_vs_manifest(entry, zpath, out)
+            return out
+
+        check("match accepts", errs_for(extensions=[".czi", ".lif"]) == [])
+        check("missing field rejected",
+              any("has no 'extensions'" in e for e in errs_for()))
+        check("superset rejected",
+              any("does not match" in e and ".zip" in e for e in errs_for(extensions=[".czi", ".lif", ".zip"])))
+        check("uppercase rejected",
+              any("lowercase with a leading dot" in e for e in errs_for(extensions=[".CZI", ".lif"])))
+        check("no-dot rejected",
+              any("lowercase with a leading dot" in e for e in errs_for(extensions=["czi"])))
+        check("duplicate rejected",
+              any("duplicate value in 'extensions'" in e for e in errs_for(extensions=[".czi", ".czi", ".lif"])))
+        check("empty list rejected",
+              any("non-empty list" in e for e in errs_for(extensions=[])))
+
+    if failures:
+        print(f"\nSELFTEST FAILED: {len(failures)} case(s)", file=sys.stderr)
+        return 1
+    print("\nselftest OK")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Verify the vizi plugin catalog.")
     ap.add_argument("--fetch", metavar="URL", help="download one asset; print its sha256 and size")
+    ap.add_argument("--selftest", action="store_true",
+                    help="run offline unit checks (no network, stdlib only) and exit")
     args = ap.parse_args()
+
+    if args.selftest:
+        return selftest()
 
     if args.fetch:
         with tempfile.NamedTemporaryFile(delete=True) as tf:
@@ -275,6 +357,10 @@ def main() -> int:
             print(f"size:   {size}")
         return 0
 
+    try:
+        import yaml
+    except ImportError:
+        return _fail("the catalog check needs PyYAML — `pip install pyyaml`")
     data = yaml.safe_load(DATA.read_text())
     errs: list[str] = []
     if not isinstance(data, dict):
