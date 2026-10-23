@@ -41,6 +41,7 @@
   {%- assign beta = false -%}
   {%- if newest_pub and newest_pub.prerelease -%}{%- assign beta = newest_pub -%}{%- endif -%}
   {%- assign oses = "windows,macos,linux" | split: "," -%}
+  {%- assign documented = rels | where_exp: "r", "r.notes" -%}
 
   <section class="download-hero">
     <div class="download-inner">
@@ -78,6 +79,9 @@
         </li>
         {%- endfor %}
       </ul>
+      {%- if current.notes %}
+      <p class="dl-whatsnew"><a href="{{ '/changelog.html' | relative_url }}#{{ current.version }}">What's new in {{ current.version }} &rarr;</a></p>
+      {%- endif %}
       {%- elsif beta %}
       <p class="download-note">
         <span class="dot"></span>
@@ -114,12 +118,15 @@
           </li>
           {%- endfor %}
         </ul>
+        {%- if beta.notes %}
+        <p class="dl-whatsnew"><a href="{{ '/changelog.html' | relative_url }}#{{ beta.version }}">What's new in {{ beta.version }} &rarr;</a></p>
+        {%- endif %}
       </div>
       {%- endif %}
 
       <p class="download-foot">
-        See the <a href="{{ '/changelog.html' | relative_url }}">changelog</a> for release notes, or
-        <a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">view the project on GitHub →</a>
+        {%- if documented.size > 0 %}See the <a href="{{ '/changelog.html' | relative_url }}">changelog</a> for release notes, or
+        {% endif %}<a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">view the project on GitHub →</a>
       </p>
     </div>
   </section>

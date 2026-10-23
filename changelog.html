@@ -40,7 +40,8 @@
     </div>
 
     <div class="changelog">
-      {%- for r in site.data.releases.releases %}
+      {%- assign documented = site.data.releases.releases | where_exp: "r", "r.notes" -%}
+      {%- for r in documented %}
       <article class="cl-release" id="{{ r.version }}">
         <div class="cl-head">
           <h3><a href="#{{ r.version }}" class="cl-anchor">{{ r.version }}</a></h3>
@@ -52,8 +53,8 @@
         </div>
       </article>
       {%- endfor %}
-      {%- if site.data.releases.releases.size == 0 %}
-      <p class="cl-empty">No public release yet — the first public build is the 1.0.0 beta.</p>
+      {%- if documented.size == 0 %}
+      <p class="cl-empty">Release notes arrive with 1.0.0.</p>
       {%- endif %}
     </div>
   </section>
