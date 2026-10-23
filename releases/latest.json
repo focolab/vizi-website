@@ -6,7 +6,8 @@
 # downloads{windows,macos,linux}. "latest" is the newest release WITH downloads, a
 # final preferred over a pre-release (see _data/releases.yml). notes_url is the
 # entry's changelog anchor when it has approved notes, else the download page (so
-# About's "What's new" never opens a page that is not there); page_url mirrors it.
+# About's "What's new" never opens a page that is not there). page_url is always the
+# download page — the feed doc's fallback for a platform with no downloads entry.
 # When no release is eligible this emits `{}` — Jekyll cannot skip a generated file
 # conditionally, and the app treats an unparseable feed as a quiet failed check.
 ---
@@ -22,7 +23,7 @@
   "version": {{ latest.version | jsonify }},
   "published": {{ latest.published | jsonify }},
   "notes_url": {{ notes_url | jsonify }},
-  "page_url": {{ notes_url | jsonify }},
+  "page_url": {{ "/download.html" | absolute_url | jsonify }},
   "downloads": {
     "windows": {{ latest.downloads.windows | jsonify }},
     "macos": {{ latest.downloads.macos | jsonify }},
