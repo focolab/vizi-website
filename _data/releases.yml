@@ -1,10 +1,12 @@
 # vizi releases — single source of truth for the public download channel.
 #
-# The publish workflow WRITES this file (newest release prepended). The site
-# builds everything else from it:
+# The publish workflow WRITES this file (newest release prepended) with the
+# machine fields below. Release notes are NOT written here by the workflow; they
+# are added BY HAND after the maintainer approves the text (see "notes"). The
+# site builds everything else from this file:
 #   - releases/latest.json  the update feed the app polls (newest eligible release)
 #   - download.html         the current build (+ a beta block when one is newer)
-#   - changelog.html        every release, newest first, under a #<version> anchor
+#   - changelog.html        the released versions that have approved notes
 #
 # Installers live on the download host, not in this repo:
 #   https://downloads.vizi.science/<version>/<asset>
@@ -15,13 +17,12 @@
 # ORDER: releases MUST be listed newest first. The build trusts this order; it
 # does not sort by version or date.
 #
-# Field contract (schema 1) — one mapping per release:
+# Field contract (schema 1). The publish workflow writes these, one mapping per
+# release:
 #   version      PEP 440, no leading 'v' (e.g. "1.0.0b1", "1.0.0")
 #   tag          the git tag (e.g. "v1.0.0b1")
 #   published    release time, ISO 8601 UTC (e.g. "2026-02-10T18:30:00Z")
 #   prerelease   true for a beta/rc, false for a final release
-#   notes        release notes, markdown, verbatim from the GitHub release.
-#                Rendered on changelog.html via `markdownify`. User-facing only.
 #   downloads    per-OS installer URL on downloads.vizi.science:
 #                  windows / macos / linux
 #   sha256       per-OS sha256 of that asset (64 lowercase hex):
@@ -30,6 +31,19 @@
 #                  windows / macos / linux
 #                (size is not derivable at build time, so the workflow records it;
 #                 the download page shows it next to each button.)
+#
+# Added by HAND, never by the workflow:
+#   notes        release notes / announcement text, markdown. ABSENT until the
+#                maintainer approves the text; it is then added in a later commit
+#                as a YAML block scalar on the entry:
+#                    notes: |
+#                      ## What's new
+#                      - ...
+#                Rendered on changelog.html via `markdownify`. An entry with no
+#                `notes` is NOT shown on the changelog, and its feed notes_url
+#                points at the download page instead of a changelog anchor. The
+#                1.0.0 launch announcement is simply the `notes` on the 1.0.0
+#                entry (write the announcement there; no separate page needed).
 #
 # FEED ELIGIBILITY (how releases/latest.json picks "latest"):
 #   1. newest FINAL release that has downloads; else
@@ -44,5 +58,5 @@
 schema: 1
 
 # No public release yet. The publish workflow prepends the first entry (the
-# 1.0.0 beta) following the field contract above.
+# 1.0.0 beta) with the machine fields above; notes are added by hand later.
 releases: []
