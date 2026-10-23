@@ -64,7 +64,7 @@
         {%- assign url = current.downloads[os] -%}
         {%- assign sha = current.sha256[os] -%}
         {%- assign size = current.size[os] -%}
-        {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
+        {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "In Edge, the download is flagged because it isn't commonly downloaded; open its menu, choose Keep, then Keep anyway. First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
         <li class="download-card">
           <h2>{{ label }}</h2>
           <p class="dl-meta">{{ meta }}</p>
@@ -103,7 +103,7 @@
           {%- assign url = beta.downloads[os] -%}
           {%- assign sha = beta.sha256[os] -%}
           {%- assign size = beta.size[os] -%}
-          {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
+          {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "In Edge, the download is flagged because it isn't commonly downloaded; open its menu, choose Keep, then Keep anyway. First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: macOS flags apps downloaded from the Internet. Right-click the app, choose Open, and confirm — or allow it under System Settings → Privacy & Security." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
           <li class="download-card">
             <h2>{{ label }}</h2>
             <p class="dl-meta">{{ meta }}</p>
@@ -124,10 +124,11 @@
       </div>
       {%- endif %}
 
+      {%- if documented.size > 0 %}
       <p class="download-foot">
-        {%- if documented.size > 0 %}See the <a href="{{ '/changelog.html' | relative_url }}">changelog</a> for release notes, or
-        {% endif %}<a href="https://github.com/focolab/vizi" target="_blank" rel="noopener">view the project on GitHub →</a>
+        See the <a href="{{ '/changelog.html' | relative_url }}">changelog</a> for release notes.
       </p>
+      {%- endif %}
     </div>
   </section>
 
