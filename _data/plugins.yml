@@ -44,6 +44,17 @@
 
 schema: 1
 
-# No plugins accepted yet. Add one mapping per accepted plugin (fields above);
-# fill size + sha256 with `script/verify-plugins.py --fetch <asset_url>`.
-plugins: []
+# Accepted plugins, one mapping per accepted version (fields above). Fill size +
+# sha256 with `script/verify-plugins.py --fetch <asset_url>`.
+plugins:
+  - id: org.focolab.vizi_quant
+    name: vizi-quant
+    summary: "Region quantification and plotting — measures every region on every frame, plots the traces (raw F or ΔF/F), exports tables."
+    repo: https://github.com/focolab/vizi-quant
+    version: "0.1.0"
+    min_vizi: "1.0.0"
+    sdk_version: "1.0.0"
+    asset_url: https://github.com/focolab/vizi-quant/releases/download/v0.1.0/org.focolab.vizi_quant-0.1.0.zip
+    size: 498563
+    sha256: d5356ddba94feb266c97eba5e24a509aa9682a04e2d95c998e6fc894d5cba271
+    permissions: [data_access]
