@@ -40,45 +40,20 @@
   {%- assign newest_pub = pub_any.first -%}
   {%- assign beta = false -%}
   {%- if newest_pub and newest_pub.prerelease -%}{%- assign beta = newest_pub -%}{%- endif -%}
-  {%- assign oses = "windows,macos,linux" | split: "," -%}
   {%- assign documented = rels | where_exp: "r", "r.notes" -%}
 
   <section class="download-hero">
     <div class="download-inner">
       <span class="eyebrow">Download</span>
       <h1>Get vizi for your platform.</h1>
-      <p class="download-sub">
-        vizi runs natively on macOS, Windows, and Linux — Vulkan, Metal, and
-        DX12 GPU backends through <code>wgpu</code>. It opens OME-TIFF,
-        OME-Zarr, and FOCO Lab SCAPE natively, plus CZI, ND2, LIF and ~150
-        more formats via the optional Bio-Formats image server.
-      </p>
+      <p class="download-sub">vizi runs natively on macOS, Windows, and Linux.</p>
 
       {%- if current %}
       <p class="download-note">
         <span class="dot"></span>
         Current release: {{ current.version }}{% if current.published %} · {{ current.published | date: "%B %-d, %Y" }}{% endif %}
       </p>
-      <ul class="download-grid">
-        {%- for os in oses %}
-        {%- assign url = current.downloads[os] -%}
-        {%- assign sha = current.sha256[os] -%}
-        {%- assign size = current.size[os] -%}
-        {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "In Edge, the download is flagged because it isn't commonly downloaded; open its menu, choose Keep, then Keep anyway. First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: open the .dmg, drag vizi to Applications, then click Open on the one confirmation macOS shows for a signed, notarized app." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
-        <li class="download-card">
-          <h2>{{ label }}</h2>
-          <p class="dl-meta">{{ meta }}</p>
-          {%- if url %}
-          <a class="btn btn-primary dl-btn" href="{{ url }}">Download</a>
-          <p class="dl-file">{{ url | split: "/" | last }}{% if size %} · {{ size | divided_by: 1048576.0 | round: 1 }} MB{% endif %}</p>
-          {%- if sha %}<p class="dl-sha"><span class="dl-sha-label">sha256</span> <code>{{ sha }}</code></p>{% endif %}
-          <p class="dl-firstrun">{{ firstrun }}</p>
-          {%- else %}
-          <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Unavailable</a>
-          {%- endif %}
-        </li>
-        {%- endfor %}
-      </ul>
+      {% include download-grid.html release=current %}
       {%- if current.notes %}
       <p class="dl-whatsnew"><a href="{{ '/changelog.html' | relative_url }}#{{ current.version }}">What's new in {{ current.version }} &rarr;</a></p>
       {%- endif %}
@@ -98,26 +73,7 @@
       <div class="beta-block">
         <h2 class="beta-title">Beta: {{ beta.version }}</h2>
         <p class="beta-warn">This is a test build — expect rough edges, and prefer the stable release for real work.</p>
-        <ul class="download-grid">
-          {%- for os in oses %}
-          {%- assign url = beta.downloads[os] -%}
-          {%- assign sha = beta.sha256[os] -%}
-          {%- assign size = beta.size[os] -%}
-          {%- case os %}{% when "windows" %}{% assign label = "Windows" %}{% assign meta = "x64 · installer" %}{% assign firstrun = "In Edge, the download is flagged because it isn't commonly downloaded; open its menu, choose Keep, then Keep anyway. First launch: the installer is unsigned, so Windows SmartScreen may appear. Choose More info, then Run anyway." %}{% when "macos" %}{% assign label = "macOS" %}{% assign meta = "Apple Silicon · .dmg" %}{% assign firstrun = "First launch: open the .dmg, drag vizi to Applications, then click Open on the one confirmation macOS shows for a signed, notarized app." %}{% when "linux" %}{% assign label = "Linux" %}{% assign meta = "x86_64 · AppImage" %}{% assign firstrun = "First launch: make the AppImage executable with chmod +x, then run it." %}{% endcase -%}
-          <li class="download-card">
-            <h2>{{ label }}</h2>
-            <p class="dl-meta">{{ meta }}</p>
-            {%- if url %}
-            <a class="btn btn-primary dl-btn" href="{{ url }}">Download</a>
-            <p class="dl-file">{{ url | split: "/" | last }}{% if size %} · {{ size | divided_by: 1048576.0 | round: 1 }} MB{% endif %}</p>
-            {%- if sha %}<p class="dl-sha"><span class="dl-sha-label">sha256</span> <code>{{ sha }}</code></p>{% endif %}
-            <p class="dl-firstrun">{{ firstrun }}</p>
-            {%- else %}
-            <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Unavailable</a>
-            {%- endif %}
-          </li>
-          {%- endfor %}
-        </ul>
+        {% include download-grid.html release=beta %}
         {%- if beta.notes %}
         <p class="dl-whatsnew"><a href="{{ '/changelog.html' | relative_url }}#{{ beta.version }}">What's new in {{ beta.version }} &rarr;</a></p>
         {%- endif %}

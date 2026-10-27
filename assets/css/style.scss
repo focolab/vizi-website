@@ -1094,13 +1094,6 @@ html {
   margin: 0;
   color: $text;
 }
-.dl-meta {
-  font-family: $mono;
-  font-size: 0.85rem;
-  color: $text-dim;
-  letter-spacing: 0.02em;
-  margin: 0 0 14px;
-}
 .dl-btn {
   align-self: flex-start;
 }
@@ -1239,38 +1232,8 @@ html {
 }
 
 // ----------------------------------------------------------------------------
-// Download page extras (download.html) — per-asset detail + beta block
+// Download page extras (download.html) — beta block + what's-new link
 // ----------------------------------------------------------------------------
-.dl-file {
-  font-family: $mono;
-  font-size: 0.82rem;
-  color: $text-dim;
-  margin: 12px 0 0;
-  word-break: break-all;
-}
-.dl-sha {
-  margin: 6px 0 0;
-  font-size: 0.72rem;
-  line-height: 1.5;
-  color: $text-faint;
-}
-.dl-sha-label {
-  font-family: $mono;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-right: 6px;
-}
-.dl-sha code {
-  font-family: $mono;
-  word-break: break-all;
-  color: $text-dim;
-}
-.dl-firstrun {
-  margin: 14px 0 0;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: $text-faint;
-}
 .beta-block {
   margin: clamp(40px, 6vw, 60px) 0 0;
   padding-top: clamp(32px, 5vw, 44px);
