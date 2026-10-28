@@ -64,6 +64,8 @@ releases:
     tag: "v1.0.0"
     published: "2026-10-28T21:40:46Z"
     prerelease: false
+    notes: |
+      vizi is a viewer for volumetric scientific image data: multi-channel 3D volumes over time, from calcium imaging to light-sheet and confocal stacks, in 2D slices and a native 3D render. It opens OME-TIFF and OME-Zarr directly, and other formats through plugins. This is its first public release, for Windows (x86), macOS (ARM) and Linux.
     downloads:
       windows: "https://downloads.vizi.science/1.0.0/vizi-1.0.0-Setup.exe"
       macos: "https://downloads.vizi.science/1.0.0/vizi-1.0.0-arm64.dmg"
