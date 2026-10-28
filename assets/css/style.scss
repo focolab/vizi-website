@@ -1232,13 +1232,20 @@ html {
 }
 
 // ----------------------------------------------------------------------------
-// Download page extras (download.html) — card file line, beta block, what's-new
+// Download page extras (download.html) — card meta + file line, beta, what's-new
 // ----------------------------------------------------------------------------
+.dl-meta {
+  font-family: $mono;
+  font-size: 0.85rem;
+  color: $text-dim;
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+}
 .dl-file {
   font-family: $mono;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: $text-dim;
-  margin: 0;
+  margin: 12px 0 0;
   word-break: break-all;
 }
 .beta-block {
