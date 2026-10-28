@@ -60,6 +60,23 @@ schema: 1
 # No public release yet. The publish workflow prepends the first entry (the
 # 1.0.0 beta) with the machine fields above; notes are added by hand later.
 releases:
+  - version: "1.0.0"
+    tag: "v1.0.0"
+    published: "2026-10-28T21:40:46Z"
+    prerelease: false
+    downloads:
+      windows: "https://downloads.vizi.science/1.0.0/vizi-1.0.0-Setup.exe"
+      macos: "https://downloads.vizi.science/1.0.0/vizi-1.0.0-arm64.dmg"
+      linux: "https://downloads.vizi.science/1.0.0/vizi-1.0.0-x86_64.AppImage"
+    sha256:
+      windows: "af3db2dc65f8c0176413c60f44586292e85585efaef4e124bcc10840de27939e"
+      macos: "8d163bf35b8a365fdedbffbcff132c9ff101bb2d2bd37ba86f0c72163395585f"
+      linux: "84b475e7534f4fbbd6e0c24ac8918ab20d329b3c13a27affb8300f230a8aba61"
+    size:
+      windows: 77509447
+      macos: 83621291
+      linux: 116210168
+
   - version: "1.0.0b1"
     tag: "v1.0.0-beta1"
     published: "2026-10-23T19:03:15Z"
