@@ -1232,8 +1232,15 @@ html {
 }
 
 // ----------------------------------------------------------------------------
-// Download page extras (download.html) — beta block + what's-new link
+// Download page extras (download.html) — card file line, beta block, what's-new
 // ----------------------------------------------------------------------------
+.dl-file {
+  font-family: $mono;
+  font-size: 0.8rem;
+  color: $text-dim;
+  margin: 0;
+  word-break: break-all;
+}
 .beta-block {
   margin: clamp(40px, 6vw, 60px) 0 0;
   padding-top: clamp(32px, 5vw, 44px);

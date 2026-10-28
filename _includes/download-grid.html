@@ -1,9 +1,9 @@
 {%- comment -%}
 OS download grid for download.html. Call with the release to show, e.g.
   {% include download-grid.html release=current %}
-Each box shows the OS name and a Download button, or an "Unavailable" fallback
-when that platform has no URL. Used for both the current-release grid and the
-beta block so the two cannot drift.
+Each box shows the OS name, the installer filename and size, and a Download
+button (or an "Unavailable" fallback when that platform has no URL). Used for
+both the current-release grid and the beta block so the two cannot drift.
 {%- endcomment -%}
 <ul class="download-grid">
   {%- assign oses = "windows,macos,linux" | split: "," -%}
@@ -13,6 +13,8 @@ beta block so the two cannot drift.
   <li class="download-card">
     <h2>{{ label }}</h2>
     {%- if url %}
+    {%- assign size = include.release.size[os] -%}
+    <p class="dl-file">{{ url | split: "/" | last }}{% if size %} · {{ size | divided_by: 1048576.0 | round: 1 }} MB{% endif %}</p>
     <a class="btn btn-primary dl-btn" href="{{ url }}">Download</a>
     {%- else %}
     <a class="btn btn-primary dl-btn is-disabled" href="#" aria-disabled="true" tabindex="-1">Unavailable</a>
