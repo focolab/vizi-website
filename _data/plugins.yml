@@ -51,10 +51,10 @@ plugins:
     name: vizi-quant
     summary: "Region quantification and plotting — measures every region on every frame, plots the traces (raw F or ΔF/F), exports tables."
     repo: https://github.com/focolab/vizi-quant
-    version: "0.1.0"
+    version: "0.1.1"
     min_vizi: "1.0.0"
     sdk_version: "1.0.0"
-    asset_url: https://github.com/focolab/vizi-quant/releases/download/v0.1.0/org.focolab.vizi_quant-0.1.0.zip
-    size: 498563
-    sha256: d5356ddba94feb266c97eba5e24a509aa9682a04e2d95c998e6fc894d5cba271
+    asset_url: https://github.com/focolab/vizi-quant/releases/download/v0.1.1/org.focolab.vizi_quant-0.1.1.zip
+    size: 498683
+    sha256: 66ed71dc1dae49d50c6292031f86d8058a54d0ce97cbad254d7e916fda3e0e97
     permissions: [data_access]
