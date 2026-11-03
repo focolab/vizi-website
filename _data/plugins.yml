@@ -41,6 +41,18 @@
 #               reader handles but a catalog plugin declares prompts to install that
 #               plugin. verify-plugins.py requires this to equal the manifest's
 #               declared reader suffixes. (Omitted from catalog.json when absent.)
+#   setup_downloads
+#               list of runtimes the plugin's setup fetches that are NOT Python or
+#               its packages (ABSENT means Python and its packages only). vizi's
+#               install prompt shows these before the person consents. Each item:
+#                 name     non-empty string the person sees
+#                 version  the runtime version
+#                 size     download size in BYTES (positive integer)
+#                 source   where it is fetched from
+#                 license  SPDX id, or GPL-2.0-with-classpath-exception for a JRE
+#                 kept     "plugin" (in the plugin's folder) or "shared" (vizi's
+#                          data folder)
+#               (Omitted from catalog.json when absent; vizi reads the same shape.)
 #
 # `pending: true` marks an entry whose release is not yet public: it is shown on
 # the Plugins page as pending and is NOT emitted to catalog.json (so the app
