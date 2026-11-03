@@ -46,6 +46,7 @@
           <h3>{{ p.name }}</h3>
           {%- if p.pending %}<span class="badge-pending">Pending</span>{% endif %}
           <span class="plugin-version">{{ p.version }}</span>
+          {%- if p.license %}<span class="plugin-license">{{ p.license }}</span>{% endif %}
         </div>
         <p class="plugin-summary">{{ p.summary }}</p>
         <div class="plugin-meta">

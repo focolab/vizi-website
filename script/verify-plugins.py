@@ -65,9 +65,12 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "_data" / "plugins.yml"
 
 REQUIRED_STR = ["id", "name", "summary", "repo", "version", "min_vizi",
-                "sdk_version", "asset_url", "sha256"]
+                "sdk_version", "asset_url", "sha256", "license"]
 KNOWN_PERMISSIONS = {"data_access", "contribute_rois"}  # §5 of the manifest schema
 KNOWN_PLATFORMS = {"linux-x86_64", "macos-arm64", "windows-x86_64"}
+# SPDX ids accepted for a plugin's `license`. An entry's license must be one of
+# these; extend the set (reviewed) when a plugin ships under a new one.
+KNOWN_LICENSES = {"Apache-2.0", "MIT", "BSD-3-Clause", "GPL-3.0-only", "GPL-3.0-or-later"}
 # A manifest's engines.vizi is the plugin PROTOCOL version, not the app version.
 # Protocol 1.0 is served by vizi 0.9.0+, but the catalog-aware client (in-app
 # install + platform/min_vizi filter) ships in 0.9.5 — so a cataloged protocol-1.0
@@ -177,6 +180,10 @@ def validate_entry(p: dict, errs: list[str]) -> None:
     mv = p.get("min_vizi")
     if isinstance(mv, str) and not VERSION_RE.match(mv):
         errs.append(f"{where}: 'min_vizi' must look like a version, e.g. 0.9.5")
+    lic = p.get("license")
+    if isinstance(lic, str) and lic not in KNOWN_LICENSES:
+        errs.append(f"{where}: 'license' must be a known SPDX id; got '{lic}'. "
+                    f"Allowed: {sorted(KNOWN_LICENSES)}")
     perms = p.get("permissions")
     if not isinstance(perms, list) or not all(isinstance(x, str) for x in perms):
         errs.append(f"{where}: 'permissions' must be a list of strings")

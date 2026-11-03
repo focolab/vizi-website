@@ -21,7 +21,8 @@
       "asset_url": {{ p.asset_url | jsonify }},
       "size": {{ p.size | jsonify }},
       "sha256": {{ p.sha256 | jsonify }},
-      "permissions": {{ p.permissions | jsonify }}{% if p.platforms %},
+      "permissions": {{ p.permissions | jsonify }},
+      "license": {{ p.license | jsonify }}{% if p.platforms %},
       "platforms": {{ p.platforms | jsonify }}{% endif %}{% if p.extensions %},
       "extensions": {{ p.extensions | jsonify }}{% endif %}
     }{%- unless forloop.last %},{% endunless -%}

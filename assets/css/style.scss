@@ -1174,6 +1174,11 @@ html {
   color: $text-dim;
   margin-left: auto;
 }
+.plugin-license {
+  font-family: $mono;
+  font-size: 0.78rem;
+  color: $text-faint;
+}
 .plugin-summary {
   margin: 10px 0 14px;
   color: $text-dim;
