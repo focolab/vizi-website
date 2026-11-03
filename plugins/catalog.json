@@ -24,7 +24,8 @@
       "permissions": {{ p.permissions | jsonify }},
       "license": {{ p.license | jsonify }}{% if p.platforms %},
       "platforms": {{ p.platforms | jsonify }}{% endif %}{% if p.extensions %},
-      "extensions": {{ p.extensions | jsonify }}{% endif %}
+      "extensions": {{ p.extensions | jsonify }}{% endif %}{% if p.setup_downloads %},
+      "setup_downloads": {{ p.setup_downloads | jsonify }}{% endif %}
     }{%- unless forloop.last %},{% endunless -%}
     {%- endfor %}
   ]

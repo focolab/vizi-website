@@ -68,9 +68,12 @@ REQUIRED_STR = ["id", "name", "summary", "repo", "version", "min_vizi",
                 "sdk_version", "asset_url", "sha256", "license"]
 KNOWN_PERMISSIONS = {"data_access", "contribute_rois"}  # §5 of the manifest schema
 KNOWN_PLATFORMS = {"linux-x86_64", "macos-arm64", "windows-x86_64"}
-# SPDX ids accepted for a plugin's `license`. An entry's license must be one of
-# these; extend the set (reviewed) when a plugin ships under a new one.
-KNOWN_LICENSES = {"Apache-2.0", "MIT", "BSD-3-Clause", "GPL-3.0-only", "GPL-3.0-or-later"}
+# SPDX ids accepted for a plugin's `license` and for a setup download's `license`.
+# GPL-2.0-with-classpath-exception is for RUNTIMES (setup_downloads), not plugins.
+# Extend the set (reviewed) when a plugin or runtime ships under a new one.
+KNOWN_LICENSES = {"Apache-2.0", "MIT", "BSD-3-Clause", "GPL-3.0-only",
+                  "GPL-3.0-or-later", "GPL-2.0-with-classpath-exception"}
+KNOWN_KEPT = {"plugin", "shared"}  # a setup_downloads item's `kept`
 # A manifest's engines.vizi is the plugin PROTOCOL version, not the app version.
 # Protocol 1.0 is served by vizi 0.9.0+, but the catalog-aware client (in-app
 # install + platform/min_vizi filter) ships in 0.9.5 — so a cataloged protocol-1.0
@@ -213,6 +216,27 @@ def validate_entry(p: dict, errs: list[str]) -> None:
                             f"e.g. '.czi'; bad: {bad}")
             if len(set(exts)) != len(exts):
                 errs.append(f"{where}: duplicate value in 'extensions'")
+    sd = p.get("setup_downloads")
+    if sd is not None:  # optional; absent means Python and its packages only
+        if not isinstance(sd, list) or not sd:
+            errs.append(f"{where}: 'setup_downloads', if present, must be a non-empty list")
+        else:
+            for i, item in enumerate(sd):
+                w = f"{where}: setup_downloads[{i}]"
+                if not isinstance(item, dict):
+                    errs.append(f"{w} must be a mapping")
+                    continue
+                nm = item.get("name")
+                if not isinstance(nm, str) or not nm.strip():
+                    errs.append(f"{w}: 'name' must be a non-empty string")
+                sz = item.get("size")
+                if not isinstance(sz, int) or isinstance(sz, bool) or sz <= 0:
+                    errs.append(f"{w}: 'size' must be a positive integer (bytes)")
+                if item.get("kept") not in KNOWN_KEPT:
+                    errs.append(f"{w}: 'kept' must be one of {sorted(KNOWN_KEPT)}")
+                dl_lic = item.get("license")
+                if not isinstance(dl_lic, str) or dl_lic not in KNOWN_LICENSES:
+                    errs.append(f"{w}: 'license' must be a known SPDX id; allowed {sorted(KNOWN_LICENSES)}")
     if "pending" in p and not isinstance(p["pending"], bool):
         errs.append(f"{where}: 'pending' must be true/false if present")
 
