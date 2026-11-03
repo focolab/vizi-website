@@ -22,6 +22,11 @@
 #   size        asset size in bytes
 #   sha256      sha256 of the asset, 64 lowercase hex
 #   permissions copied verbatim from the manifest `permissions`
+#   license     SPDX id of the plugin's license, read from its repo LICENSE file
+#               (e.g. Apache-2.0, MIT, BSD-3-Clause, GPL-3.0-only, GPL-3.0-or-later).
+#               Shown in vizi's install prompt and on the Plugins page before a
+#               download. verify-plugins.py refuses an id it does not know. Added
+#               without a schema bump — 1.0.0 clients ignore keys they do not know.
 #
 # Optional per entry (schema 1):
 #   platforms   list from linux-x86_64 / macos-arm64 / windows-x86_64; ABSENT means
@@ -58,3 +63,4 @@ plugins:
     size: 498683
     sha256: 66ed71dc1dae49d50c6292031f86d8058a54d0ce97cbad254d7e916fda3e0e97
     permissions: [data_access]
+    license: "Apache-2.0"
