@@ -85,8 +85,8 @@ plugins:
     min_vizi: "1.0.0"
     sdk_version: "1.0.0"
     asset_url: https://github.com/focolab/vizi-nwb/releases/download/v0.1.0/org.focolab.nwb-0.1.0.zip
-    size: 499227
-    sha256: 883d748ad3f21376a63e0cc7f1306a9a15577d67a4486efacedc154fd9489afd
+    size: 499193
+    sha256: 1bf4705719afa0e16e08c898346e8808a69e0c25524e0c1d4f4ac7a3ece123ab
     permissions: []
     extensions: [".nwb"]
     license: "Apache-2.0"
