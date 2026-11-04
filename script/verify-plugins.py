@@ -34,7 +34,8 @@ one leading dot, de-duplicated and sorted. For a live entry the check reads
 those suffixes out of the same zip it reads ``engines.vizi`` from and requires
 the entry's `extensions` to equal them as a set; a manifest that declares reader
 formats while the entry omits `extensions` is an error (acceptance forgot to
-copy them).
+copy them). The optional `fallback_extensions` field is checked the same way
+against the readers' ``fallback_extensions`` list.
 
 Dry example (the catalog is empty live, so this documents the check):
 
@@ -133,14 +134,11 @@ def normalize_ext(s: str) -> str:
     return "." + s.strip().lower().lstrip(".")
 
 
-def manifest_reader_extensions(zip_path: Path) -> set[str] | None:
-    """Normalised set of file suffixes the asset's readers declare.
-
-    Reads ``contributions.readers[].extensions`` from the plugin's
-    vizi-plugin.json — each reader's PRIMARY extensions list, NOT
-    ``fallback_extensions`` — and normalises every suffix. Returns the set
-    (empty if no reader declares a format), or None when there is no readable
-    manifest (the engines check reports that case)."""
+def manifest_reader_extensions(zip_path: Path, key: str = "extensions") -> set[str] | None:
+    """Normalised set of the readers' suffixes for `key` — ``extensions`` (each
+    reader's PRIMARY list) or ``fallback_extensions`` — from the plugin's
+    vizi-plugin.json. Returns the set (empty if no reader declares any for `key`),
+    or None when there is no readable manifest (the engines check reports that)."""
     with zipfile.ZipFile(zip_path) as z:
         cands = [n for n in z.namelist() if n.rsplit("/", 1)[-1] == "vizi-plugin.json"]
         if not cands:
@@ -160,7 +158,7 @@ def manifest_reader_extensions(zip_path: Path) -> set[str] | None:
     for r in readers:
         if not isinstance(r, dict):
             continue
-        for s in r.get("extensions") or []:
+        for s in r.get(key) or []:
             if isinstance(s, str) and s.strip().strip("."):
                 exts.add(normalize_ext(s))
     return exts
@@ -216,6 +214,17 @@ def validate_entry(p: dict, errs: list[str]) -> None:
                             f"e.g. '.czi'; bad: {bad}")
             if len(set(exts)) != len(exts):
                 errs.append(f"{where}: duplicate value in 'extensions'")
+    fexts = p.get("fallback_extensions")
+    if fexts is not None:  # optional; absent means none (same rules as extensions)
+        if not isinstance(fexts, list) or not fexts or not all(isinstance(x, str) for x in fexts):
+            errs.append(f"{where}: 'fallback_extensions', if present, must be a non-empty list of strings")
+        else:
+            bad = [x for x in fexts if not (x.startswith(".") and len(x) > 1 and x == x.lower())]
+            if bad:
+                errs.append(f"{where}: each fallback extension must be lowercase with a leading dot, "
+                            f"e.g. '.h5'; bad: {bad}")
+            if len(set(fexts)) != len(fexts):
+                errs.append(f"{where}: duplicate value in 'fallback_extensions'")
     sd = p.get("setup_downloads")
     if sd is not None:  # optional; absent means Python and its packages only
         if not isinstance(sd, list) or not sd:
@@ -266,25 +275,27 @@ def check_min_vizi_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> None
               f"min_vizi {mv} accepted as-is")
 
 
-def check_extensions_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> None:
-    """Require the entry's 'extensions' to equal the asset's declared reader
-    suffixes (contributions.readers[].extensions), as a set."""
+def check_reader_suffixes_vs_manifest(p: dict, zip_path: Path, errs: list[str], *,
+                                      field: str, manifest_key: str, label: str) -> None:
+    """Require the entry's `field` to equal the asset's declared reader
+    `manifest_key` suffixes (contributions.readers[].<manifest_key>), as a set.
+    Used for `extensions` (primaries) and `fallback_extensions`, identically."""
     where = f"plugin '{p.get('id', '?')}'"
-    declared = manifest_reader_extensions(zip_path)
+    declared = manifest_reader_extensions(zip_path, manifest_key)
     if declared is None:
         return  # no readable manifest — the engines check reports that
-    cat = p.get("extensions")
+    cat = p.get(field)
     if cat is None:
         if declared:
-            errs.append(f"{where}: the asset's manifest declares reader formats "
-                        f"{sorted(declared)} but the entry has no 'extensions' "
+            errs.append(f"{where}: the asset's manifest declares {label} "
+                        f"{sorted(declared)} but the entry has no '{field}' "
                         f"(copy them from the manifest at acceptance)")
         return
     if not isinstance(cat, list):
         return  # shape already reported by validate_entry
     catset = {x for x in cat if isinstance(x, str)}
     if catset == declared:
-        print(f"  {p.get('id')}: extensions match manifest ({sorted(declared) or 'none'})")
+        print(f"  {p.get('id')}: {field} match manifest ({sorted(declared) or 'none'})")
         return
     bits = []
     extra = sorted(catset - declared)
@@ -293,7 +304,7 @@ def check_extensions_vs_manifest(p: dict, zip_path: Path, errs: list[str]) -> No
         bits.append(f"in entry but not the manifest: {extra}")
     if missing:
         bits.append(f"in the manifest but not the entry: {missing}")
-    errs.append(f"{where}: 'extensions' does not match the asset's reader formats "
+    errs.append(f"{where}: '{field}' does not match the asset's {label} "
                 f"(entry {sorted(catset)} vs manifest {sorted(declared)}; {'; '.join(bits)})")
 
 
@@ -327,6 +338,8 @@ def selftest() -> int:
                 {"contributions": {"readers": [{"id": "x", "extensions": [".deep"]}]}}))
         check("manifest read = {.czi,.lif} (fallback + deeper manifest excluded, "
               "mixed case de-duplicated)", manifest_reader_extensions(zpath) == {".czi", ".lif"})
+        check("fallback read = {.h5}",
+              manifest_reader_extensions(zpath, "fallback_extensions") == {".h5"})
 
         znone = Path(td) / "noreaders.zip"
         with zipfile.ZipFile(znone, "w") as z:
@@ -344,7 +357,19 @@ def selftest() -> int:
                 entry["extensions"] = extensions
             out: list[str] = []
             validate_entry(entry, out)
-            check_extensions_vs_manifest(entry, zpath, out)
+            check_reader_suffixes_vs_manifest(entry, zpath, out, field="extensions",
+                                              manifest_key="extensions", label="reader formats")
+            return out
+
+        def fb_errs(*, fallback="\0absent"):
+            entry = dict(base)
+            entry["extensions"] = [".czi", ".lif"]  # valid primaries; only fallback under test
+            if fallback != "\0absent":
+                entry["fallback_extensions"] = fallback
+            out: list[str] = []
+            validate_entry(entry, out)
+            check_reader_suffixes_vs_manifest(entry, zpath, out, field="fallback_extensions",
+                                              manifest_key="fallback_extensions", label="fallback reader formats")
             return out
 
         check("match accepts", errs_for(extensions=[".czi", ".lif"]) == [])
@@ -360,6 +385,13 @@ def selftest() -> int:
               any("duplicate value in 'extensions'" in e for e in errs_for(extensions=[".czi", ".czi", ".lif"])))
         check("empty list rejected",
               any("non-empty list" in e for e in errs_for(extensions=[])))
+        check("fallback present matches", fb_errs(fallback=[".h5"]) == [])
+        check("fallback absent rejected",
+              any("has no 'fallback_extensions'" in e for e in fb_errs()))
+        check("fallback mismatch rejected",
+              any("does not match" in e and ".zip" in e for e in fb_errs(fallback=[".h5", ".zip"])))
+        check("fallback empty list rejected",
+              any("non-empty list" in e for e in fb_errs(fallback=[])))
 
     if failures:
         print(f"\nSELFTEST FAILED: {len(failures)} case(s)", file=sys.stderr)
@@ -431,7 +463,10 @@ def main() -> int:
             if size == p.get("size") and sha == p.get("sha256"):
                 print(f"  {pid}: OK — {size} bytes, sha256 {sha[:12]}…")
             check_min_vizi_vs_manifest(p, tmp, errs)
-            check_extensions_vs_manifest(p, tmp, errs)
+            check_reader_suffixes_vs_manifest(p, tmp, errs, field="extensions",
+                                              manifest_key="extensions", label="reader formats")
+            check_reader_suffixes_vs_manifest(p, tmp, errs, field="fallback_extensions",
+                                              manifest_key="fallback_extensions", label="fallback reader formats")
         except Exception as e:  # noqa: BLE001
             errs.append(f"plugin '{pid}': could not fetch/read asset_url: {e}")
         finally:
