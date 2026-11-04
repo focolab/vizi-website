@@ -336,7 +336,7 @@ def selftest() -> int:
         base = {"id": "org.example.p", "name": "P", "summary": "s",
                 "repo": "https://example.com/p", "version": "1.0.0", "min_vizi": "0.9.5",
                 "sdk_version": "1.0.0", "asset_url": "https://example.com/p.zip",
-                "size": 10, "sha256": "a" * 64, "permissions": []}
+                "size": 10, "sha256": "a" * 64, "permissions": [], "license": "Apache-2.0"}
 
         def errs_for(*, extensions="\0absent"):
             entry = dict(base)
