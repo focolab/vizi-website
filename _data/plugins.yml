@@ -41,6 +41,16 @@
 #               reader handles but a catalog plugin declares prompts to install that
 #               plugin. verify-plugins.py requires this to equal the manifest's
 #               declared reader suffixes. (Omitted from catalog.json when absent.)
+#   fallback_extensions
+#               like `extensions` but for suffixes a reader CAN open yet should not
+#               be picked for unasked — copied from the manifest's
+#               contributions.readers[].fallback_extensions at acceptance, same
+#               lowercase-dotted rule, de-duplicated and sorted. ABSENT means none;
+#               an empty list is refused. vizi 1.0.1 offers a fallback-only plugin
+#               when a file's type has no installed reader and no primary-declaring
+#               catalog entry; a reader that declares the suffix in `extensions`
+#               keeps precedence. verify-plugins.py requires this to equal the
+#               manifest's declared fallbacks. (Omitted from catalog.json when absent.)
 #   setup_downloads
 #               list of runtimes the plugin's setup fetches that are NOT Python or
 #               its packages (ABSENT means Python and its packages only). vizi's
@@ -89,4 +99,5 @@ plugins:
     sha256: 1bf4705719afa0e16e08c898346e8808a69e0c25524e0c1d4f4ac7a3ece123ab
     permissions: []
     extensions: [".nwb"]
+    fallback_extensions: [".h5", ".hdf5"]
     license: "Apache-2.0"
