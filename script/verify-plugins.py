@@ -246,6 +246,18 @@ def validate_entry(p: dict, errs: list[str]) -> None:
                 dl_lic = item.get("license")
                 if not isinstance(dl_lic, str) or dl_lic not in KNOWN_LICENSES:
                     errs.append(f"{w}: 'license' must be a known SPDX id; allowed {sorted(KNOWN_LICENSES)}")
+    repl = p.get("replaces")
+    if repl is not None:  # optional; absent means the entry renames nothing
+        if not isinstance(repl, list) or not repl:
+            errs.append(f"{where}: 'replaces', if present, must be a non-empty list of plugin ids")
+        else:
+            bad = [x for x in repl if not (isinstance(x, str) and x.strip())]
+            if bad:
+                errs.append(f"{where}: each id in 'replaces' must be a non-empty string (like 'id'); bad: {bad}")
+            if len(set(repl)) != len(repl):
+                errs.append(f"{where}: duplicate id in 'replaces'")
+            if p.get("id") in repl:
+                errs.append(f"{where}: 'replaces' must not list the entry's own id")
     if "pending" in p and not isinstance(p["pending"], bool):
         errs.append(f"{where}: 'pending' must be true/false if present")
 
@@ -306,6 +318,26 @@ def check_reader_suffixes_vs_manifest(p: dict, zip_path: Path, errs: list[str], 
         bits.append(f"in the manifest but not the entry: {missing}")
     errs.append(f"{where}: '{field}' does not match the asset's {label} "
                 f"(entry {sorted(catset)} vs manifest {sorted(declared)}; {'; '.join(bits)})")
+
+
+def check_replaces_catalog(plugins: list, errs: list[str]) -> None:
+    """Catalog-level `replaces` checks across all entries: a replaced id must not
+    also be a live entry's id (the old entry is dropped, not kept), and no two
+    entries may list the same replaced id."""
+    ids = {p.get("id") for p in plugins if isinstance(p, dict)}
+    replaced_by: dict[str, list] = {}
+    for p in plugins:
+        if not isinstance(p, dict):
+            continue
+        for rid in p.get("replaces") or []:
+            if isinstance(rid, str):
+                replaced_by.setdefault(rid, []).append(p.get("id"))
+    for rid, by in sorted(replaced_by.items()):
+        if rid in ids:
+            errs.append(f"'replaces' lists '{rid}', which is still a live entry's id — "
+                        f"the replaced entry must be removed from the catalog")
+        if len(by) > 1:
+            errs.append(f"replaced id '{rid}' is listed by more than one entry: {sorted(by)}")
 
 
 def selftest() -> int:
@@ -393,6 +425,39 @@ def selftest() -> int:
         check("fallback empty list rejected",
               any("non-empty list" in e for e in fb_errs(fallback=[])))
 
+        def rp_errs(*, replaces="\0absent", entry_id="org.example.p"):
+            entry = dict(base); entry["id"] = entry_id
+            if replaces != "\0absent":
+                entry["replaces"] = replaces
+            out: list[str] = []
+            validate_entry(entry, out)
+            return [e for e in out if "replaces" in e]
+
+        def cat_errs(plugins):
+            out: list[str] = []
+            check_replaces_catalog(plugins, out)
+            return out
+
+        check("replaces valid accepts", rp_errs(replaces=["org.old.a"]) == [])
+        check("replaces wrong type rejected",
+              any("must be a non-empty list of plugin ids" in e for e in rp_errs(replaces="org.old.a")))
+        check("replaces malformed id rejected",
+              any("must be a non-empty string" in e for e in rp_errs(replaces=["", "org.x"])))
+        check("replaces duplicate rejected",
+              any("duplicate id in 'replaces'" in e for e in rp_errs(replaces=["org.a", "org.a"])))
+        check("replaces own id rejected",
+              any("own id" in e for e in rp_errs(replaces=["org.example.p"])))
+        check("replaces empty list rejected",
+              any("must be a non-empty list of plugin ids" in e for e in rp_errs(replaces=[])))
+        check("replaced id that is still a live entry rejected",
+              any("still a live entry" in e for e in
+                  cat_errs([{"id": "org.new.a", "replaces": ["org.old.b"]}, {"id": "org.old.b"}])))
+        check("same replaced id in two entries rejected",
+              any("more than one entry" in e for e in
+                  cat_errs([{"id": "org.a", "replaces": ["org.x"]}, {"id": "org.b", "replaces": ["org.x"]}])))
+        check("clean rename accepts",
+              cat_errs([{"id": "org.new.a", "replaces": ["org.old.a"]}, {"id": "org.b"}]) == [])
+
     if failures:
         print(f"\nSELFTEST FAILED: {len(failures)} case(s)", file=sys.stderr)
         return 1
@@ -471,6 +536,8 @@ def main() -> int:
             errs.append(f"plugin '{pid}': could not fetch/read asset_url: {e}")
         finally:
             tmp.unlink(missing_ok=True)
+
+    check_replaces_catalog(plugins, errs)
 
     if errs:
         print("\nFAILED:", file=sys.stderr)
