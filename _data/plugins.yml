@@ -63,6 +63,16 @@
 #                 kept     "plugin" (in the plugin's folder) or "shared" (vizi's
 #                          data folder)
 #               (Omitted from catalog.json when absent; vizi reads the same shape.)
+#   replaces    list of plugin ids this entry renames FROM. vizi 1.0.1+ treats an
+#               entry that lists an installed plugin's old id here as that plugin's
+#               update and carries its settings across; nothing new is shown to the
+#               user. Each id is validated like `id`; ABSENT means none. Only the
+#               catalog may declare a rename, never a plugin's own manifest.
+#               ACCEPTING A RENAME: the new entry's repo must have the SAME owner as
+#               the replaced plugin, and the replaced plugin's own entry MUST be
+#               removed in the same change. verify-plugins.py enforces that a
+#               replaced id is not also a live entry and is claimed by only one
+#               entry. (Omitted from catalog.json when absent.)
 #
 # `pending: true` marks an entry whose release is not yet public: it is shown on
 # the Plugins page as pending and is NOT emitted to catalog.json (so the app
