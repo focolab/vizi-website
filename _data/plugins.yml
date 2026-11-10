@@ -98,15 +98,15 @@ plugins:
     license: "Apache-2.0"
 
   - id: org.focolab.nwb
-    name: NWB reader
+    name: NWB
     summary: "Opens the images in NWB (Neurodata Without Borders) files — NWBelegans NeuroPAL volumes and calcium imaging series included, with their calibration and channel names."
     repo: https://github.com/focolab/vizi-nwb
-    version: "0.1.0"
+    version: "0.1.1"
     min_vizi: "1.0.0"
     sdk_version: "1.0.0"
-    asset_url: https://github.com/focolab/vizi-nwb/releases/download/v0.1.0/org.focolab.nwb-0.1.0.zip
-    size: 499193
-    sha256: 1bf4705719afa0e16e08c898346e8808a69e0c25524e0c1d4f4ac7a3ece123ab
+    asset_url: https://github.com/focolab/vizi-nwb/releases/download/v0.1.1/org.focolab.nwb-0.1.1.zip
+    size: 499220
+    sha256: cc9c7bd642abff50e8a643c0f7bd9aad48d00f2af3d6453d53e4166f935962c9
     permissions: []
     extensions: [".nwb"]
     fallback_extensions: [".h5", ".hdf5"]
