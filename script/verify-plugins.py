@@ -230,6 +230,9 @@ def validate_entry(p: dict, errs: list[str]) -> None:
         if not isinstance(sd, list) or not sd:
             errs.append(f"{where}: 'setup_downloads', if present, must be a non-empty list")
         else:
+            if len(sd) > 16:
+                errs.append(f"{where}: 'setup_downloads' has {len(sd)} items; the host drops a list "
+                            f"longer than 16 items, so at most 16 are allowed")
             for i, item in enumerate(sd):
                 w = f"{where}: setup_downloads[{i}]"
                 if not isinstance(item, dict):
@@ -457,6 +460,18 @@ def selftest() -> int:
                   cat_errs([{"id": "org.a", "replaces": ["org.x"]}, {"id": "org.b", "replaces": ["org.x"]}])))
         check("clean rename accepts",
               cat_errs([{"id": "org.new.a", "replaces": ["org.old.a"]}, {"id": "org.b"}]) == [])
+
+        sd_ok = {"name": "R", "version": "1", "size": 1, "source": "s", "license": "MIT", "kept": "plugin"}
+        def sd_errs(items):
+            entry = dict(base); entry["setup_downloads"] = items
+            out: list[str] = []
+            validate_entry(entry, out)
+            return [e for e in out if "setup_downloads" in e]
+        check("setup_downloads 16 items accepted", sd_errs([dict(sd_ok) for _ in range(16)]) == [])
+        check("setup_downloads over 16 rejected",
+              any("longer than 16" in e for e in sd_errs([dict(sd_ok) for _ in range(17)])))
+        check("setup_downloads bad item rejected",
+              any("'kept'" in e for e in sd_errs([{**sd_ok, "kept": "nowhere"}])))
 
     if failures:
         print(f"\nSELFTEST FAILED: {len(failures)} case(s)", file=sys.stderr)

@@ -62,6 +62,18 @@
 #                 license  SPDX id, or GPL-2.0-with-classpath-exception for a JRE
 #                 kept     "plugin" (in the plugin's folder) or "shared" (vizi's
 #                          data folder)
+#               vizi 1.0.1 renders the list VERBATIM in the install prompt, so write
+#               values that read well: each item becomes "the {name} {version}
+#               (about N MB) from {source}" (N = size/1_000_000 rounded, missing
+#               parts left out; items join "a and b" / "a, b and c"); a licensed item
+#               adds "The {name} is under the {license} and carries its license
+#               files", {license} shown exactly. `name` is a SINGULAR noun phrase
+#               that reads after "the" ("Eclipse Temurin JRE"), never a plural; the
+#               verb agrees with the item count. `kept: plugin` reads "kept in the
+#               plugin's folder", `kept: shared` "kept there too". Give ONE size per
+#               item; for a range (56–62 MB) use the largest. The host drops the
+#               whole list if an item has no name or there are more than 16 items;
+#               verify-plugins.py refuses both.
 #               (Omitted from catalog.json when absent; vizi reads the same shape.)
 #   replaces    list of plugin ids this entry renames FROM. vizi 1.0.1+ treats an
 #               entry that lists an installed plugin's old id here as that plugin's
@@ -111,3 +123,19 @@ plugins:
     extensions: [".nwb"]
     fallback_extensions: [".h5", ".hdf5"]
     license: "Apache-2.0"
+
+  - id: org.focolab.bioformats
+    name: Bio-Formats
+    summary: "Opens almost any scientific imaging format (CZI, ND2, LIF, whole-slide images and some 220 more suffixes) through Bio-Formats 8.5.0; a file with several images asks which one."
+    repo: https://github.com/focolab/vizi-bioformats
+    version: "0.2.0"
+    min_vizi: "1.0.0"
+    sdk_version: "1.0.0"
+    asset_url: https://github.com/focolab/vizi-bioformats/releases/download/v0.2.0/org.focolab.bioformats-0.2.0.zip
+    size: 73399909
+    sha256: 72cee31b7f9f99985eea93f9718d8b232777d56a218465a708cd5b81b5800c9e
+    permissions: []
+    license: "GPL-3.0-only"
+    fallback_extensions: [".1sc", ".2fl", ".acff", ".afi", ".afm", ".aiix", ".aim", ".aisf", ".al3d", ".ali", ".am", ".amiramesh", ".ano", ".apl", ".aqproj", ".arf", ".atsf", ".avi", ".bif", ".bin", ".bip", ".bmp", ".btf", ".c01", ".cfg", ".ch5", ".cif", ".companion.ome", ".cr2", ".crw", ".csv", ".cxd", ".czi", ".dat", ".db", ".dcimg", ".dcm", ".df3", ".dib", ".dic", ".dicom", ".dm2", ".dm3", ".dm4", ".dti", ".dv", ".dv.log", ".env", ".eps", ".epsi", ".ets", ".exp", ".fake", ".fdf", ".fff", ".ffr", ".fits", ".flex", ".fli", ".frm", ".fts", ".gel", ".gif", ".grey", ".h5", ".hdf", ".hdr", ".hed", ".his", ".htd", ".htm", ".html", ".hx", ".i2i", ".ics", ".ids", ".im3", ".ima", ".img", ".ims", ".inf", ".inr", ".ipl", ".ipm", ".ips", ".ipw", ".j2k", ".j2ki", ".j2kr", ".jdce", ".jp2", ".jpe", ".jpeg", ".jpf", ".jpg", ".jpk", ".jpx", ".klb", ".l2d", ".labels", ".lei", ".lif", ".liff", ".lim", ".lms", ".lof", ".log", ".lsm", ".lut", ".map", ".mdb", ".mea", ".mnc", ".mng", ".mod", ".mov", ".mrc", ".mrcs", ".mrw", ".msr", ".mtb", ".mvd2", ".naf", ".nd", ".nd2", ".ndpi", ".ndpis", ".nef", ".nhdr", ".nii", ".nii.gz", ".nrrd", ".obf", ".oib", ".oif", ".oir", ".ome", ".ome.btf", ".ome.tf2", ".ome.tf8", ".ome.tif", ".ome.tiff", ".ome.xml", ".omp2info", ".par", ".pattern", ".pbm", ".pcoraw", ".pct", ".pcx", ".pgm", ".pic", ".pict", ".png", ".pnl", ".ppm", ".pr3", ".ps", ".psd", ".pst", ".pty", ".qptiff", ".r3d", ".r3d.log", ".r3d_d3d", ".raw", ".rcpnl", ".rec", ".res", ".scan", ".scn", ".sdt", ".seq", ".set", ".sif", ".sld", ".sldy", ".sldyz", ".sm2", ".sm3", ".spc", ".spe", ".spi", ".spl", ".st", ".stk", ".stp", ".svs", ".sxm", ".tf2", ".tf8", ".tfcyto", ".tfr", ".tga", ".thm", ".tif", ".tiff", ".tim", ".tnb", ".top", ".txm", ".txrm", ".txt", ".v", ".vff", ".vms", ".vsi", ".vws", ".wat", ".wav", ".wpi", ".xdce", ".xlef", ".xlog", ".xml", ".xqd", ".xqf", ".xv", ".xys", ".zfp", ".zfr", ".zpo", ".zvi"]
+    setup_downloads:
+      - {name: "Eclipse Temurin JRE", version: "25.0.5+8", size: 61736206, source: "github.com/adoptium", license: GPL-2.0-with-classpath-exception, kept: plugin}
