@@ -68,10 +68,10 @@
         <g class="intro-wrap intro-zbr"><path class="vlogo-node node-zbr" d="M350.99,226c-18.22,0-33-14.77-33-33s14.78-33,33-33,33,14.77,33,33-14.78,33-33,33Z"/></g>
       </svg>
       <h1 class="hero-tagline">
-        A viewer for large <em>4D scientific image data</em> — multi-channel 3D volumes over time.
+        A viewer for large <em>4D scientific image data</em>.
       </h1>
       <p class="hero-sub">
-        vizi opens OME-TIFF and OME-Zarr directly, scrubs and plays files over 10&nbsp;GB at full resolution, and renders them in a native 3D view. Other formats open through plugins.
+        It opens OME-TIFF and OME-Zarr, and other formats through plugins.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="{{ '/download.html' | relative_url }}">Download for Linux, Windows &amp; macOS</a>
@@ -81,75 +81,23 @@
         vizi 1.0.0 — Linux, Windows, and macOS on Apple Silicon.
       </p>
       </div><!-- /.hero-copy -->
-
-      <div class="hero-media">
-        <div class="media-frame reveal" aria-label="vizi UI demo">
-          <video class="media-fill" autoplay muted loop playsinline preload="metadata"
-                 poster="{{ '/assets/img/vizi-demo-poster.jpg' | relative_url }}"
-                 aria-label="vizi in action — a NeuroPAL volumetric recording explored in the viewer">
-            <source src="{{ '/assets/video/vizi-demo.mp4' | relative_url }}" type="video/mp4">
-          </video>
-        </div>
-      </div><!-- /.hero-media -->
     </div>
   </header>
 
   <section class="features" id="features">
-    <div class="section-head reveal">
-      <span class="eyebrow">Features</span>
-      <h2>Designed around how scientists want to look at data.</h2>
-    </div>
-
-    <ul class="feature-grid">
-      <li class="feature reveal">
-        <span class="feature-num">01</span>
-        <h3>Fast, even on huge files</h3>
-        <p>Scrub and play 10+&nbsp;GB OME-TIFF and OME-Zarr volumes at full resolution. A Rust I/O core and streaming load keep it smooth &mdash; no proxies, no precomputation. Set Skip to stride past slowly-varying frames.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">02</span>
-        <h3>Voxel-perfect rendering</h3>
-        <p>Sum (fluorescence-faithful) and Max (MIP) projection &mdash; or any blend &mdash; stay crisp at every zoom, drawing full-resolution voxels with no step-size tuning.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">03</span>
-        <h3>Fluid 3D navigation</h3>
-        <p>Fly (WASD), orbit, or Hybrid &mdash; orbit an annotation, then detach into free-look. An orientation minimap and click-to-fly keep you placed, and you switch modes without losing your viewpoint.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">04</span>
-        <h3>2D and 3D, in sync</h3>
-        <p>Dock the slice and the volume side by side &mdash; or float one onto a second monitor. Ctrl+click in 2D to fly the 3D camera to that voxel; the two views always agree on where you are.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">05</span>
-        <h3>Annotate, measure &amp; track</h3>
-        <p>Draw box, ellipse, cylinder, or surface regions, rotate and parent them in 3D, and crop the volume to them. Measure per-channel intensity over time &mdash; live plot and CSV export &mdash; while &ldquo;Center&rdquo; tracks a region on a moving object across timepoints.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">06</span>
-        <h3>Multi-channel done right</h3>
-        <p>Per-channel composite with colors, saved presets, and emissive balancing. A subtractive &ldquo;stain&rdquo; mode and a custom multi-stop colormap editor round it out.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">07</span>
-        <h3>Extensible via plugins</h3>
-        <p>Add file-format readers, exporters, commands, dockable panels, 3D overlays, and tools from the Plugin Manager. Each plugin runs in its own process, so a broken one can't take the viewer down.</p>
-      </li>
-      <li class="feature reveal">
-        <span class="feature-num">08</span>
-        <h3>Publication-ready output</h3>
-        <p>Export frames, sequences, and movies (MP4/WebM, GIF, PNG, TIFF) &mdash; including keyframed camera flythroughs &mdash; with timestamp, scale-bar, and colormap-legend burn-ins. Or write out the raw voxels at full bit depth (OME-TIFF, OME-Zarr, .zarr.zip) with an embedded provenance record.</p>
-      </li>
+    <ul class="what-list reveal">
+      <li>Opens OME-TIFF and OME-Zarr</li>
+      <li>Scrubs and plays files over 10&nbsp;GB at full resolution</li>
+      <li>2D slices and a 3D view that stay in step</li>
+      <li>Regions you can draw, measure over time and crop to</li>
+      <li>Per-channel colors and contrast</li>
+      <li>Export of images, movies and data</li>
+      <li>Plugins that add file formats and tools</li>
     </ul>
   </section>
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
-        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
-      </div>
       <div class="footer-cols">
         <div class="footer-col">
           <h5>Lab</h5>
