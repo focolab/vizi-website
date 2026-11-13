@@ -160,30 +160,13 @@ code {
   overflow-x: clip;
 }
 .hero-inner {
-  max-width: $max-w;
+  max-width: 760px;
   margin: 0 auto;
-  // Two columns: copy on the left, demo video on the right. The intro type
-  // is shrunk (see .hero-tagline / .hero-sub below) so the media fits beside
-  // it on a typical laptop screen. Collapses to a single column < 880px.
-  display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(28px, 4vw, 60px);
-  align-items: center;
+  // One calm column, centered: logo, name, one sentence, download, version.
 }
 .hero-copy {
-  text-align: left;
+  text-align: center;
   min-width: 0;
-}
-.hero-copy .hero-logo-svg {
-  margin: 0 0 22px;
-  height: clamp(58px, 6.5vw, 88px);
-}
-.hero-media {
-  min-width: 0;
-}
-.hero-media .media-frame {
-  margin: 0;
-  max-width: 100%;
 }
 // Inline hero SVG: animated logo with sequenced node-pulse.
 .hero-logo-svg {
@@ -296,24 +279,21 @@ code {
   86%  { transform: translate(0, 0); }                                       // 4.40s: fully coalesced
   100% { transform: translate(0, 0); }                                       // 5.10s: stays here while connectors fade in
 }
-// Per-node scatter positions. These are the DESKTOP values for the two-column
-// hero: the logo sits in the left column, so the original symmetric pattern is
-// shifted ~33vw to the right (x only) to re-center the cloud on the screen and
-// keep every node on-screen. Below 880px the hero stacks and the logo re-centers,
-// so the @media (max-width: 880px) block restores the original centered pattern.
-.intro-lm  { --scatter-x: -5vw;  --scatter-y: -4vh; }
-.intro-cl  { --scatter-x: +11vw; --scatter-y: -12vh; }
-.intro-bl  { --scatter-x: +3vw;  --scatter-y: +14vh; }
-.intro-tm  { --scatter-x: +29vw; --scatter-y: -20vh; }
-.intro-c   { --scatter-x: +36vw; --scatter-y: -5vh; }
-.intro-bm  { --scatter-x: +25vw; --scatter-y: +18vh; }
-.intro-tr  { --scatter-x: +66vw; --scatter-y: -20vh; }
-.intro-mr  { --scatter-x: +71vw; --scatter-y: -2vh; }
-.intro-br  { --scatter-x: +63vw; --scatter-y: +16vh; }
-.intro-ztl { --scatter-x: +43vw; --scatter-y: -16vh; }
-.intro-ztr { --scatter-x: +55vw; --scatter-y: -8vh; }
-.intro-zbl { --scatter-x: +39vw; --scatter-y: +18vh; }
-.intro-zbr { --scatter-x: +51vw; --scatter-y: +12vh; }
+// Per-node scatter positions. The hero is a single centered column, so the
+// cloud scatters symmetrically around the logo.
+.intro-lm  { --scatter-x: -38vw; --scatter-y: -4vh; }
+.intro-cl  { --scatter-x: -22vw; --scatter-y: -12vh; }
+.intro-bl  { --scatter-x: -30vw; --scatter-y: +14vh; }
+.intro-tm  { --scatter-x: -4vw;  --scatter-y: -20vh; }
+.intro-c   { --scatter-x: +3vw;  --scatter-y: -5vh; }
+.intro-bm  { --scatter-x: -8vw;  --scatter-y: +18vh; }
+.intro-tr  { --scatter-x: +33vw; --scatter-y: -20vh; }
+.intro-mr  { --scatter-x: +38vw; --scatter-y: -2vh; }
+.intro-br  { --scatter-x: +30vw; --scatter-y: +16vh; }
+.intro-ztl { --scatter-x: +10vw; --scatter-y: -16vh; }
+.intro-ztr { --scatter-x: +22vw; --scatter-y: -8vh; }
+.intro-zbl { --scatter-x: +6vw;  --scatter-y: +18vh; }
+.intro-zbr { --scatter-x: +18vw; --scatter-y: +12vh; }
 
 // Connectors: visible at start, fade out very quickly *before* circles begin
 // to spread, stay invisible during scatter/flash/coalesce, then fade back in
@@ -347,7 +327,7 @@ code {
 .hero-sub {
   font-size: clamp(0.98rem, 1.3vw, 1.1rem);
   color: $text-dim;
-  margin: 0 0 26px;
+  margin: 0 auto 26px;
   line-height: 1.5;
   max-width: 520px;
 }
@@ -358,7 +338,7 @@ code {
 .hero-cta {
   display: flex;
   gap: 12px;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 22px;
 }
@@ -519,6 +499,19 @@ code {
 // ----------------------------------------------------------------------------
 .features {
   padding: clamp(50px, 8vw, 90px) clamp(20px, 5vw, 48px);
+}
+.what-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 620px;
+  text-align: center;
+}
+.what-list li {
+  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+  color: $text;
+  line-height: 1.5;
+  padding: 10px 0;
 }
 .feature-grid {
   list-style: none;
@@ -813,28 +806,11 @@ code {
 .footer-inner {
   max-width: $max-w;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.5fr 2fr;
-  gap: 40px;
-}
-.footer-brand {
-  max-width: 360px;
-}
-.footer-logo {
-  height: 24px;
-  width: auto;
-  margin-bottom: 12px;
-}
-.footer-tag {
-  color: $text-dim;
-  font-size: 0.92rem;
-  margin: 0;
-  line-height: 1.55;
 }
 .footer-cols {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(40px, 8vw, 72px);
 }
 .footer-col h5 {
   font-family: $mono;
@@ -863,57 +839,9 @@ code {
   padding-top: 28px;
   border-top: 1px solid $border;
 }
-@media (max-width: 760px) {
-  .footer-inner {
-    grid-template-columns: 1fr;
-  }
-  .footer-cols {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 // ----------------------------------------------------------------------------
 // responsive misc
 // ----------------------------------------------------------------------------
-// Hero: collapse the two-column layout to a single centered column once the
-// copy + video no longer comfortably sit side by side.
-@media (max-width: 880px) {
-  .hero-inner {
-    grid-template-columns: 1fr;
-    gap: clamp(30px, 6vw, 48px);
-    max-width: 760px;
-  }
-  .hero-copy {
-    text-align: center;
-  }
-  .hero-copy .hero-logo-svg {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .hero-sub {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .hero-cta {
-    justify-content: center;
-  }
-  // Stacked hero re-centers the logo, so restore the original symmetric scatter
-  // (the desktop rightward bias would shove the cloud off-center to the right).
-  .intro-lm  { --scatter-x: -38vw; --scatter-y: -4vh; }
-  .intro-cl  { --scatter-x: -22vw; --scatter-y: -12vh; }
-  .intro-bl  { --scatter-x: -30vw; --scatter-y: +14vh; }
-  .intro-tm  { --scatter-x: -4vw;  --scatter-y: -20vh; }
-  .intro-c   { --scatter-x: +3vw;  --scatter-y: -5vh; }
-  .intro-bm  { --scatter-x: -8vw;  --scatter-y: +18vh; }
-  .intro-tr  { --scatter-x: +33vw; --scatter-y: -20vh; }
-  .intro-mr  { --scatter-x: +38vw; --scatter-y: -2vh; }
-  .intro-br  { --scatter-x: +30vw; --scatter-y: +16vh; }
-  .intro-ztl { --scatter-x: +10vw; --scatter-y: -16vh; }
-  .intro-ztr { --scatter-x: +22vw; --scatter-y: -8vh; }
-  .intro-zbl { --scatter-x: +6vw;  --scatter-y: +18vh; }
-  .intro-zbr { --scatter-x: +18vw; --scatter-y: +12vh; }
-}
-
 @media (max-width: 720px) {
   // On narrow screens hide the section anchors and keep only the Download CTA.
   .nav-links a:not(.nav-cta) {

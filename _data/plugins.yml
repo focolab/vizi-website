@@ -64,8 +64,10 @@
 #                          data folder)
 #               vizi 1.0.1 renders the list VERBATIM in the install prompt, so write
 #               values that read well: each item becomes "the {name} {version}
-#               (about N MB) from {source}" (N = size/1_000_000 rounded, missing
-#               parts left out; items join "a and b" / "a, b and c"); a licensed item
+#               (about N MB) from {source}", where N is BINARY megabytes —
+#               round(size / 1048576), the way the host's fmt_bytes sizes every
+#               download, so 61,736,206 bytes reads "about 59 MB", not 62 — with
+#               missing parts left out; items join "a and b" / "a, b and c"; a licensed item
 #               adds "The {name} is under the {license} and carries its license
 #               files", {license} shown exactly. `name` is a SINGULAR noun phrase
 #               that reads after "the" ("Eclipse Temurin JRE"), never a plural; the

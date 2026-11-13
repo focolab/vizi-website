@@ -27,7 +27,6 @@
     </a>
     <div class="nav-links">
       <a href="{{ '/' | relative_url }}#features">Features</a>
-      <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
       <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
       <a href="{{ '/' | relative_url }}" class="nav-cta">← Home</a>
     </div>
@@ -44,9 +43,7 @@
 
   <section class="download-hero">
     <div class="download-inner">
-      <span class="eyebrow">Download</span>
       <h1>Get vizi for your platform.</h1>
-      <p class="download-sub">vizi runs natively on macOS, Windows, and Linux.</p>
 
       {%- if current %}
       <p class="download-note">
@@ -65,7 +62,7 @@
       {%- else %}
       <p class="download-note">
         <span class="dot"></span>
-        No public release yet — the first public build is the 1.0.0 beta.
+        No public release yet.
       </p>
       {%- endif %}
 
@@ -90,10 +87,6 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="{{ '/assets/img/vizi.svg' | relative_url }}" alt="vizi" class="footer-logo">
-        <p class="footer-tag">A viewer for volumetric scientific image data.</p>
-      </div>
       <div class="footer-cols">
         <div class="footer-col">
           <h5>Lab</h5>
@@ -102,7 +95,6 @@
         <div class="footer-col">
           <h5>Site</h5>
           <a href="{{ '/' | relative_url }}#features">Features</a>
-          <a href="{{ '/' | relative_url }}#use-cases">Use cases</a>
           <a href="{{ '/plugins.html' | relative_url }}">Plugins</a>
           <a href="{{ '/changelog.html' | relative_url }}">Changelog</a>
         </div>
