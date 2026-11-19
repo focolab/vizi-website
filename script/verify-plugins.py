@@ -81,6 +81,7 @@ KNOWN_KEPT = {"plugin", "shared"}  # a setup_downloads item's `kept`
 # plugin must declare an app floor of at least 0.9.5. We CHECK min_vizi against
 # this; we do not derive it (protocol version != app version).
 APP_FLOOR_FOR_PROTOCOL_1 = (0, 9, 5)
+AUTHOR_MAX = 80  # `author` is a single display line; keep it short enough to render
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 VERSION_RE = re.compile(r"^\d+(\.\d+)*[0-9a-z.]*$")
 _CHUNK = 1 << 16
@@ -185,6 +186,14 @@ def validate_entry(p: dict, errs: list[str]) -> None:
     if isinstance(lic, str) and lic not in KNOWN_LICENSES:
         errs.append(f"{where}: 'license' must be a known SPDX id; got '{lic}'. "
                     f"Allowed: {sorted(KNOWN_LICENSES)}")
+    author = p.get("author")
+    if author is not None:  # optional; absent means the entry names no author
+        if not isinstance(author, str) or not author.strip():
+            errs.append(f"{where}: 'author', if present, must be a non-empty string")
+        elif "\n" in author or "\r" in author:
+            errs.append(f"{where}: 'author' must be a single line (no newlines)")
+        elif len(author) > AUTHOR_MAX:
+            errs.append(f"{where}: 'author' must be at most {AUTHOR_MAX} characters; got {len(author)}")
     perms = p.get("permissions")
     if not isinstance(perms, list) or not all(isinstance(x, str) for x in perms):
         errs.append(f"{where}: 'permissions' must be a list of strings")
@@ -460,6 +469,26 @@ def selftest() -> int:
                   cat_errs([{"id": "org.a", "replaces": ["org.x"]}, {"id": "org.b", "replaces": ["org.x"]}])))
         check("clean rename accepts",
               cat_errs([{"id": "org.new.a", "replaces": ["org.old.a"]}, {"id": "org.b"}]) == [])
+
+        def au_errs(*, author="\0absent"):
+            entry = dict(base)
+            if author != "\0absent":
+                entry["author"] = author
+            out: list[str] = []
+            validate_entry(entry, out)
+            return [e for e in out if "'author'" in e]
+
+        check("author valid accepts", au_errs(author="FOCO Lab") == [])
+        check("author absent accepts", au_errs() == [])
+        check("author empty rejected",
+              any("non-empty string" in e for e in au_errs(author="   ")))
+        check("author wrong type rejected",
+              any("non-empty string" in e for e in au_errs(author=123)))
+        check("author newline rejected",
+              any("single line" in e for e in au_errs(author="Foo\nBar")))
+        check("author at 80 chars accepted", au_errs(author="x" * 80) == [])
+        check("author over 80 chars rejected",
+              any("at most 80" in e for e in au_errs(author="x" * 81)))
 
         sd_ok = {"name": "R", "version": "1", "size": 1, "source": "s", "license": "MIT", "kept": "plugin"}
         def sd_errs(items):
