@@ -82,6 +82,7 @@ KNOWN_KEPT = {"plugin", "shared"}  # a setup_downloads item's `kept`
 # this; we do not derive it (protocol version != app version).
 APP_FLOOR_FOR_PROTOCOL_1 = (0, 9, 5)
 AUTHOR_MAX = 80  # `author` is a single display line; keep it short enough to render
+PYTHON_RE = re.compile(r"^3\.[0-9]{1,2}$")  # `python` is a 3.N minor version, e.g. 3.13
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 VERSION_RE = re.compile(r"^\d+(\.\d+)*[0-9a-z.]*$")
 _CHUNK = 1 << 16
@@ -194,6 +195,11 @@ def validate_entry(p: dict, errs: list[str]) -> None:
             errs.append(f"{where}: 'author' must be a single line (no newlines)")
         elif len(author) > AUTHOR_MAX:
             errs.append(f"{where}: 'author' must be at most {AUTHOR_MAX} characters; got {len(author)}")
+    py = p.get("python")
+    if py is not None:  # optional; absent means vizi uses the SDK default interpreter
+        if not isinstance(py, str) or not PYTHON_RE.match(py):
+            errs.append(f"{where}: 'python', if present, must be a '3.N' minor version "
+                        f"like '3.13' (^3\\.[0-9]{{1,2}}$); got {py!r}")
     perms = p.get("permissions")
     if not isinstance(perms, list) or not all(isinstance(x, str) for x in perms):
         errs.append(f"{where}: 'permissions' must be a list of strings")
@@ -489,6 +495,26 @@ def selftest() -> int:
         check("author at 80 chars accepted", au_errs(author="x" * 80) == [])
         check("author over 80 chars rejected",
               any("at most 80" in e for e in au_errs(author="x" * 81)))
+
+        def py_errs(*, python="\0absent"):
+            entry = dict(base)
+            if python != "\0absent":
+                entry["python"] = python
+            out: list[str] = []
+            validate_entry(entry, out)
+            return [e for e in out if "'python'" in e]
+
+        check("python valid accepts", py_errs(python="3.13") == [])
+        check("python absent accepts", py_errs() == [])
+        check("python one-digit minor accepts", py_errs(python="3.9") == [])
+        check("python with patch rejected",
+              any("3.N" in e for e in py_errs(python="3.13.5")))
+        check("python wrong major rejected",
+              any("3.N" in e for e in py_errs(python="2.7")))
+        check("python non-string rejected",
+              any("3.N" in e for e in py_errs(python=3.13)))
+        check("python empty rejected",
+              any("3.N" in e for e in py_errs(python="")))
 
         sd_ok = {"name": "R", "version": "1", "size": 1, "source": "s", "license": "MIT", "kept": "plugin"}
         def sd_errs(items):
